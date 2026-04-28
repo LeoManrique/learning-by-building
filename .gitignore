@@ -1,0 +1,6 @@
+# Internal measurements
+milestones.md
+
+# Zig output directory
+zig-out/
+.zig-cache/

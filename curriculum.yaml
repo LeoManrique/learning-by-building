@@ -1,0 +1,2769 @@
+# =============================================================================
+# LEARNING BY BUILDING CURRICULUM — Leo
+# =============================================================================
+#
+# 114 projects, ordered by difficulty
+# Levels 20 (easiest) -> 2280 (hardest).
+#
+# The level number is purely an *ordering*. The absolute number has no meaning;
+# only "level X comes before level Y" matters. A larger number simply means
+# "the next harder project". Gaps are not difficulty units.
+#
+# Initial projects were incremented by 20; new projects will be added at 10s
+# or replace existing ones considered no longer relevant.
+#
+# Each project carries:
+#   - description: what to build, in plain words
+#   - concepts: the ideas the project drives into your head
+#   - requirements: concrete acceptance criteria - if you can tick all of
+#     them, the project is done
+#   - recommended_languages: good fits for the project's domain, in rough
+#     order of preference. Pick one and stick with it; don't dabble.
+# =============================================================================
+
+
+# =============================================================================
+# PHASE I  -  Foundations of Computation        (Levels 20 -> 840)
+# =============================================================================
+# Goal: stop relying on libraries to do the thinking. Internalize control flow,
+# data structures, parsing, and basic concurrency by building these by hand.
+#
+# Recommended language: Go. The point of Phase I is to feel comfortable
+# orchestrating I/O, parsing arguments, and round-tripping data without
+# reaching for a framework, while building the data structures (hash maps,
+# B-trees, regex engines) that later levels will treat as primitives.
+#
+# Pair with: "Crafting Interpreters" (early chapters) and "Designing
+# Data-Intensive Applications".
+# =============================================================================
+
+projects:
+
+  - level: 20
+    id: 20-cli-task-tracker
+    name: "CLI Task Tracker"
+    phase: I
+    description: >-
+      A terminal app for managing a personal todo list: add, list, mark
+      complete, delete. State persists to a JSON file on disk between runs,
+      using the stdlib's JSON encoder - you'll build your own parser at
+      level 140. The point is to feel comfortable orchestrating I/O, parsing
+      arguments, and round-tripping data without reaching for any framework.
+    concepts:
+      - imperative control flow
+      - file I/O
+      - serialization
+      - the read-modify-write cycle
+    requirements:
+      - tasks survive process restart via a JSON file on disk
+      - subcommands or flags for add, list, complete, delete
+      - list filters by status (all / active / done)
+      - handles a missing or malformed state file gracefully
+      - works correctly with at least 1000 tasks
+    recommended_languages:
+      - Go
+
+  - level: 40
+    id: 40-word-frequency-analyzer
+    name: "Word Frequency Analyzer"
+    phase: I
+    description: >-
+      Read a stream of text from stdin or a file path. Output the top-N most
+      frequent words with counts. Handle case folding, punctuation
+      stripping, a min-length filter, and an n-gram mode for K-word phrase
+      counts. The point is to get fluent with Go's stream-processing idioms
+      (bufio.Scanner, maps, sort.Slice) before any later project asks you to
+      invent them.
+    concepts:
+      - bufio.Scanner streaming
+      - map idioms (count, get-or-create)
+      - sort.Slice for ranked output
+      - normalization (case folding, punctuation stripping)
+    requirements:
+      - reads from stdin or any file path interchangeably
+      - top-N flag controls output size
+      - ignore-case and min-length flags work correctly
+      - n-gram mode for K=2 and K=3 produces sensible phrase counts
+      - handles files larger than RAM (no Read-all)
+    recommended_languages:
+      - Go
+
+  - level: 60
+    id: 60-csv-json-converter
+    name: "CSV <-> JSON Converter"
+    phase: I
+    description: >-
+      A bidirectional converter that streams rows: CSV-to-JSON-array and
+      JSON-array-to-CSV. Uses encoding/csv and encoding/json - the goal is
+      to feel comfortable with Go's stdlib encoders before level 140 makes
+      you build JSON parsing from scratch.
+    concepts:
+      - streaming encoders (json.Encoder/Decoder, csv.Reader/Writer)
+      - structs vs map[string]any
+      - type inference in heterogeneous data
+      - round-trip stability across encoders
+    requirements:
+      - converts both directions via subcommands or flags
+      - streams rows (does not load the full file into memory)
+      - flag for type inference (numbers, bools) vs all-strings mode
+      - handles quoted CSV fields containing commas and newlines
+      - round-trip is stable for typical sample inputs
+    recommended_languages:
+      - Go
+
+  - level: 80
+    id: 80-tree-clone
+    name: "tree clone"
+    phase: I
+    description: >-
+      Print a directory tree with box-drawing characters, optional file
+      sizes, and color. Replicate the classic tree CLI with depth,
+      exclude-glob, dirs-only, and show-size flags. Tiny project, but it
+      cements filesystem-traversal idioms used by the next several projects.
+    concepts:
+      - filepath.WalkDir traversal
+      - glob matching with filepath.Match
+      - terminal output formatting (box-drawing, ANSI color)
+      - tty detection for auto-disabling color
+    requirements:
+      - depth flag limits recursion
+      - exclude glob filters by name pattern
+      - sizes are shown in human-readable form when --show-size is set
+      - color output is auto-disabled when stdout is not a tty
+      - handles symlink loops without infinite recursion
+    recommended_languages:
+      - Go
+
+  - level: 100
+    id: 100-hex-dump
+    name: "Hex Dump (xxd clone)"
+    phase: I
+    description: >-
+      Read a file (or stdin) and print it in classic offset/hex/ASCII
+      columns. The kind of program that's around 50 lines but makes you
+      think in bytes for the first time.
+    concepts:
+      - bufio.Reader
+      - fixed-width formatting
+      - byte vs rune distinction
+      - ASCII printability checks
+    requirements:
+      - default output matches xxd byte-for-byte for ASCII input
+      - takes input from stdin or a file path
+      - --cols flag changes bytes-per-row
+      - --reverse mode parses hex-dump output back into the original bytes
+      - non-printable bytes are shown as '.' in the ASCII column
+    recommended_languages:
+      - Go
+
+  - level: 120
+    id: 120-pomodoro-timer
+    name: "Pomodoro / Countdown Timer"
+    phase: I
+    description: >-
+      A terminal countdown timer that redraws in place (no scrolling),
+      handles SIGINT cleanly, and rings the bell when done. The smallest
+      project that builds Go-CLI muscle memory: tickers, signal handling,
+      and basic terminal control.
+    concepts:
+      - time.Ticker
+      - os/signal handling
+      - terminal escape codes (carriage return for in-place redraw)
+      - ANSI bell
+    requirements:
+      - configurable duration via flag (e.g. --duration 25m)
+      - in-place redraw of remaining time, no scrolling
+      - SIGINT cleans up terminal state and exits cleanly
+      - prints a final summary line and rings the terminal bell on completion
+      - supports a Pomodoro mode (work/break cycles) with --cycles N
+    recommended_languages:
+      - Go
+
+  - level: 140
+    id: 140-json-parser
+    name: "JSON Parser"
+    phase: I
+    description: >-
+      Read raw JSON text and emit your own in-memory tree (objects, arrays,
+      strings, numbers, bools, null). No JSON library at all - you write the
+      lexer and the parser by hand. The output should be a tree your own code
+      can walk.
+    concepts:
+      - recursive-descent parsing
+      - the lex/parse separation
+      - AST construction
+      - error reporting on malformed input
+    requirements:
+      - handles all JSON types including deeply nested objects and arrays
+      - reports parse errors with line and column
+      - round-trip stability - parse(serialize(x)) equals x
+      - passes a representative subset of the JSON conformance suite
+    recommended_languages:
+      - Go
+
+  - level: 160
+    id: 160-cli-with-cobra-viper
+    name: "CLI with Cobra & Viper"
+    phase: I
+    description: >-
+      Build a real, useful CLI using the actual Cobra and Viper libraries -
+      a note-taker, snippet manager, or system info dashboard. Lay out the
+      command tree, declare flags, wire env-var fallback through Viper, and
+      generate completion scripts. The point is to feel the framework's
+      ergonomics before level 180 makes you clone it from scratch.
+    concepts:
+      - Cobra command tree declaration
+      - Viper config precedence (flags > env > config > defaults)
+      - shell completion via Cobra's generators
+      - PersistentFlags vs LocalFlags
+    requirements:
+      - at least 3 levels of nested subcommands
+      - flag -> env -> config-file -> default precedence demonstrably works
+      - generates bash and zsh completion scripts
+      - --help output is properly formatted with examples
+      - the tool is genuinely useful enough that you keep using it after
+    recommended_languages:
+      - Go
+
+  - level: 180
+    id: 180-cli-framework-cobra-clone
+    name: "CLI Framework (Cobra-clone)"
+    phase: I
+    description: >-
+      Build the framework that kubectl, helm, and terraform are built on.
+      Users register commands in a tree (root, subcommand, sub-subcommand),
+      declare flags per command, and the framework parses argv, dispatches
+      to the right handler, auto-renders help text, and emits
+      shell-completion scripts. The point is to internalize the pattern
+      every modern Go infrastructure CLI uses.
+    concepts:
+      - command tree traversal and dispatch
+      - flag set composition with parent-flag inheritance
+      - precedence chain - flags beat config-file beat env beat defaults
+      - shell-completion generation (bash, zsh, fish)
+      - help-text auto-rendering from declared schema
+    requirements:
+      - nested commands at arbitrary depth (cli foo bar baz)
+      - flag declaration is the single source for parsing and help output
+      - env-var fallback for any flag
+      - generates a working bash and zsh completion script
+      - example app with at least 3 levels of nesting and 10+ flags
+      - typo correction suggests close commands when input is unrecognized
+    recommended_languages:
+      - Go
+
+  - level: 200
+    id: 200-http-file-downloader
+    name: "HTTP File Downloader with Progress Bar"
+    phase: I
+    description: >-
+      A curl -O clone that downloads a URL to disk and shows a TTY progress
+      bar. The lesson is io.Reader composition - you wrap the HTTP response
+      body in a counter-reader that updates the progress bar as bytes flow
+      through. Once you internalize this decorator pattern you read other
+      people's Go code differently.
+    concepts:
+      - net/http client and redirects
+      - io.Reader wrapping (decorator pattern)
+      - context.Context for cancellation
+      - atomic file writes (temp + rename)
+      - Range header for resume
+    requirements:
+      - downloads via GET, follows redirects, writes to disk atomically
+      - progress bar shows percentage and bytes/second when content-length is known
+      - handles unknown content-length gracefully (running byte count)
+      - supports resume on partial download via the Range header
+      - Ctrl-C cancels via context and removes the partial file
+    recommended_languages:
+      - Go
+
+  - level: 220
+    id: 220-markdown-to-html-converter
+    name: "Markdown-to-HTML Converter"
+    phase: I
+    description: >-
+      Read a Markdown file and emit equivalent HTML. The lexer recognizes
+      Markdown tokens; the renderer emits HTML. Keep these two stages crisply
+      separated - the same lexer should be able to feed a different renderer
+      (LaTeX, plain text) later.
+    concepts:
+      - string tokenization
+      - finite-state thinking
+      - distinction between lexing and rendering
+    requirements:
+      - handles headers (H1 through H6), bold, italic, lists (ul and ol),
+        inline links, inline code, paragraphs
+      - lexing and rendering are decoupled passes
+      - preserves content inside code blocks verbatim
+      - output validates as well-formed HTML
+    recommended_languages:
+      - Go
+
+  - level: 240
+    id: 240-cron-expression-evaluator
+    name: "Cron Expression Evaluator"
+    phase: I
+    description: >-
+      Parse standard cron expressions and predict the next N firings from a
+      given time. Practical parsing without committing to a full grammar -
+      you're building a small DSL evaluator with real-world edge cases (DST,
+      leap years, month boundaries).
+    concepts:
+      - tokenizing fixed-shape expressions
+      - time arithmetic in IANA timezones
+      - expression evaluation (step, range, list modifiers)
+      - edge cases (DST transitions, leap years)
+    requirements:
+      - supports the five-field standard cron syntax
+      - supports step (*/N), range (A-B), and list (A,B,C) modifiers
+      - --next N --from <time> prints the next N firing timestamps
+      - validates input and reports parse errors with field position
+      - handles timezone via flag, including DST transitions correctly
+    recommended_languages:
+      - Go
+
+  - level: 260
+    id: 260-math-expression-evaluator
+    name: "Math Expression Evaluator"
+    phase: I
+    description: >-
+      Take a string like "(4 + 5) * 2 / 3", parse it into an AST honoring
+      operator precedence and associativity, then walk the tree to evaluate.
+      The smallest interpreter you can write end to end - lexer, parser,
+      evaluator.
+    concepts:
+      - ASTs
+      - recursive-descent parsing
+      - operator precedence and associativity
+      - tree-walking evaluation
+    requirements:
+      - supports +, -, *, /, parentheses, unary minus, exponentiation
+      - correct precedence and left/right associativity
+      - REPL mode - type expressions, see results
+      - reports meaningful errors for malformed input
+    recommended_languages:
+      - Go
+
+  - level: 280
+    id: 280-hash-indexed-address-book
+    name: "Hash-Indexed Address Book"
+    phase: I
+    description: >-
+      A contact book stored in your own open-addressing hash table. No `dict`,
+      no `HashMap` - you write the hash function, collision handling, and
+      resizing yourself. The contact UI is incidental; the hash table is the
+      point.
+    concepts:
+      - hash functions
+      - collision resolution (linear probing vs chaining)
+      - load-factor-driven resizing
+    requirements:
+      - open addressing with linear or quadratic probing
+      - automatic resize when load factor exceeds 0.75
+      - O(1) amortized insert, lookup, and delete
+      - stress test with 100k entries verifies correctness
+      - benchmark vs the language's built-in map shows a comprehensible gap
+    recommended_languages:
+      - Go
+
+  - level: 300
+    id: 300-file-deduplicator
+    name: "File Deduplicator"
+    phase: I
+    description: >-
+      Walk a directory tree, hash every file, and report groups of
+      duplicates. Optional --delete-dupes keeps the first occurrence and
+      removes the rest. The mental model - content addressed by hash - is
+      exactly what the next project (Mini-Git) needs you to already feel.
+    concepts:
+      - filepath.WalkDir
+      - streaming hashes with crypto/sha256 (constant memory)
+      - maps as multimaps (hash -> []path)
+      - content-addressed storage as a concept
+    requirements:
+      - hashes are computed by streaming, not by loading whole files
+      - duplicate groups are printed with hash, size, and paths
+      - --delete-dupes deletes all but the first path in each group, with confirmation
+      - size mismatch short-circuits hashing (files of different sizes cannot be duplicates)
+      - symlinks are not followed by default
+    recommended_languages:
+      - Go
+
+  - level: 320
+    id: 320-diff-tool-myers
+    name: "Diff Tool (line-level Myers)"
+    phase: I
+    description: >-
+      Implement the Myers diff algorithm and produce unified-diff output
+      between two text files. Classic CS algorithm in a useful CLI.
+      Pre-stages every diff-shaped feature later (git diff, code review
+      tools, patch generation).
+    concepts:
+      - Myers algorithm (edit graph, shortest edit script)
+      - unified diff format
+      - longest common subsequence vs edit distance
+      - exit-code conventions
+    requirements:
+      - produces output byte-compatible with diff -u for typical inputs
+      - handles files of a few thousand lines without quadratic blowup
+      - context-lines flag (-U N) controls hunk size
+      - exit code matches diff convention (0 identical, 1 differ, 2 error)
+      - handles the empty-file case correctly
+    recommended_languages:
+      - Go
+
+  - level: 340
+    id: 340-mini-git-plumbing
+    name: "Mini-Git (Plumbing)"
+    phase: I
+    description: >-
+      A minimal Git: init, add, commit, log, diff, checkout. Build a
+      content-addressable object store on disk where blobs, trees, and
+      commits are addressed by SHA-1 of their contents. Working through this
+      clarifies why Git is what it is.
+    concepts:
+      - content-addressable storage
+      - DAGs
+      - SHA-1 hashing
+      - the blob/tree/commit object model
+    requirements:
+      - stores blobs, trees, commits as SHA-1-named files in .mygit/objects
+      - commit history forms a correct DAG with parent pointers
+      - diff between two commits shows added, removed, modified files
+      - checkout reconstructs the working tree from any commit
+      - log walks history and prints messages in topological order
+    recommended_languages:
+      - Go
+
+  - level: 360
+    id: 360-unix-shell
+    name: "Unix Shell"
+    phase: I
+    description: >-
+      A POSIX-style shell. Read a command line, parse it (pipes,
+      redirections, quoting), fork the child, exec the program, wait for
+      it. Add job control (background jobs, fg/bg, Ctrl-Z, signal
+      handling) and your own builtins. Your first real conversation with
+      the kernel via syscalls.
+    concepts:
+      - fork / exec / wait
+      - process groups and sessions
+      - pipes and dup2 plumbing
+      - signal handling (SIGINT, SIGCHLD, SIGTSTP)
+      - job control
+    requirements:
+      - parses pipelines, input/output redirection, and quoted arguments
+      - runs commands via fork + exec, reaps zombies via SIGCHLD
+      - builtins - cd, exit, jobs, fg, bg, export
+      - background jobs (&) with job control (Ctrl-Z, Ctrl-C) work correctly
+      - tab completion for commands and file paths
+      - history with up/down arrow recall, persisted between sessions
+    recommended_languages:
+      - Go
+
+  - level: 380
+    id: 380-concurrent-port-scanner
+    name: "Concurrent Port Scanner"
+    phase: I
+    description: >-
+      A bounded-concurrency TCP port scanner. Given a host and port range,
+      scan in parallel with N workers, connect with a timeout, and report
+      open ports. The goal is to feel goroutines, channels, contexts, and
+      bounded worker pools as everyday tools before they become load-bearing
+      in level 400 (Concurrent Web Crawler) and level 440 (Thread Pool).
+    concepts:
+      - goroutines and channels for fan-out / fan-in
+      - bounded worker pool via buffered channel as semaphore
+      - net.Dialer with timeout
+      - context cancellation propagation
+    requirements:
+      - --workers N caps concurrency
+      - --timeout flag controls connect deadline per port
+      - context cancels all in-flight scans on Ctrl-C
+      - port range syntax (1-1024, 22,80,443, mixed)
+      - results stream out as found, with a --sort flag for ordered output
+    recommended_languages:
+      - Go
+
+  - level: 400
+    id: 400-concurrent-web-crawler
+    name: "Concurrent Web Crawler"
+    phase: I
+    description: >-
+      Given a starting URL, fetch the page, extract links, queue them, and
+      continue across N worker goroutines. Respects robots.txt, deduplicates
+      URLs, bounds depth and concurrency. The point is producer-consumer
+      mechanics under contention.
+    concepts:
+      - producer-consumer queues
+      - mutexes vs channels
+      - bounded concurrency
+      - race conditions
+    requirements:
+      - bounded worker pool with configurable concurrency
+      - URL deduplication across workers (no double-fetches)
+      - depth limit and per-host rate limit
+      - respects robots.txt
+      - crawls 1000 pages without leaking threads or crashing
+    recommended_languages:
+      - Go
+
+  - level: 420
+    id: 420-structured-logger-and-metrics-library
+    name: "Structured Logger + Metrics Library"
+    phase: II
+    description: >-
+      Two observability primitives in one package. The logger emits
+      structured JSON or logfmt, leveled, with sampling under load and
+      correlation IDs propagated via context. The metrics half exposes
+      counters, gauges, and histograms - the histogram with bounded memory
+      via HDR or t-digest so cardinality doesn't blow up. Both are exposed
+      through a single registry that scrapes or pushes.
+    concepts:
+      - structured and leveled logging
+      - log sampling under load
+      - counter / gauge / histogram / summary semantics
+      - bounded-memory histogram approximation (HDR, t-digest)
+      - pull (Prometheus) vs push (StatsD) collection models
+      - label cardinality and how to bound it
+    requirements:
+      - structured logger with JSON and logfmt outputs
+      - correlation IDs flow through context across goroutines
+      - counters, gauges, histograms with configurable buckets
+      - HDR or t-digest histogram variant with bounded memory
+      - /metrics endpoint speaking the Prometheus exposition format
+      - 1M observations/sec on a single core without lock contention
+    recommended_languages:
+      - Go
+
+  - level: 440
+    id: 440-thread-pool-job-queue
+    name: "Thread Pool + Job Queue"
+    phase: I
+    description: >-
+      Build the concurrency runtime itself. A fixed pool of OS threads pulls
+      tasks from a shared bounded queue. Submitters block when the queue is
+      full; workers block when it's empty. You implement the synchronization
+      primitives - condition variables, not busy loops.
+    concepts:
+      - threads
+      - mutexes
+      - condition variables
+      - synchronization primitives
+      - graceful shutdown
+    requirements:
+      - configurable pool size and queue capacity
+      - submit() blocks when the queue is full
+      - workers block efficiently on an empty queue (no spinning)
+      - graceful shutdown drains in-flight tasks before exit
+      - 1M tasks across 8 workers with no deadlock or lost work
+    recommended_languages:
+      - Go
+
+  - level: 460
+    id: 460-in-memory-kv-redis-lite
+    name: "In-Memory KV / Redis-lite"
+    phase: I
+    description: >-
+      A TCP server that speaks a tiny text protocol (GET key, SET key value,
+      DEL key) and stores everything in memory. Connect from netcat, send
+      commands, see responses. Your first real network protocol over real
+      sockets.
+    concepts:
+      - hash maps
+      - command parsing
+      - line-oriented protocols
+      - manual memory accounting
+    requirements:
+      - listens on a TCP port, handles many concurrent clients
+      - commands - GET, SET, DEL, EXISTS, KEYS
+      - command pipelining (client sends multiple commands before reading)
+      - survives malformed input without crashing
+      - 50k ops/sec single-threaded on commodity hardware
+    recommended_languages:
+      - Go
+
+  - level: 480
+    id: 480-cache-with-lru-lfu-eviction
+    name: "Cache with LRU/LFU Eviction"
+    phase: I
+    description: >-
+      Extend your KV store with bounded capacity and an eviction policy. When
+      full, evict the least-recently-used (or least-frequently-used) entry.
+      The classic implementation - a doubly-linked list plus a hash map -
+      gives O(1) for everything.
+    concepts:
+      - LRU and LFU implementations
+      - the doubly-linked-list + hash-map combo
+      - eviction trade-offs
+      - hit/miss telemetry
+    requirements:
+      - bounded capacity, configurable
+      - both LRU and LFU implementations, switchable at startup
+      - O(1) get, set, evict
+      - hit/miss counters exposed via a STATS command
+      - benchmark shows the eviction cost is independent of cache size
+    recommended_languages:
+      - Go
+
+  - level: 500
+    id: 500-tui-tool-bubbletea
+    name: "TUI Tool (Bubbletea)"
+    phase: I
+    description: >-
+      Build a real terminal UI tool using charmbracelet/bubbletea - a fuzzy
+      file picker, git status viewer, or process explorer. Practice the
+      Elm-architecture pattern (Model / Update / View) and feel a production
+      TUI library before level 520 makes you build a text editor mostly by
+      hand on raw terminal codes.
+    concepts:
+      - Bubbletea's Model-Update-View pattern
+      - tea.Cmd for async work (filesystem walks, shell calls)
+      - lipgloss for styling
+      - keyboard event handling and focus management
+    requirements:
+      - clean Model/Update/View separation, no logic in View
+      - keyboard-driven navigation, no mouse required
+      - handles a real workload (filesystem, git, processes - pick one)
+      - graceful terminal resize handling
+      - exits cleanly to a non-broken terminal state
+    recommended_languages:
+      - Go
+
+  - level: 520
+    id: 520-terminal-text-editor
+    name: "Terminal Text Editor"
+    phase: I
+    description: >-
+      A modal text editor in the spirit of kilo and hecto. Switch the
+      terminal to raw mode, draw via ANSI escape sequences, manage the
+      document with a gap buffer or piece table, render syntax
+      highlighting, save and load files. Build the entire IO loop yourself
+      - no curses, no readline. Suddenly the terminal feels like hardware.
+    concepts:
+      - terminal raw mode (termios)
+      - ANSI escape sequences and the alternate screen buffer
+      - gap buffers / piece tables
+      - incremental redraw
+      - simple regex- or token-based syntax highlighting
+    requirements:
+      - raw-mode IO; restores cooked mode cleanly on exit (incl. SIGINT)
+      - opens, edits, and saves files of arbitrary size
+      - modal or chord-key input scheme (vim or emacs flavor) of your choice
+      - syntax highlighting for at least one language
+      - incremental search with live highlight
+      - undo / redo with at least 280 levels
+    recommended_languages:
+      - Go
+
+  - level: 540
+    id: 540-json-serializer-library
+    name: "JSON Serializer Library"
+    phase: I
+    description: >-
+      The other direction from level 140. Take an arbitrary in-memory value
+      and produce JSON text. Use reflection or type introspection to walk the
+      structure. Detect cycles. Let users opt into custom encoders for
+      specific types.
+    concepts:
+      - tree traversal
+      - type introspection / reflection
+      - schema-less serialization
+      - cycle detection
+    requirements:
+      - encodes structs/records, slices/arrays, maps, primitives, pointers
+      - round-trip stability with the parser from level 140
+      - cycle detection returns an error rather than recursing forever
+      - user-supplied custom encoder hook for specific types
+      - pretty-print mode with configurable indentation
+    recommended_languages:
+      - Go
+
+  - level: 560
+    id: 560-dependency-injection-container
+    name: "Dependency Injection Container"
+    phase: I
+    description: >-
+      A tiny IoC container. Register types and their constructors; ask the
+      container for an instance and it builds the whole dependency graph for
+      you. Like Spring or guice, but minimal. Detects cycles, manages
+      singleton vs transient lifetimes.
+    concepts:
+      - metaprogramming / reflection
+      - graph traversal
+      - dependency resolution order
+      - scope and lifetime management
+    requirements:
+      - register by type or interface, resolve by type
+      - constructor injection works for arbitrary nesting depth
+      - detects circular dependencies and reports the cycle
+      - singleton, transient, and scoped lifetimes
+      - example app wires 20+ services without manual plumbing
+    recommended_languages:
+      - Go
+
+  - level: 580
+    id: 580-event-driven-game-loop
+    name: "Event-Driven Game Loop"
+    phase: I
+    description: >-
+      A headless engine that ticks at a fixed rate, processes input events
+      from a queue, updates entity state, and "renders" (logs or writes to a
+      buffer). No graphics needed - the loop semantics are the point.
+      Foundation for any later real-time system.
+    concepts:
+      - event queues
+      - delta-time integration
+      - entity-component systems
+      - fixed vs variable timestep
+    requirements:
+      - fixed-timestep update at 60Hz, decoupled from variable-rate render
+      - entity-component model - entities own components, systems process
+        them
+      - input event queue dispatches to handlers
+      - pause and resume preserve state correctly
+      - determinism - same input sequence produces the same output
+    recommended_languages:
+      - Go
+
+  - level: 600
+    id: 600-rest-api-net-http
+    name: "REST API with net/http"
+    phase: I
+    description: >-
+      Build a real CRUD JSON API using only Go's standard library: net/http,
+      encoding/json, log/slog. Routing tree, middleware chain, structured
+      errors, graceful shutdown via context. Critical pre-stage to level 620
+      (HTTP/1.1 from Sockets) - you have to know what net/http feels like
+      before you can appreciate what it's hiding from you.
+    concepts:
+      - http.ServeMux and method-aware routing
+      - middleware chains via http.Handler composition
+      - request body decoding and validation
+      - graceful shutdown with context.Context
+      - structured logging with log/slog
+    requirements:
+      - CRUD endpoints over a real resource (notes, tasks, links, etc.)
+      - "middleware: logging, request-ID, panic recovery, basic auth"
+      - returns JSON errors with proper HTTP status codes
+      - graceful shutdown drains in-flight requests on SIGTERM
+      - handles JSON decode errors with helpful, structured messages
+    recommended_languages:
+      - Go
+
+  - level: 620
+    id: 620-http-1-1-server-from-sockets
+    name: "HTTP/1.1 Server from Sockets"
+    phase: I
+    description: >-
+      A web server built on raw TCP. Parse the request line, headers, body.
+      Implement keep-alive, chunked transfer encoding, content-length
+      framing. Speak HTTP/1.1 by reading the RFC, not by importing a library.
+    concepts:
+      - OSI/TCP model
+      - socket lifecycle
+      - request/response framing
+      - the HTTP/1.1 grammar
+    requirements:
+      - speaks HTTP/1.1 with keep-alive and chunked encoding
+      - routing table maps method + path to handlers
+      - concurrent connections (one goroutine per conn or epoll-style)
+      - returns proper status codes and Content-Length
+      - passes a curl-based conformance suite for the HTTP/1.1 grammar
+    recommended_languages:
+      - Go
+
+  - level: 640
+    id: 640-http-2-server
+    name: "HTTP/2 Server"
+    phase: I
+    description: >-
+      Implement HTTP/2 server-side from raw TCP. Frame layer (DATA, HEADERS,
+      SETTINGS, WINDOW_UPDATE, PING, GOAWAY), HPACK header compression with
+      static and dynamic tables, stream multiplexing with per-stream and
+      connection-level flow control, server push, prioritization. Plug it
+      into the routing table from level 620.
+    concepts:
+      - HTTP/2 binary framing
+      - HPACK header compression with static and dynamic tables
+      - stream multiplexing on a single TCP connection
+      - connection-level vs stream-level flow control
+      - server push and how it differs from request/response
+      - ALPN negotiation over TLS
+    requirements:
+      - speaks HTTP/2 with all required frame types
+      - HPACK encoding and decoding round-trips against a reference implementation
+      - 100 concurrent streams on a single connection without head-of-line blocking
+      - backpressure via flow control - sender stops when window is exhausted
+      - ALPN-negotiated h2 over TLS, with h2c (cleartext) as a switch
+      - passes a curl --http2 conformance suite
+    recommended_languages:
+      - Go
+
+  - level: 660
+    id: 660-append-only-log
+    name: "Append-Only Log"
+    phase: I
+    description: >-
+      A crash-safe append-only log file. Writes encode a length-prefixed,
+      checksummed record and append it. fsync on commit. Recovery scans
+      the file from start, validates each record's checksum, and stops at
+      the first torn write. The simplest possible introduction to disk
+      durability - the WAL piece you'll reuse in level 680.
+    concepts:
+      - fsync semantics (data vs metadata, fsync vs fdatasync)
+      - record framing with length prefix and CRC32
+      - torn writes and partial-record detection
+      - log replay as a recovery primitive
+    requirements:
+      - append(record) writes a length-prefixed CRC-checked record and fsyncs
+      - reads all records back in insertion order
+      - kill -9 mid-write, restart, recovers up to the last valid record
+      - corrupted middle record stops replay; later records are not silently kept
+      - 1M records appended and replayed without corruption
+    recommended_languages:
+      - Go
+
+  - level: 680
+    id: 680-persistent-b-tree-kv-store-with-wal
+    name: "Persistent B-Tree KV Store with WAL"
+    phase: I
+    description: >-
+      A KV store backed by a B-tree on disk, with a write-ahead log for crash
+      recovery. Writes go to the WAL first, then the B-tree page cache, then
+      disk. After a crash, replay the WAL. The "D" in ACID, end to end.
+    concepts:
+      - B-tree balancing
+      - page caching
+      - fsync and durability
+      - the "D" in ACID
+      - WAL replay
+    requirements:
+      - B-tree on disk with proper splits and merges
+      - page cache with LRU eviction
+      - WAL fsync on commit
+      - crash recovery - kill -9 mid-write, restart, no data loss
+      - 100M ops without corruption
+    recommended_languages:
+      - Go
+
+  - level: 700
+    id: 700-tls-and-acme-automatic-https
+    name: "TLS + ACME Automatic HTTPS"
+    phase: I
+    description: >-
+      TLS 1.3 from sockets up through Caddy-style automatic HTTPS. Parse and
+      validate x509 chains, run the full TLS 1.3 handshake state machine,
+      then implement the ACME protocol (RFC 8555) to obtain real
+      certificates from Let's Encrypt's staging server on demand. End
+      result: a server that, given a domain, gets a real certificate and
+      serves it with no manual step.
+    concepts:
+      - x509 certificate parsing and chain validation
+      - TLS 1.3 handshake state machine
+      - HKDF and the TLS 1.3 key schedule
+      - AEAD record protection (ChaCha20-Poly1305, AES-GCM)
+      - ACME RFC 8555 - account, order, challenge, finalization
+      - on-demand TLS - issue certs as new SNI hostnames arrive
+      - OCSP stapling
+    requirements:
+      - TLS 1.3 server interoperates with curl, Go stdlib client, openssl s_client
+      - x509 chain validation including revocation via OCSP
+      - ACME client obtains a cert from Let's Encrypt staging via HTTP-01
+      - on-demand issuance on first request for a new SNI hostname (rate-limited)
+      - automatic renewal before expiry
+      - OCSP stapling on served certificates
+    recommended_languages:
+      - Go
+
+  - level: 720
+    id: 720-regex-tester-visualizer
+    name: "Regex Tester / Visualizer"
+    phase: I
+    description: >-
+      Paste a regex and a sample text. The tool highlights matches in the
+      terminal, shows capture groups in distinct colors, prints group
+      indices, and reports compilation errors with column position. Bonus
+      mode emits a Graphviz DOT file representing the regex structure. The
+      point is to use Go's regexp package fluently before the next project
+      (Regex Engine) makes you build one from scratch.
+    concepts:
+      - regexp package fluency
+      - terminal coloring (ANSI)
+      - capture groups (numbered and named)
+      - structural visualization (DOT output)
+    requirements:
+      - takes regex and text from CLI args, files, or stdin
+      - highlights matches with distinct colors per capture group
+      - prints a per-match group breakdown
+      - reports compilation errors with the exact column position
+      - --dot flag emits Graphviz DOT for the regex's structure
+    recommended_languages:
+      - Go
+
+  - level: 740
+    id: 740-regex-engine-nfa-dfa
+    name: "Regex Engine (NFA/DFA)"
+    phase: I
+    description: >-
+      A regex matcher built from automata. Parse the regex into an AST,
+      build an NFA via Thompson's construction, optionally subset-construct
+      to a DFA. Handle . | * + ? () [] and anchors. Match against strings;
+      report position.
+    concepts:
+      - automata theory
+      - Thompson's construction
+      - subset construction
+      - finite automata
+    requirements:
+      - supports literal chars, ., |, *, +, ?, (), [], ^, $
+      - both NFA and DFA backends, switchable
+      - returns match position and length
+      - handles Kleene closure and alternation correctly
+      - 100+ pattern/input pairs in a regression suite
+    recommended_languages:
+      - Go
+
+  - level: 760
+    id: 760-grep-like-streaming-text-searcher
+    name: "grep-like Streaming Text Searcher"
+    phase: I
+    description: >-
+      A grep clone. Takes a regex and a file (or stdin), prints matching
+      lines. Files larger than RAM must work - read in chunks, buffer lines,
+      never load the whole file. Builds on the regex engine from level 740.
+    concepts:
+      - streaming I/O
+      - manual memory management
+      - integrating a regex engine into a real CLI tool
+      - line-buffered vs block-buffered I/O
+    requirements:
+      - streams files of arbitrary size with bounded memory
+      - flags - -i (case-insensitive), -v (invert), -n (line numbers),
+        -c (count)
+      - recursive directory mode (-r)
+      - reads stdin when no file argument is given
+      - at least 100MB/s on warm-cache files
+    recommended_languages:
+      - Go
+
+  - level: 780
+    id: 780-sqlite-app-database-sql
+    name: "SQLite App with database/sql"
+    phase: I
+    description: >-
+      Build a real app backed by SQLite using Go's database/sql - schema
+      migrations, prepared statements, transactions, connection pooling,
+      NULL handling. Pre-stages level 800 (SQL Subset Engine) - you can't
+      build a SQL engine without first feeling what SQL is actually for.
+    concepts:
+      - database/sql driver pattern
+      - schema migrations (manual or with golang-migrate / goose)
+      - prepared statements and parameter binding
+      - transactions with proper rollback on error
+      - sql.Null* types for nullable columns
+    requirements:
+      - schema migrations applied at startup, idempotent
+      - all queries use prepared statements with bound parameters (no string concat)
+      - at least one transaction with multi-statement work and rollback path
+      - uses SQLite's WAL mode and handles concurrent reads
+      - includes a benchmark comparing prepared vs ad-hoc query throughput
+    recommended_languages:
+      - Go
+
+  - level: 800
+    id: 800-sql-subset-engine
+    name: "SQL Subset Engine"
+    phase: I
+    description: >-
+      Parse and execute SELECT, WHERE, JOIN, ORDER BY, LIMIT against tables
+      loaded from CSV (or your B-tree KV from level 680). Build the AST,
+      walk it, return rows. The query planner is naive (nested-loop joins,
+      full scans); that comes later.
+    concepts:
+      - recursive-descent parsing of SQL
+      - relational algebra
+      - simple query execution trees
+      - nested-loop joins
+    requirements:
+      - parser handles SELECT with WHERE, INNER JOIN, ORDER BY, LIMIT
+      - executes against in-memory tables loaded from CSV
+      - reports parse errors with position
+      - returns results in the requested order
+      - 30+ queries in a regression suite with known expected output
+    recommended_languages:
+      - Go
+
+  - level: 820
+    id: 820-tree-walking-interpreter
+    name: "Tree-Walking Interpreter"
+    phase: I
+    description: >-
+      Build a tiny interpreted language - arithmetic, variables, if/else,
+      while, functions, closures. No bytecode, no compiler - just walk the
+      AST and recursively evaluate. Pre-stages level 840 (Bytecode VM): the
+      leap from source text to a stack machine is too big without first
+      feeling what evaluation actually is.
+    concepts:
+      - lexer/parser for a tiny grammar
+      - AST node types (visitor pattern or type switch)
+      - environment / scope as a chain of maps
+      - first-class functions and closures (capturing the enclosing env)
+      - the evaluation loop as recursive descent over the AST
+    requirements:
+      - supports arithmetic, comparisons, if/else, while, and functions
+      - closures correctly capture variables from the enclosing scope
+      - recursive functions work (Fibonacci, factorial)
+      - reports runtime errors with source position (line/column)
+      - REPL mode in addition to file execution
+    recommended_languages:
+      - Go
+
+  - level: 840
+    id: 840-bytecode-vm-executor
+    name: "Bytecode VM (Executor)"
+    phase: I
+    description: >-
+      A stack-based VM that loads and executes a hand-written or
+      pre-generated bytecode stream. You define the opcodes (push, pop, add,
+      jump, call, ret); the VM dispatches each one. No compiler yet - the
+      VM is the focus. Execution speed matters.
+    concepts:
+      - stack machines
+      - instruction dispatch (switch / threaded code)
+      - opcode encoding
+      - calling conventions
+    requirements:
+      - stack-based dispatch with at least 20 opcodes
+      - function calls with proper frame management
+      - control flow - conditional jumps, loops
+      - threaded-code dispatch (computed goto) benchmarked vs switch
+      - 100M ops/sec on a tight integer loop
+    recommended_languages:
+      - Go
+
+
+# =============================================================================
+# PHASE II  -  Systems & Concurrency        (Levels 420 -> 1580)
+# =============================================================================
+# Goal: now start building the things that get imported. The discomfort of
+# writing 2,000 lines of Go to do what one library call does is the *point*.
+#
+# Recommended language: Go. The distributed projects - container runtime
+# (1200), distributed KV store (1300), Raft consensus (1360), message
+# broker (1400) - have canonical Go reference implementations in
+# Kubernetes, etcd, hashicorp/raft, and NATS. Contributing back to those
+# projects becomes possible after the curriculum.
+#
+# Pair with: "Designing Data-Intensive Applications" and "Operating Systems:
+# Three Easy Pieces".
+# =============================================================================
+
+  - level: 860
+    id: 860-garbage-collector-mark-and-sweep
+    name: "Garbage Collector (Mark-and-Sweep)"
+    phase: II
+    description: >-
+      A tracing GC for a toy heap of objects with pointers between them.
+      Stop the world, walk roots, mark reachable, sweep unreachable.
+      Foundation for the generational GC at level 1720.
+    concepts:
+      - reachability analysis
+      - tri-color marking
+      - stop-the-world vs incremental collection
+    requirements:
+      - mark phase walks from registered roots and marks all reachable
+      - sweep phase frees unmarked objects and reclaims memory
+      - tri-color invariant maintained throughout
+      - handles cycles correctly (the whole point)
+      - stress test - 10M allocations with random retention pattern
+    recommended_languages:
+      - Go
+
+  - level: 880
+    id: 880-event-loop-async-runtime
+    name: "Event Loop / Async Runtime"
+    phase: II
+    description: >-
+      A single-threaded async runtime built on epoll (Linux) or kqueue
+      (macOS). Tasks register I/O interest with the runtime; the runtime
+      polls and resumes them when ready. Node.js-style.
+    concepts:
+      - non-blocking I/O
+      - the reactor pattern
+      - callbacks vs continuations vs promises
+    requirements:
+      - epoll or kqueue backend
+      - task abstraction with completion callbacks or coroutine resumption
+      - timers integrated into the same poll loop
+      - echo server example - 10k concurrent connections, single thread
+      - clean shutdown drains pending tasks
+    recommended_languages:
+      - Go
+
+  - level: 900
+    id: 900-real-grpc-service
+    name: "Real gRPC Service"
+    phase: II
+    description: >-
+      Define a .proto schema, generate Go code with protoc-gen-go and
+      protoc-gen-go-grpc, and build a real client and server. Cover all four
+      RPC types (unary, server-stream, client-stream, bidirectional-stream),
+      use metadata, deadlines, and interceptors. Pre-stages level 920 (gRPC
+      framework clone).
+    concepts:
+      - protobuf schema design
+      - the four gRPC method types
+      - context propagation across RPC boundaries
+      - metadata for cross-cutting concerns (auth, request IDs)
+      - interceptors (the gRPC equivalent of HTTP middleware)
+    requirements:
+      - .proto file defines a service with at least one of each RPC type
+      - server and client both implemented and exercised end-to-end
+      - deadline propagation works (client cancel cancels server's context)
+      - at least one server-side and one client-side interceptor
+      - uses TLS (real certs or self-signed via mkcert)
+    recommended_languages:
+      - Go
+
+  - level: 920
+    id: 920-grpc-style-rpc-framework
+    name: "gRPC-Style RPC Framework"
+    phase: II
+    description: >-
+      A miniature gRPC. Define services in a small IDL (Protobuf-shaped or
+      your own); a code generator emits Go server stubs and client stubs
+      from it. Wire format is length-prefixed Protobuf over HTTP/2 (built at
+      level 640). All four call patterns - unary, server-streaming,
+      client-streaming, bidirectional. Add interceptors and deadline
+      propagation.
+    concepts:
+      - IDL design and code generation
+      - Protobuf wire format (varint, length-delimited, packed)
+      - length-prefixed framing over HTTP/2 streams
+      - unary vs server-streaming vs client-streaming vs bidirectional RPC
+      - interceptor / middleware chains
+      - deadline and cancellation propagation via context
+      - service reflection
+    requirements:
+      - IDL parser plus Go code generator (protoc-shaped, but yours)
+      - Protobuf wire format encode/decode round-trips against the official protoc
+      - runs on top of the HTTP/2 server from level 640
+      - all four RPC patterns work
+      - interceptors compose - deadlines flow client to server
+      - 100k unary RPCs/sec on a single connection
+    recommended_languages:
+      - Go
+
+  - level: 940
+    id: 940-layer-4-load-balancer
+    name: "Layer 4 Load Balancer"
+    phase: II
+    description: >-
+      A reverse proxy operating purely on TCP. Accept connections, pick a
+      backend (round-robin, least-connections), forward bytes both ways,
+      handle backend failures by removing them from the pool.
+    concepts:
+      - TCP connection forwarding
+      - connection pooling
+      - health checking
+      - the L4 vs L7 distinction
+    requirements:
+      - accepts TCP connections, forwards to a backend pool
+      - round-robin and least-connections strategies, switchable
+      - TCP health checks remove dead backends within seconds
+      - 10k concurrent forwarding connections without leaks
+    recommended_languages:
+      - Go
+
+  - level: 960
+    id: 960-reverse-proxy-httputil
+    name: "Reverse Proxy with httputil"
+    phase: II
+    description: >-
+      Build an auth-injecting or path-rewriting reverse proxy using
+      httputil.NewSingleHostReverseProxy. Modify request headers in flight,
+      rewrite paths, log structured access events, handle WebSocket
+      upgrades. Pre-stages level 980 (HTTP Reverse Proxy from scratch) - the
+      stdlib already gives you a reverse proxy, understand it before
+      reimplementing one.
+    concepts:
+      - httputil.ReverseProxy with Director and ModifyResponse hooks
+      - http.Header manipulation in flight
+      - WebSocket upgrade through a proxy
+      - hop-by-hop vs end-to-end headers
+      - structured access logging for proxied requests
+    requirements:
+      - proxies to one or more backends (multi-backend pool is bonus)
+      - injects an auth header (e.g. JWT) into upstream requests
+      - rewrites incoming paths (e.g. /api/v1/* -> /v1/* upstream)
+      - handles WebSocket upgrades correctly
+      - structured access logs for every proxied request
+    recommended_languages:
+      - Go
+
+  - level: 980
+    id: 980-http-reverse-proxy-l7
+    name: "HTTP Reverse Proxy (L7)"
+    phase: II
+    description: >-
+      An HTTP-aware load balancer. Parse the request, apply routing rules
+      (path-based, host-based), rewrite headers, forward to a backend.
+      Backpressure - if the backend is slow, slow the client.
+    concepts:
+      - HTTP-aware routing
+      - header rewriting
+      - backpressure
+      - retry and timeout policies
+    requirements:
+      - parses HTTP/1.1 requests, routes by path and Host header
+      - rewrites X-Forwarded-For and Via headers
+      - streams responses (does not buffer the entire body)
+      - per-route timeout and retry policy
+      - 5k+ concurrent connections without head-of-line blocking
+    recommended_languages:
+      - Go
+
+  - level: 1000
+    id: 1000-reliable-udp
+    name: "Reliable UDP"
+    phase: II
+    description: >-
+      Build a reliability layer on top of UDP. Sender numbers each
+      datagram; receiver ACKs by sequence number. Sender retransmits
+      unACKed packets on timeout. Add a small sliding window so multiple
+      datagrams can be in flight. The point is to learn the building
+      blocks of TCP - sequence numbers, cumulative ACKs, retransmit
+      timers, sliding windows - in their simplest form, before
+      implementing TCP itself at level 1020.
+    concepts:
+      - sequence numbers and cumulative ACKs
+      - retransmit on timeout, simple RTO estimation
+      - sliding window flow control
+      - in-order delivery over an unordered transport
+    requirements:
+      - reliable byte stream over UDP between two processes
+      - sender retransmits unACKed packets after RTO
+      - sliding window with at least 8 packets in flight
+      - 10MB transfer survives 30% simulated packet loss
+      - in-order delivery to the receiver despite out-of-order arrival
+    recommended_languages:
+      - Go
+
+  - level: 1020
+    id: 1020-userspace-tcp-ip-stack
+    name: "Userspace TCP/IP Stack"
+    phase: II
+    description: >-
+      Open a TUN/TAP device. Read raw IP packets. Implement ARP, IPv4, ICMP,
+      and a minimal TCP. Make `ping` work. Then make `nc` connect to a TCP
+      listener you built. Then run an HTTP request through it.
+    concepts:
+      - packet framing
+      - the TCP state machine
+      - sliding windows
+      - basic congestion control
+    requirements:
+      - responds to ARP requests for the assigned IP
+      - replies to ICMP echo - ping works from the host
+      - implements TCP three-way handshake, retransmit, sliding window
+      - curl can fetch a page from a server bound to your stack
+    recommended_languages:
+      - Go
+
+  - level: 1040
+    id: 1040-software-defined-router
+    name: "Software-Defined Router"
+    phase: II
+    description: >-
+      A daemon that maintains routing tables and forwards packets between
+      subnets. Implement Dijkstra or Bellman-Ford for shortest-path; toy BGP
+      for inter-domain announcements.
+    concepts:
+      - routing algorithms (Dijkstra, Bellman-Ford)
+      - forwarding vs control plane
+      - BGP basics
+    requirements:
+      - forwards packets between two configured subnets
+      - implements Dijkstra over a topology graph
+      - toy BGP exchange between two routers (announce + withdraw)
+      - topology change events do not drop in-flight traffic
+    recommended_languages:
+      - Go
+
+  - level: 1060
+    id: 1060-dns-server
+    name: "DNS Server"
+    phase: II
+    description: >-
+      An authoritative + recursive DNS server speaking the wire protocol
+      directly. Parse and emit DNS messages with label compression, answer
+      A / AAAA / CNAME / MX / TXT queries, recursively resolve unknown
+      names by walking the root nameservers, cache responses honoring
+      TTLs. UDP first, with TCP fallback for large responses. The
+      protocol gap your network stack hasn't covered yet.
+    concepts:
+      - DNS wire format and label compression
+      - UDP-first protocols with TCP fallback
+      - recursive resolution from the root
+      - TTL-respecting caching
+      - the .arpa hierarchy and reverse lookups
+    requirements:
+      - parses and emits DNS messages including compressed labels
+      - serves A, AAAA, CNAME, MX, TXT, NS records from a zone file
+      - recursive resolution starting from a root hints file
+      - response cache honoring per-record TTL expiry
+      - falls back to TCP for responses over 512 bytes
+      - resolves real names (google.com, github.com) end to end
+      - safe against the classic Kaminsky-style poisoning - randomizes
+        source ports and transaction IDs
+    recommended_languages:
+      - Go
+
+  - level: 1080
+    id: 1080-distributed-lock-manager
+    name: "Distributed Lock Manager"
+    phase: II
+    description: >-
+      A service that multiple machines call to coordinate exclusive access to
+      shared resources. Implement leases (time-bounded locks), fencing
+      tokens (so a stale lock-holder can be detected), failure detection.
+    concepts:
+      - leases
+      - fencing tokens
+      - fault-tolerant locking
+      - consensus basics
+    requirements:
+      - acquire(resource, ttl), release(resource, token), renew(token)
+      - leases expire automatically if not renewed
+      - fencing tokens prevent zombie writers
+      - survives node restart without losing lock state
+      - chaos test - kill the node holding a lock, lock recovers
+    recommended_languages:
+      - Go
+
+  - level: 1100
+    id: 1100-app-on-pebble
+    name: "App on Pebble (Production LSM)"
+    phase: II
+    description: >-
+      Build a small but real KV-backed app on cockroachdb/pebble - a link
+      shortener, simple queue, or metrics buffer. Use batches, snapshots,
+      iterators, and prefix scans. Pre-stages level 1120 (LSM-Tree Storage
+      Engine): you'll feel what a production LSM offers before you build
+      one.
+    concepts:
+      - Pebble batches for atomic multi-key writes
+      - iterators and prefix scans
+      - snapshots for consistent reads
+      - LSM compaction observed via metrics
+      - key design (prefix patterns for range scans)
+    requirements:
+      - app does something genuinely useful (link shortener, queue, etc.)
+      - uses batches for atomic writes across keys
+      - at least one prefix-scan query path
+      - exposes Pebble metrics on an HTTP endpoint
+      - handles graceful shutdown (close DB, flush WAL)
+    recommended_languages:
+      - Go
+
+  - level: 1120
+    id: 1120-lsm-tree-storage-engine
+    name: "LSM-Tree Storage Engine"
+    phase: II
+    description: >-
+      A LevelDB-style storage engine. Writes go into an in-memory memtable,
+      which flushes to immutable SSTables on disk. Background compaction
+      merges SSTables. Bloom filters speed up reads.
+    concepts:
+      - write/read amplification
+      - compaction strategies
+      - the storage hierarchy trade-off
+    requirements:
+      - memtable plus at least 3 levels of SSTables
+      - compaction triggered by per-level size thresholds
+      - bloom filters per SSTable to skip negative reads
+      - crash recovery via WAL
+      - sustained 100k writes/sec
+    recommended_languages:
+      - Go
+
+  - level: 1140
+    id: 1140-time-series-database
+    name: "Time-Series Database"
+    phase: II
+    description: >-
+      A database tuned for timestamped numeric data - millions of (timestamp,
+      metric, value) tuples per second in, range queries out. Columnar
+      layout, delta-of-delta encoding for timestamps, Gorilla-style
+      compression for values.
+    concepts:
+      - columnar storage
+      - delta/RLE compression
+      - time-ordered indexing
+      - downsampling
+    requirements:
+      - ingests at least 1M points/sec on a single node
+      - range query returns points within [start, end] efficiently
+      - compression - at least 10x vs raw float64 + uint64 timestamp
+      - downsampling rollups (1m/5m/1h aggregates)
+    recommended_languages:
+      - Go
+
+  - level: 1160
+    id: 1160-full-text-search-engine
+    name: "Full-Text Search Engine"
+    phase: II
+    description: >-
+      A document indexer and searcher. Build inverted indexes from text;
+      tokenize and stem; support phrase queries and BM25 ranking. The kind
+      of engine that powers a tiny Wikipedia search.
+    concepts:
+      - inverted indexes
+      - tokenization and stemming
+      - TF-IDF and BM25 ranking
+    requirements:
+      - indexes 100k documents with English tokenization + Porter stemming
+      - boolean queries (AND, OR, NOT) and phrase queries
+      - BM25 ranking with tunable k1 and b parameters
+      - p99 query latency under 50ms on the 100k corpus
+    recommended_languages:
+      - Go
+
+  - level: 1180
+    id: 1180-actor-model-library
+    name: "Actor Model Library"
+    phase: II
+    description: >-
+      An Erlang/Akka-style concurrency framework. Actors are isolated
+      processes that communicate only by message passing. Each has a
+      mailbox; the runtime schedules execution. Supervision trees for fault
+      tolerance.
+    concepts:
+      - message-passing concurrency
+      - actor semantics
+      - supervision trees
+      - mailbox queues
+    requirements:
+      - spawn actors, send messages by address (not pointer)
+      - per-actor mailbox with bounded or unbounded queue
+      - supervision - parent restarts crashed children per strategy
+      - distributed mode - actors on two nodes communicate transparently
+    recommended_languages:
+      - Go
+
+  - level: 1200
+    id: 1200-container-runtime-mini-docker
+    name: "Container Runtime (Mini-Docker)"
+    phase: II
+    description: >-
+      Spawn isolated processes using Linux primitives directly - namespaces
+      (PID, NET, MNT, USER), cgroups v2, an overlayfs-based root filesystem.
+      No Docker. The result behaves like a tiny container runtime.
+    concepts:
+      - namespaces (PID, NET, MNT, USER)
+      - cgroups v2
+      - capabilities
+      - chroot / pivot_root
+    requirements:
+      - runs a process in isolated PID, NET, MNT, USER namespaces
+      - applies cgroup v2 memory and CPU limits
+      - OverlayFS root from a layered image
+      - drops capabilities and runs as non-root inside the container
+      - networking - the contained process can talk to the host
+    recommended_languages:
+      - Go
+
+  - level: 1220
+    id: 1220-oci-container-image-registry
+    name: "OCI Container Image Registry"
+    phase: II
+    description: >-
+      A container registry speaking the OCI Distribution Specification.
+      Stores manifests and content-addressed blob layers; serves them to
+      docker pull and podman pull. Multi-arch image indexes, chunked /
+      resumable uploads via the range API, garbage collection of
+      unreferenced blobs.
+    concepts:
+      - OCI image format (manifest, config, layers)
+      - content-addressable blob storage keyed by SHA-256
+      - multi-arch image indexes (Docker Manifest List v2)
+      - chunked / resumable layer uploads
+      - garbage collection of unreferenced blobs
+    requirements:
+      - speaks OCI Distribution Spec v1
+      - docker pull and podman pull both work against your registry
+      - content-addressed blob store with deduplication
+      - multi-arch images via image index
+      - chunked upload with resume (PATCH with Content-Range)
+      - GC removes blobs not referenced by any manifest
+    recommended_languages:
+      - Go
+
+  - level: 1240
+    id: 1240-webassembly-runtime
+    name: "WebAssembly Runtime"
+    phase: II
+    description: >-
+      A VM that loads .wasm modules and executes them. Parse the binary
+      format, validate types on load, execute the stack-based instructions.
+      Implement a subset of WASI so guest programs can read files and print.
+    concepts:
+      - bytecode execution
+      - sandboxed execution
+      - WASI
+      - validation / type checking on load
+    requirements:
+      - loads and validates a real .wasm binary (compiled from C or Zig)
+      - executes integer and float instructions correctly
+      - supports linear memory, function tables, imports/exports
+      - WASI subset - stdout, stdin, file open/read
+      - runs at least one nontrivial guest program
+    recommended_languages:
+      - Go
+
+  - level: 1260
+    id: 1260-profiler-flame-graph-tool
+    name: "Profiler / Flame-Graph Tool"
+    phase: II
+    description: >-
+      A sampling profiler. Periodically interrupt a target process, walk its
+      stack via ptrace or perf events, accumulate samples, render as a flame
+      graph. Brendan Gregg's namesake.
+    concepts:
+      - DWARF debug info
+      - stack unwinding
+      - statistical sampling theory
+    requirements:
+      - attaches to a running process via ptrace or perf
+      - walks stack frames using DWARF debug info
+      - samples at 99Hz to avoid lockstep with timers
+      - emits collapsed-stack format consumable by flamegraph.pl
+      - profiles a real workload and produces a usable SVG
+    recommended_languages:
+      - Go
+
+  - level: 1280
+    id: 1280-distributed-job-queue
+    name: "Distributed Job Queue"
+    phase: II
+    description: >-
+      A multi-node task queue. Producers submit jobs; consumers across
+      machines pull and execute them. At-least-once delivery, leader
+      election to assign work, dead-letter queue for repeated failures.
+    concepts:
+      - distributed consensus primitives
+      - idempotency
+      - CAP trade-offs
+    requirements:
+      - at-least-once delivery (consumers ack on success)
+      - leader election to coordinate scheduling
+      - dead-letter queue after N retries
+      - survives any single-node failure without losing jobs
+      - 50k jobs/sec across 5 nodes
+    recommended_languages:
+      - Go
+
+  - level: 1300
+    id: 1300-distributed-kv-store
+    name: "Distributed KV Store"
+    phase: II
+    description: >-
+      A KV store sharded across nodes with replication. Hash the key to
+      pick a shard; replicate each shard to N nodes; route reads to any
+      replica, writes through the leader.
+    concepts:
+      - replication strategies (leader/follower, multi-leader)
+      - sharding / partitioning
+      - read repair
+    requirements:
+      - consistent-hash-based sharding across at least 3 nodes
+      - replication factor configurable, survives one node failure
+      - read repair detects and fixes stale replicas
+      - membership change (add/remove node) triggers correct rebalance
+    recommended_languages:
+      - Go
+
+  - level: 1320
+    id: 1320-real-time-collaborative-text-editor
+    name: "Real-Time Collaborative Text Editor"
+    phase: II
+    description: >-
+      Two clients editing the same document concurrently over WebSockets.
+      Use Operational Transformation or a simple CRDT (RGA, Yjs-style) so
+      concurrent edits merge without conflicts. Cursor positions sync too.
+    concepts:
+      - Operational Transformation or simple CRDTs
+      - eventual consistency
+      - WebSocket coordination
+    requirements:
+      - two browser clients converge after concurrent edits
+      - survives network partition - edits during partition merge on rejoin
+      - cursor positions stay stable through remote edits
+      - server restart preserves the document
+    recommended_languages:
+      - Go
+
+  - level: 1340
+    id: 1340-gossip-protocol-swim
+    name: "Gossip Protocol (SWIM)"
+    phase: II
+    description: >-
+      An epidemic-style cluster membership service. Each node periodically
+      pings a random peer; if the peer doesn't respond, K other random peers
+      are asked to indirectly probe before declaring it dead. Membership
+      changes piggyback on regular gossip messages so news propagates
+      without extra traffic. Complementary to Raft (level 1360) - gossip
+      handles who is alive, Raft handles what the agreed value is.
+    concepts:
+      - epidemic / rumor-mongering dissemination
+      - direct vs indirect probes (SWIM's key insight against false positives)
+      - suspicion windows
+      - anti-entropy as a backstop reconciliation
+      - piggybacked metadata to avoid extra traffic
+      - O(log n) propagation with O(1) work per node
+    requirements:
+      - 100-node cluster - every node knows every other within ~5s of join
+      - failure detected within configurable window via direct + indirect probes
+      - suspicion timer rebuts a brief flap without false-positive death
+      - piggybacked dissemination - joins and leaves spread on normal gossip
+      - anti-entropy round periodically reconciles full state
+      - chaos test - random partitions and recoveries do not corrupt membership
+    recommended_languages:
+      - Go
+
+  - level: 1360
+    id: 1360-raft-consensus
+    name: "Raft Consensus"
+    phase: II
+    description: >-
+      Implement Raft from the paper. Leader election, log replication,
+      snapshotting, membership changes. Test it with a chaos harness (kill
+      nodes, partition the network) to prove safety holds.
+    concepts:
+      - FLP impossibility
+      - quorum systems
+      - safety vs liveness
+      - log compaction
+      - split-brain prevention
+    requirements:
+      - cluster of 5 nodes with leader election
+      - log replication via majority quorum
+      - snapshotting plus log compaction
+      - joint-consensus membership changes
+      - passes a Jepsen-like fault-injection test suite
+    recommended_languages:
+      - Go
+
+  - level: 1380
+    id: 1380-agent-tool-use-loop-with-mcp-server
+    name: "Agent Tool-Use Loop with MCP Server"
+    phase: II
+    description: >-
+      A coding-agent harness. Talk to an LLM API with streaming
+      responses, parse tool-call JSON out of the deltas as they arrive,
+      execute tools (file read/write, shell commands) in a sandbox, feed
+      results back into the conversation, loop until the model stops.
+      Then implement the other side - an MCP (Model Context Protocol)
+      server that exposes your tools to clients like Claude Desktop or
+      your own. This is the protocol stack underneath every modern coding
+      agent.
+    concepts:
+      - streaming HTTP and Server-Sent Events
+      - JSON-RPC over stdio with framing
+      - the tool-use loop (action -> observation -> continuation)
+      - sandbox execution (subprocess with restricted permissions, reuse
+        the container runtime work from level 1200)
+      - parsing partial JSON across stream boundaries
+      - timeouts, backoff, and graceful cancellation
+    requirements:
+      - streams completions from a real LLM API (Anthropic, OpenAI, or
+        local llama.cpp)
+      - parses tool calls from streamed JSON deltas as they arrive
+      - tool execution in a subprocess sandbox with capability limits
+      - correctly handles partial tool-call JSON across stream chunks
+      - conversation loop runs until the model emits a stop signal
+      - second binary - MCP server exposing tools over stdio JSON-RPC,
+        speakable by Claude Desktop or your own client
+      - timeouts and graceful Ctrl-C cancellation that doesn't leak
+        subprocesses
+    recommended_languages:
+      - Go
+
+  - level: 1400
+    id: 1400-message-broker-distributed-log
+    name: "Message Broker / Distributed Log"
+    phase: II
+    description: >-
+      A Kafka-lite. Producers append messages to partitioned, replicated
+      logs. Consumer groups read at offsets; the broker tracks them.
+      Log-structured storage, zero-copy transfer (sendfile).
+    concepts:
+      - append-only logs
+      - partitioning
+      - consumer groups
+      - exactly-once vs at-least-once delivery
+      - zero-copy networking
+    requirements:
+      - topic with partitions, each partition replicated to N brokers
+      - consumer groups with rebalance on add/remove
+      - sendfile-based read path (zero-copy)
+      - 500k msgs/sec on commodity hardware
+    recommended_languages:
+      - Go
+
+  - level: 1420
+    id: 1420-sql-query-planner
+    name: "SQL Query Planner"
+    phase: II
+    description: >-
+      Take the parsed AST from level 800 and produce an execution plan.
+      Choose join order, pick indexes, decide between nested-loop and hash
+      join. Rule-based for now; cost-based at level 2080.
+    concepts:
+      - relational algebra
+      - rule-based optimization
+      - join ordering
+      - statistics-driven planning
+    requirements:
+      - chooses join order by heuristic (smallest table first etc.)
+      - selects an index when WHERE matches an indexed column
+      - at least 3 join algorithms (nested-loop, hash, merge)
+      - plan visualizer outputs the chosen tree
+    recommended_languages:
+      - Go
+
+  - level: 1440
+    id: 1440-database-driver-and-connection-pool
+    name: "Database Driver + Connection Pool"
+    phase: II
+    description: >-
+      A driver for the Postgres wire protocol. Connect, authenticate via
+      SCRAM, parse the wire protocol, marshal Go values to and from Postgres
+      types (including arrays, JSONB, custom enums), support both
+      simple-query and prepared-statement protocols. Front it with a
+      connection pool that handles health checks, idle timeouts, and dynamic
+      sizing. Library shape mirrors database/sql + pgx.
+    concepts:
+      - Postgres frontend/backend wire protocol
+      - SCRAM-SHA-256 authentication
+      - prepared statements vs simple query
+      - type marshaling between Go and Postgres types
+      - connection pool sizing strategies (max-open, max-idle, max-lifetime)
+      - transaction state tracking through pool boundaries
+    requirements:
+      - connects and authenticates against real Postgres 14+
+      - both simple-query and prepared-statement protocols
+      - type round-trip for int, text, timestamp, JSONB, array, and custom enum
+      - pool with configurable max-open, max-idle, and max-lifetime
+      - health checks evict broken connections without thrashing
+      - p99 query latency under 5ms on a warm pool, sustained 5k QPS
+    recommended_languages:
+      - Go
+
+  - level: 1460
+    id: 1460-mvcc-storage-engine
+    name: "MVCC Storage Engine"
+    phase: II
+    description: >-
+      Multi-version concurrency control. Every row has multiple versions;
+      readers see a snapshot; writers create new versions. Transactions get
+      isolation without blocking each other.
+    concepts:
+      - multi-version concurrency control
+      - transaction isolation levels
+      - snapshot isolation
+      - write skew
+    requirements:
+      - read-committed and snapshot isolation both implemented
+      - writers don't block readers, readers don't block writers
+      - garbage collection of versions no transaction can see
+      - detects write skew under serializable isolation
+    recommended_languages:
+      - Go
+
+  - level: 1480
+    id: 1480-distributed-hash-table-kademlia
+    name: "Distributed Hash Table (Kademlia)"
+    phase: II
+    description: >-
+      A peer-to-peer overlay network. Nodes find each other and find data
+      via XOR-distance routing tables. Like BitTorrent's mainline DHT.
+    concepts:
+      - consistent hashing
+      - overlay networks
+      - Kademlia routing
+      - churn-tolerance
+    requirements:
+      - node bootstrap via known peer
+      - PUT/GET routes to closest node by XOR distance
+      - K-bucket maintenance with periodic refresh
+      - survives 30% node churn without losing data
+    recommended_languages:
+      - Go
+
+  - level: 1500
+    id: 1500-crdt-library-sync-engine
+    name: "CRDT Library / Sync Engine"
+    phase: II
+    description: >-
+      A library of conflict-free replicated data types (counter, set,
+      register, sequence) plus a sync engine that propagates ops between
+      replicas. Replicas can be partitioned arbitrarily and still converge.
+    concepts:
+      - state-based vs op-based CRDTs
+      - merge functions
+      - eventual consistency
+      - anti-entropy
+    requirements:
+      - at least 5 CRDT types (G-Counter, PN-Counter, OR-Set, LWW-Register,
+        RGA sequence)
+      - both state-based and op-based variants
+      - sync engine over WebSocket or HTTP
+      - convergence verified by property-based tests under random
+        interleavings
+    recommended_languages:
+      - Go
+
+  - level: 1520
+    id: 1520-distributed-tracing-system
+    name: "Distributed Tracing System"
+    phase: II
+    description: >-
+      An end-to-end trace pipeline. The instrumentation library generates
+      spans with W3C TraceContext propagation; spans flow over OTLP to a
+      collector; the collector writes to columnar storage. A query API
+      returns full traces by ID and aggregate service maps. Library half is
+      OpenTelemetry-Go-shaped; storage half is Tempo-shaped.
+    concepts:
+      - W3C TraceContext propagation across HTTP and gRPC boundaries
+      - head sampling vs tail sampling
+      - OTLP wire protocol (built on the gRPC framework from level 920)
+      - columnar storage of traces
+      - service-graph derivation from span links
+      - bounded retention with index pruning
+    requirements:
+      - instrumentation library exposes Tracer, Span, and propagation API
+      - OTLP/gRPC export to a collector built on level 920
+      - collector writes columnar trace files with bloom-filter-indexed trace IDs
+      - query API exposes GetTrace(traceID) and GetServiceGraph(timeRange)
+      - head sampling at the SDK with configurable rate, tail sampling at collector
+      - end-to-end demo - instrument a 5-service request flow and visualize the trace
+    recommended_languages:
+      - Go
+
+  - level: 1540
+    id: 1540-fuse-filesystem
+    name: "FUSE Filesystem"
+    phase: II
+    description: >-
+      A real filesystem in user space. Implement the FUSE callbacks -
+      getattr, readdir, open, read, write - and mount it. ls and cat operate
+      on your code's data structures.
+    concepts:
+      - inode tables
+      - directory entries
+      - journaling
+      - VFS layering
+      - kernel-user bridging
+    requirements:
+      - mounts via fusermount, ls and cat work
+      - persistent inode table with backing file
+      - at least - create, unlink, read, write, mkdir, rmdir, rename
+      - crash safety via journal or atomic-write strategy
+    recommended_languages:
+      - Go
+
+  - level: 1560
+    id: 1560-distributed-task-scheduler
+    name: "Distributed Task Scheduler"
+    phase: II
+    description: >-
+      An Airflow / Kubernetes-style scheduler. Tasks have constraints
+      (CPU, memory, locality); workers have capacity. The scheduler decides
+      which task goes on which worker. About *placement*, not delivery
+      (delivery was level 1280).
+    concepts:
+      - scheduling algorithms
+      - bin-packing
+      - fairness
+      - preemption
+      - resource constraints
+      - gang scheduling
+    requirements:
+      - tasks declare resource requests, nodes declare capacity
+      - bin-packing scheduler honors constraints
+      - preemption - high-priority task can evict low-priority
+      - gang scheduling for tasks that must start together
+    recommended_languages:
+      - Go
+
+  - level: 1580
+    id: 1580-versioned-data-lake
+    name: "Versioned Data Lake"
+    phase: II
+    description: >-
+      A Delta Lake / Iceberg-style data lake. Data is immutable; "writes"
+      produce new manifest files pointing to new data files. Time-travel
+      queries read any historical snapshot. Schema evolution preserves
+      backward compatibility.
+    concepts:
+      - immutable data structures
+      - snapshot isolation over a data lake
+      - schema evolution
+      - manifest files
+    requirements:
+      - append, overwrite, and merge operations all produce new snapshots
+      - time-travel - query data as of any past snapshot
+      - schema evolution (add column, widen type) without rewriting old data
+      - concurrent writes resolved via optimistic concurrency
+    recommended_languages:
+      - Go
+
+
+# =============================================================================
+# PHASE III  -  Compilers, Languages & Internals        (Levels 1600 -> 2000)
+# =============================================================================
+# Goal: leave the world of "running programs" and enter the world of "making
+# programs runnable". The most mathematically rigorous part of the curriculum.
+#
+# Recommended language: Go. The Go compiler is itself written in Go and is
+# the canonical reference for SSA, codegen, and linker work (1780, 1800,
+# 1820). gopls is the canonical Go LSP server (1860). OCaml is still useful
+# as a pairing language for the type-inference work (1660, 1680) where
+# Hindley-Milner literature is OCaml-native, but you don't need to use it.
+#
+# Pair with: "Crafting Interpreters" (in full), the Dragon Book, Pierce's
+# "Types and Programming Languages".
+# =============================================================================
+
+  - level: 1600
+    id: 1600-lexer-recursive-descent-parser
+    name: "Lexer + Recursive-Descent Parser"
+    phase: III
+    description: >-
+      Tokenize a C-like language, then parse into an AST. Handle operators
+      with precedence, statements with control flow, error recovery so one
+      mistake doesn't cascade into ten.
+    concepts:
+      - regular vs context-free grammars
+      - LL(k) parsing
+      - the Chomsky hierarchy
+      - error recovery (panic mode, synchronization)
+    requirements:
+      - tokenizer handles identifiers, literals, operators, keywords
+      - parser produces AST for expressions, statements, function defs
+      - error recovery synchronizes at the next statement boundary
+      - reports multiple errors per pass
+      - 100+ test programs (good and bad) with expected ASTs / errors
+    recommended_languages:
+      - Go
+
+  - level: 1620
+    id: 1620-tree-walking-lisp-functional-interpreter
+    name: "Tree-Walking / Lisp / Functional Interpreter"
+    phase: III
+    description: >-
+      Walk the AST and execute. Variables, lexical scope, closures,
+      first-class functions. Lambda calculus is the underlying model. A REPL
+      where you can define and call functions interactively.
+    concepts:
+      - environment models
+      - lexical vs dynamic scoping
+      - the substitution model of evaluation
+      - REPLs
+    requirements:
+      - REPL with persistent definitions
+      - closures correctly capture the lexical environment
+      - first-class functions - return, pass, store
+      - tail-call optimization (recursion doesn't blow the stack)
+      - 3+ example programs (factorial, FizzBuzz, a small data structure)
+    recommended_languages:
+      - Go
+
+  - level: 1640
+    id: 1640-bytecode-compiler
+    name: "Bytecode Compiler"
+    phase: III
+    description: >-
+      Compile your AST into bytecode for the VM at level 840. Add simple
+      optimizations like constant folding and peephole. Now you have a real
+      lex - parse - compile - execute pipeline.
+    concepts:
+      - lex / parse / codegen pipeline
+      - stack vs register VMs
+      - instruction selection
+      - peephole optimizations
+    requirements:
+      - lowers AST to bytecode emitted by the level-760 VM
+      - constant folding and dead-code elimination passes
+      - at least 2x faster than the tree-walking interpreter
+      - disassembler for produced bytecode
+    recommended_languages:
+      - Go
+
+  - level: 1660
+    id: 1660-static-type-checker-simple-types
+    name: "Static Type Checker (Simple Types)"
+    phase: III
+    description: >-
+      A monomorphic type system - function signatures, primitives, basic
+      algebraic data types. Reject programs with type errors before they
+      run. Foundation for the inference at level 1680.
+    concepts:
+      - type judgments
+      - typing rules
+      - type-error reporting
+      - soundness
+    requirements:
+      - annotated function signatures checked against bodies
+      - sum and product types (records, variants)
+      - pattern matching exhaustiveness checking
+      - type errors include location and explanation
+    recommended_languages:
+      - Go
+
+  - level: 1680
+    id: 1680-hindley-milner-type-inference
+    name: "Hindley-Milner Type Inference"
+    phase: III
+    description: >-
+      Algorithm W. Programs are unannotated; types are inferred.
+      Polymorphism via let-generalization. Unification is the core
+      operation. A miniature OCaml/Haskell type system.
+    concepts:
+      - Algorithm W
+      - unification
+      - parametric polymorphism
+      - let-polymorphism
+    requirements:
+      - Algorithm W implementation
+      - let-polymorphism (`let id x = x` works)
+      - unification with occurs check
+      - polymorphic recursion via type annotation
+      - errors phrased as "expected X, got Y at location Z"
+    recommended_languages:
+      - Go
+
+  - level: 1700
+    id: 1700-static-analyzer-abstract-interpretation
+    name: "Static Analyzer / Abstract Interpretation"
+    phase: III
+    description: >-
+      A whole-program analyzer that detects null deref, use-before-init,
+      and taint flow. Built on lattices - each variable carries an abstract
+      value approximating its concrete possibilities.
+    concepts:
+      - abstract interpretation
+      - dataflow lattices
+      - soundness vs precision
+      - sign / interval / taint domains
+    requirements:
+      - sign analysis - definitely-positive / negative / unknown
+      - null-dereference detection
+      - taint analysis tracks user input through to dangerous sinks
+      - soundness clearly stated, false-positive rate measured
+    recommended_languages:
+      - Go
+
+  - level: 1720
+    id: 1720-garbage-collected-runtime
+    name: "Garbage-Collected Runtime"
+    phase: III
+    description: >-
+      Integrate a real GC into the VM from levels 840 and 1640. Generational
+      with write barriers and remembered sets, building on the mark-and-sweep
+      from level 860. Now your language manages its own memory at runtime.
+    concepts:
+      - generational hypothesis
+      - write barriers
+      - remembered sets
+      - card tables
+    requirements:
+      - two-generation generational GC (young + old)
+      - write barriers correctly track inter-generational pointers
+      - 100x throughput improvement over a mark-sweep baseline
+      - pause times under 10ms on a 1GB heap
+    recommended_languages:
+      - Go
+
+  - level: 1740
+    id: 1740-incremental-build-system
+    name: "Incremental Build System"
+    phase: III
+    description: >-
+      A make-like tool but smarter. Hash inputs, cache outputs. If nothing
+      changed, rebuild nothing. Bazel/Buck-style hermetic builds - a target
+      sees only its declared inputs.
+    concepts:
+      - dependency graphs
+      - content hashing
+      - hermetic builds
+      - cache invalidation
+    requirements:
+      - targets declare inputs and outputs
+      - content-hash-based cache (not timestamp)
+      - hermetic execution via syscall sandboxing
+      - distributed cache - two machines share cached artifacts
+    recommended_languages:
+      - Go
+
+  - level: 1760
+    id: 1760-go-compiler-ssa-tour
+    name: "Go Compiler SSA Tour"
+    phase: III
+    description: >-
+      Build the Go compiler with GOSSAFUNC=funcname for a handful of
+      carefully chosen functions - a tight loop, a function with branches,
+      one with inlining. Read the SSA dumps, identify the rule-based
+      optimizer transformations that fired, and inspect the resulting
+      assembly. Pre-stages level 1780 (SSA Optimizing Compiler Front-End) -
+      you should know what real-world SSA looks like before designing your
+      own.
+    concepts:
+      - SSA (Static Single Assignment) form
+      - "Go compiler phases: build SSA, opt, lower, regalloc, schedule"
+      - rule-based rewrite optimizer (cmd/compile/internal/ssa/_gen)
+      - reading SSA HTML dumps
+      - register allocation as a visible transformation
+    requirements:
+      - successfully build at least 5 functions with GOSSAFUNC and review the dumps
+      - identify at least 3 distinct optimizer transformations applied across them
+      - write a short writeup mapping source -> SSA -> assembly for one function
+      - inspect the resulting assembly with go tool objdump
+      - identify one rewrite rule from the compiler source that fired and what it does
+    recommended_languages:
+      - Go
+
+  - level: 1780
+    id: 1780-ssa-optimizing-compiler-front-end
+    name: "SSA Optimizing Compiler Front-End"
+    phase: III
+    description: >-
+      Lower your AST to SSA-form intermediate representation. Implement
+      standard optimization passes - constant propagation, dead-code
+      elimination, function inlining. The IR is the compiler's payoff.
+    concepts:
+      - SSA construction (Cytron's algorithm)
+      - dataflow analysis
+      - lattices
+      - optimization passes
+    requirements:
+      - SSA construction via Cytron's algorithm
+      - at least 5 optimization passes
+      - pass infrastructure - composable passes with verification between
+      - measurably better output than unoptimized on benchmarks
+    recommended_languages:
+      - Go
+
+  - level: 1800
+    id: 1800-native-code-generator-x86-64-backend
+    name: "Native Code Generator (x86-64 Backend)"
+    phase: III
+    description: >-
+      AOT compilation. Take SSA IR (level 1780), do register allocation,
+      emit x86-64 assembly, emit ELF object files. Link them into a real
+      executable that runs on Linux.
+    concepts:
+      - linear-scan and graph-coloring register allocation
+      - instruction selection (BURS / maximal munch)
+      - dead-code elimination
+    requirements:
+      - linear-scan or graph-coloring register allocator
+      - instruction selection for x86-64
+      - produces ELF object files compatible with `ld`
+      - resulting binaries run correctly on Linux
+      - performance within 2x of `gcc -O0`
+    recommended_languages:
+      - Go
+
+  - level: 1820
+    id: 1820-linker-and-loader
+    name: "Linker and Loader"
+    phase: III
+    description: >-
+      A static linker that combines ELF object files plus a dynamic loader
+      that resolves symbols at runtime. Now you control the entire path
+      from source to running process.
+    concepts:
+      - relocation
+      - symbol resolution
+      - PLT / GOT
+      - the dynamic loader's responsibilities
+    requirements:
+      - static linker produces executables the kernel can execve
+      - handles relocations (R_X86_64_PC32, R_X86_64_PLT32, etc.)
+      - dynamic loader resolves PLT/GOT entries at startup
+      - links against musl or similar libc
+    recommended_languages:
+      - Go
+
+  - level: 1840
+    id: 1840-incremental-compiler
+    name: "Incremental Compiler"
+    phase: III
+    description: >-
+      A compiler that re-typechecks and re-codegens only the changed
+      modules. Like rust-analyzer or Roslyn. Demand-driven - re-derive only
+      what's needed for the current query.
+    concepts:
+      - dependency tracking at sub-module granularity
+      - demand-driven computation
+      - salsa-style incremental frameworks
+    requirements:
+      - module-graph dependency tracking
+      - demand-driven, salsa-style query system
+      - on a 10-module codebase, edit-then-recheck time scales with the
+        changed module set, not the total
+      - persistent cache across invocations
+    recommended_languages:
+      - Go
+
+  - level: 1860
+    id: 1860-language-server-protocol-lsp-server
+    name: "Language Server Protocol (LSP) Server"
+    phase: III
+    description: >-
+      An LSP server for the toy language you've built across levels 1600
+      / 1140 / 1160. Speak the LSP wire protocol over stdio - respond to
+      didOpen, didChange, hover, completion, go-to-definition, and
+      diagnostics. Wire it into VSCode with a 30-line client and watch
+      your toy language get IDE features. Uses your incremental compiler
+      from level 1840.
+    concepts:
+      - JSON-RPC over stdio, with framing headers
+      - the LSP wire protocol and capability negotiation
+      - incremental parsing on didChange
+      - semantic tokens
+      - workspace symbol indexing
+    requirements:
+      - speaks LSP over stdio with the framing protocol (Content-Length
+        headers + JSON body)
+      - responds to initialize, didOpen, didChange, didClose
+      - hover shows types from the type checker at level 1660
+      - completion suggests in-scope identifiers
+      - go-to-definition resolves names across files
+      - diagnostics published on save and on didChange
+      - re-parses incrementally on didChange (no full re-parse)
+      - works in real VSCode via a thin client extension
+    recommended_languages:
+      - Go
+
+  - level: 1880
+    id: 1880-dsl-for-infrastructure
+    name: "DSL for Infrastructure"
+    phase: III
+    description: >-
+      A Terraform/Pulumi-lite. Write declarative descriptions of resources
+      (VMs, DNS records, files). The tool computes a plan (what changes),
+      then applies it. Idempotent - applying twice is a no-op.
+    concepts:
+      - DSL design
+      - embedded vs external DSLs
+      - the plan/apply pattern
+      - idempotence
+    requirements:
+      - declarative DSL with resource blocks
+      - plan command shows diff vs current state
+      - apply command makes reality match
+      - idempotent - plan after apply shows no changes
+      - at least 3 resource types implemented end to end
+    recommended_languages:
+      - Go
+
+  - level: 1900
+    id: 1900-plugin-system-rpc-over-stdio
+    name: "Plugin System (RPC-over-stdio)"
+    phase: III
+    description: >-
+      HashiCorp-style plugins. The host process spawns a plugin binary as a
+      subprocess; communication is JSON-RPC or gob over stdin/stdout with a
+      magic-cookie handshake, version and capability negotiation, and crash
+      isolation. Plugins can be written in any language that speaks the wire
+      protocol. The pattern that makes Terraform providers, Vault auth
+      methods, and Packer plugins work.
+    concepts:
+      - subprocess management with crash isolation
+      - JSON-RPC or gob framing over stdin/stdout
+      - magic-cookie handshake to prevent accidental execution
+      - version and capability negotiation
+      - panic recovery in the plugin without taking down the host
+      - streaming logs and progress from plugin to host
+    requirements:
+      - host spawns plugin binary, exchanges handshake, verifies protocol version
+      - plugin crash isolated - host detects and reports cleanly
+      - bidirectional streaming - plugin can call back into host services
+      - example - a plugin in your toy lang from level 1620 plus one in Go interop
+      - protocol version mismatch produces a clear error, not a hang
+      - benchmarked overhead under 1ms per round-trip RPC
+    recommended_languages:
+      - Go
+
+  - level: 1920
+    id: 1920-graph-query-engine
+    name: "Graph Query Engine"
+    phase: III
+    description: >-
+      A query engine for graphs (Cypher / Gremlin-like). Match patterns like
+      "(a)-[:KNOWS]->(b)-[:WORKS_AT]->(c)" against in-memory graphs. Plan
+      the traversal, execute it.
+    concepts:
+      - graph traversal
+      - BFS / DFS plans
+      - pattern matching
+      - query optimization for graphs
+    requirements:
+      - Cypher-subset query language with parser
+      - pattern matching - nodes, edges, variable-length paths
+      - query optimizer chooses traversal order
+      - indexed lookups for labeled nodes
+    recommended_languages:
+      - Go
+
+  - level: 1940
+    id: 1940-graph-database
+    name: "Graph Database"
+    phase: III
+    description: >-
+      A persistent graph database (Neo4j-like). On-disk storage of nodes,
+      edges, and properties. Indexes for labels and edge types. Built on
+      top of the query engine from level 1920.
+    concepts:
+      - graph storage layouts
+      - adjacency indexing
+      - transactional graph mutations
+    requirements:
+      - persistent storage that recovers after crash
+      - at least 10M nodes, 100M edges in a single instance
+      - adjacency lookup in O(log n) via index
+      - transactional updates with rollback
+    recommended_languages:
+      - Go
+
+  - level: 1960
+    id: 1960-stream-processing-engine
+    name: "Stream Processing Engine"
+    phase: III
+    description: >-
+      A Flink-lite. Operators (map, filter, join, aggregate). Windows
+      (tumbling, sliding, session). Watermarks for handling late events.
+      Exactly-once semantics under failure.
+    concepts:
+      - dataflow models
+      - event time vs processing time
+      - watermarks
+      - exactly-once stream processing
+    requirements:
+      - operator graph with at least 5 op types
+      - tumbling, sliding, session windows
+      - watermarks track event-time progress
+      - checkpoint and recovery enable exactly-once
+    recommended_languages:
+      - Go
+
+  - level: 1980
+    id: 1980-linux-debugger-ptrace-dwarf
+    name: "Linux Debugger (ptrace + DWARF)"
+    phase: III
+    description: >-
+      A gdb-lite. Attach to a process via ptrace, set software breakpoints
+      by patching INT3, step instruction by instruction, walk the stack,
+      read and modify registers and memory. Parse DWARF debug info to map
+      machine addresses back to source lines and variables. The symmetric
+      tool to the native code generator at level 1800 - that turned source
+      into machine code, this turns machine code back into source.
+    concepts:
+      - ptrace and the process control ABI
+      - software breakpoints via INT3 patching
+      - DWARF debug info (line tables, DIEs, location expressions)
+      - frame unwinding via .eh_frame / CFI
+      - mapping addresses to symbols
+    requirements:
+      - attaches to a running process or launches a new one under control
+      - source-line breakpoints set by file:line, hit and resume cleanly
+      - single-step at instruction and source-line granularity
+      - prints local variables and arguments using DWARF location info
+      - backtrace walks frames using CFI and resolves function names
+      - works on a stripped binary - degraded but the stack still unwinds
+    recommended_languages:
+      - Go
+
+  - level: 2000
+    id: 2000-self-hosting-compiler
+    name: "Self-Hosting Compiler"
+    phase: III
+    description: >-
+      Rewrite your compiler in its own language. Bootstrap it - use the old
+      compiler to compile the new one, then use the new one to recompile
+      itself. Diff the output to verify the fixed point.
+    concepts:
+      - bootstrapping
+      - T-diagrams
+      - Ken Thompson's "Reflections on Trusting Trust" (1984)
+    requirements:
+      - compiler source written in the source language itself
+      - stage 1 - compile with old compiler, produce stage-1 binary
+      - stage 2 - recompile with stage 1, produce stage-2 binary
+      - stage 3 - recompile with stage 2, produce stage-3 binary identical
+        to stage 2
+    recommended_languages:
+      - your own language (host - whatever level 1640 / 1800 was written in)
+
+
+# =============================================================================
+# PHASE IV  -  Frontier Systems & Bare Metal        (Levels 2020 -> 2280)
+# =============================================================================
+# Goal: frontier distributed systems - SQL across data centers, cost-based
+# query optimization, edge platforms, novel storage and consensus designs.
+# By the end you are someone who could plausibly contribute meaningfully to
+# CockroachDB, etcd, Kubernetes' scheduler, or design original systems work.
+#
+# Recommended language: Go. Spanner-class distributed SQL (2040), Cascades
+# optimization (2080), and edge platforms (2120) all have serious Go OSS -
+# CockroachDB and its optimizer, KubeEdge - as references. ZK-SNARKs (2220)
+# has gnark. Original-design work at the end (2260, 2280) is open-ended.
+#
+# Pair with: the original Spanner / Cascades / Calvin papers, plus Jepsen
+# write-ups for fault-tolerance reasoning.
+# =============================================================================
+
+  - level: 2020
+    id: 2020-cockroachdb-lab
+    name: "CockroachDB Lab"
+    phase: IV
+    description: >-
+      Deploy a 3-node CockroachDB cluster locally, load TPC-C, and observe
+      the system under stress - kill nodes during queries, watch ranges
+      rebalance, read EXPLAIN ANALYZE output across different query shapes.
+      The reference implementation is Go-native and open. Pre-stages level
+      2040 (Distributed SQL) and level 2080 (Cascades Optimizer).
+    concepts:
+      - distributed SQL execution (gateway -> leaseholder -> range leaders)
+      - cost-based optimization (read EXPLAIN ANALYZE output)
+      - Raft-based replication observed in real time
+      - range splits and rebalancing
+      - serializable isolation in practice
+    requirements:
+      - 3-node cluster running locally (cockroach start) or via docker-compose
+      - TPC-C loaded at a scale factor that fits local resources
+      - kill a node during a transaction and document what happened
+      - examine EXPLAIN ANALYZE for at least 5 different query shapes
+      - writeup mapping a slow query to the optimizer's plan choice
+    recommended_languages:
+      - Go
+
+  - level: 2040
+    id: 2040-distributed-sql-spanner-lite
+    name: "Distributed SQL (Spanner-lite)"
+    phase: IV
+    description: >-
+      A SQL database spanning multiple data centers with global ACID
+      transactions. Two-phase commit for cross-shard transactions. Clock
+      synchronization (TrueTime-style) for external consistency.
+    concepts:
+      - two-phase commit
+      - clock synchronization (TrueTime)
+      - external consistency
+    requirements:
+      - cross-shard transactions via 2PC
+      - external consistency via uncertainty intervals plus commit waits
+      - survives data-center partition with degradation to local
+        consistency
+      - linearizable reads from any replica via timestamped reads
+    recommended_languages:
+      - Go
+
+  - level: 2060
+    id: 2060-controller-operator-framework
+    name: "Controller / Operator Framework"
+    phase: IV
+    description: >-
+      A Kubernetes-flavored controller framework. The runtime ships
+      informers (watch-then-cache), a rate-limited work queue, and a
+      level-triggered reconciliation loop. Users register Reconcilers per
+      resource kind; the framework drives them on every change. Add
+      finalizers, owner references, and leader election (built on Raft from
+      level 1360).
+    concepts:
+      - watch + cache (informer pattern) - local view of remote state
+      - rate-limited work queue with exponential backoff
+      - level-triggered vs edge-triggered control loops
+      - finalizers to coordinate cleanup before deletion
+      - owner references and cascade deletion
+      - leader election so only one replica acts at a time
+    requirements:
+      - informer keeps a local cache in sync with a watch endpoint, handles resyncs
+      - rate-limited work queue with exponential backoff on requeue
+      - Reconciler interface with requeue and requeue-after both functioning
+      - finalizers run before object deletion proceeds
+      - owner refs - parent deletion cascades to children
+      - leader election integrated with Raft from level 1360
+      - demo controller manages a CRD-like custom resource end to end
+    recommended_languages:
+      - Go
+
+  - level: 2080
+    id: 2080-cascades-cost-based-query-optimizer
+    name: "Cascades / Cost-Based Query Optimizer"
+    phase: IV
+    description: >-
+      An advanced SQL optimizer using the Cascades framework. Memo
+      structure stores equivalent plans; transformation rules expand it;
+      dynamic programming picks the cheapest. Distinct from the rule-based
+      planner at level 1420.
+    concepts:
+      - cost-based optimization
+      - the memo data structure
+      - transformation rules
+      - dynamic programming over plans
+    requirements:
+      - memo structure with equivalence classes
+      - cost model based on table statistics
+      - rule-based plan transformations (join reorder, predicate pushdown)
+      - branch-and-bound prunes the search space
+      - beats the rule-based planner from level 1420 on TPC-H queries
+    recommended_languages:
+      - Go
+
+  - level: 2100
+    id: 2100-crd-and-admission-webhook-framework
+    name: "CRD + Admission Webhook Framework"
+    phase: IV
+    description: >-
+      Build the extensibility layer around the controller framework from
+      level 2060. CRDs declare new types with OpenAPI schemas; admission
+      webhooks intercept create/update/delete to mutate or validate before
+      persistence. Your framework handles schema validation,
+      mutating-vs-validating webhook plumbing, JSON-Patch generation for
+      mutations, and multi-version conversion.
+    concepts:
+      - OpenAPI v3 schema validation
+      - mutating vs validating webhooks
+      - JSON Patch (RFC 6902) for mutations
+      - API version conversion (v1alpha1 to v1beta1 to v1) without data loss
+      - webhook TLS bootstrap and certificate rotation
+      - admission ordering - defaulting, then mutating, then validating
+    requirements:
+      - declare a CRD with OpenAPI schema - invalid objects rejected at admission
+      - mutating webhook example - defaults a missing field
+      - validating webhook example - rejects an object failing a custom invariant
+      - API conversion - same object served as v1alpha1 or v1beta1, lossless
+      - webhook TLS cert rotation without dropped requests
+      - runs on top of the controller framework from level 2060
+    recommended_languages:
+      - Go
+
+  - level: 2120
+    id: 2120-edge-computing-platform
+    name: "Edge Computing Platform"
+    phase: IV
+    description: >-
+      A platform for running distributed workloads across edge nodes with
+      intermittent connectivity. Hierarchical scheduling, locality-aware
+      routing, sync when reconnected.
+    concepts:
+      - edge-cloud sync
+      - partition tolerance
+      - hierarchical scheduling
+      - locality-aware routing
+    requirements:
+      - workloads run during disconnection, sync state on reconnect
+      - hierarchical scheduling - cloud → region → edge node
+      - locality-aware request routing
+      - at least 3 example workloads (cache, ML inference, IoT aggregation)
+    recommended_languages:
+      - Go
+
+  - level: 2140
+    id: 2140-oauth-2-and-oidc-authorization-server
+    name: "OAuth 2.0 / OIDC Authorization Server"
+    phase: IV
+    description: >-
+      An identity server that issues tokens. Implements OAuth 2.0
+      authorization-code with PKCE, OIDC discovery and ID tokens, JWT
+      signing with rotating JWKS, refresh-token rotation, and dynamic client
+      registration. A real Dex-shaped service that can sit behind any
+      application that needs delegated auth.
+    concepts:
+      - OAuth 2.0 authorization-code flow with PKCE
+      - OIDC discovery and ID tokens
+      - JWT signing, JWS, and JWKS rotation
+      - refresh-token rotation with reuse detection
+      - session management with sliding expiry
+      - dynamic client registration (RFC 7591)
+    requirements:
+      - authorization-code with PKCE end-to-end via a real OIDC client library
+      - ID tokens validate against the published JWKS
+      - refresh-token rotation with reuse detection (stolen refresh invalidates chain)
+      - session cookies with sliding expiry and absolute timeout
+      - dynamic client registration produces clients that work immediately
+      - conformance against the OIDC certification suite for the basic profile
+    recommended_languages:
+      - Go
+
+  - level: 2160
+    id: 2160-secrets-manager-vault-mini
+    name: "Secrets Manager (Vault-mini)"
+    phase: IV
+    description: >-
+      A Vault-shaped secrets service. Pluggable auth methods (token,
+      userpass, K8s service-account JWT); pluggable secret engines (KV,
+      dynamic database credentials, PKI for short-lived certs); lease-based
+      revocation; an unsealing flow guarded by Shamir's Secret Sharing.
+      Treats every secret as time-bounded.
+    concepts:
+      - pluggable auth methods (extension via the plugin pattern from level 1900)
+      - pluggable secret engines
+      - lease-based secret lifecycle - issue, renew, revoke
+      - dynamic secrets - generated on read, expired automatically
+      - Shamir's Secret Sharing for sealing the master key
+      - audit log with hash-chain integrity
+    requirements:
+      - auth methods - token, userpass, and K8s service-account JWT validation work
+      - KV engine plus dynamic-DB engine (issues a Postgres user that auto-expires)
+      - PKI engine issues short-lived x509 certs (chains to a CA you control)
+      - Shamir 3-of-5 unsealing protects the master key
+      - lease revocation cascades - revoke parent token, all children invalidated
+      - hash-chained audit log proves no entries were tampered with
+    recommended_languages:
+      - Go
+
+  - level: 2180
+    id: 2180-service-mesh-sidecar-proxy
+    name: "Service Mesh / Sidecar Proxy"
+    phase: IV
+    description: >-
+      A Linkerd-shaped data plane. Each application gets a sidecar proxy
+      that intercepts all inbound and outbound traffic transparently,
+      terminates and re-establishes mTLS automatically using SPIFFE-style
+      workload identities, enforces traffic policy, and emits observability
+      data. Built on the L7 reverse proxy from level 980 plus the controller
+      framework from level 2060 for the control plane.
+    concepts:
+      - traffic interception (iptables redirect on Linux, userspace proxy elsewhere)
+      - SPIFFE / SVID workload identity
+      - automatic mTLS between meshed services
+      - retry budgets and circuit breakers
+      - traffic shifting (canary, weighted routing)
+      - observability injection - golden signals for free
+    requirements:
+      - sidecar intercepts all of a pod's traffic via iptables redirect
+      - automatic mTLS between any two meshed services without app changes
+      - retry budget prevents retry storms - circuit breaker opens on backend failure
+      - canary traffic shifting via percentage-based routing rule
+      - p99 added latency under 1ms vs no mesh
+      - control plane (using level 2060 framework) configures all sidecars
+    recommended_languages:
+      - Go
+
+  - level: 2200
+    id: 2200-gnark-tiny-circuit
+    name: "gnark Tiny Circuit"
+    phase: IV
+    description: >-
+      Use gnark to write a 'I know x such that hash(x) == y' circuit.
+      Generate a proof, verify it, then extend to a small Merkle membership
+      proof. Switch between Groth16 and PLONK and observe the size/time
+      differences. Pre-stages level 2220 (ZK-SNARK Prover) - you should be
+      able to use a SNARK before you implement one.
+    concepts:
+      - circuit-based computation (everything is constraints)
+      - native ops vs circuit ops (and why they differ)
+      - proof generation vs verification (asymmetric cost)
+      - Groth16 vs PLONK as proving systems
+      - public inputs vs private witness
+    requirements:
+      - circuit compiles and produces a valid proof
+      - proof verifies correctly with the right public input
+      - proof fails to verify with a wrong public input
+      - switch between Groth16 and PLONK and observe size/time differences
+      - extend the circuit to a Merkle inclusion proof
+    recommended_languages:
+      - Go
+
+  - level: 2220
+    id: 2220-zk-snark-prover
+    name: "ZK-SNARK Prover"
+    phase: IV
+    description: >-
+      A prover and verifier for zero-knowledge succinct arguments. Take a
+      computation, encode it as R1CS or a Plonkish arithmetization,
+      generate a proof, verify the proof without revealing inputs.
+    concepts:
+      - zero-knowledge proofs
+      - polynomial commitments
+      - R1CS / arithmetization
+      - trusted setup
+    requirements:
+      - computation lowered to R1CS or Plonk's arithmetization
+      - trusted setup (or transparent setup)
+      - polynomial commitments (KZG or FRI)
+      - verifies a non-trivial example - e.g. proving knowledge of a hash
+        preimage
+    recommended_languages:
+      - Go
+
+  - level: 2240
+    id: 2240-wireguard-style-encrypted-mesh
+    name: "WireGuard-Style Encrypted Mesh"
+    phase: IV
+    description: >-
+      A modern VPN. Implements the Noise Protocol Framework (IK pattern) for
+      peer key exchange, sets up a TUN device to ingest user-space packets,
+      encrypts them with ChaCha20-Poly1305, sends over UDP. A small mesh of
+      peers with NAT traversal via a STUN-like rendezvous server. The
+      user-space cousin of the Linux WireGuard kernel module.
+    concepts:
+      - Noise Protocol Framework (IK handshake pattern)
+      - TUN device plus Go event loop for raw IP packets
+      - ChaCha20-Poly1305 AEAD record protection
+      - session re-keying without dropping the data plane
+      - NAT traversal (STUN, hole punching)
+      - relay fallback when symmetric NAT defeats traversal
+    requirements:
+      - two peers establish a Noise IK session over UDP and exchange IP packets
+      - TUN device on Linux/macOS routes user packets through the encrypted tunnel
+      - mesh of 5+ peers - each can reach each other directly when possible
+      - session re-keying after N bytes or T seconds without dropping the data plane
+      - NAT traversal via STUN-like rendezvous - relay fallback when impossible
+      - iperf3 over the tunnel hits at least 50% of plain-UDP bandwidth
+    recommended_languages:
+      - Go
+
+  - level: 2260
+    id: 2260-new-storage-engine-design
+    name: "New Storage Engine Design"
+    phase: IV
+    description: >-
+      Invent something. Combine ideas from B-trees, LSMs, and learned
+      indexes into a hybrid design - or take a single workload and design
+      a storage engine optimized for it. Original work.
+    concepts:
+      - original systems research
+      - design trade-offs across the storage hierarchy
+    requirements:
+      - novel design articulated as a written proposal
+      - implementation that beats LSM and B-tree on a chosen workload
+      - benchmarks against RocksDB or LMDB
+      - worth a workshop paper at HotStorage or VLDB
+    recommended_languages:
+      - Go
+
+  - level: 2280
+    id: 2280-novel-topology-consensus-algorithm
+    name: "Novel Topology Consensus Algorithm"
+    phase: IV
+    description: >-
+      Design and implement a distributed agreement algorithm tailored for
+      specific hardware (RDMA networks, satellite clusters, low-latency
+      datacenter fabrics). Original protocol design.
+    concepts:
+      - state-of-the-art Byzantine fault tolerance
+      - hardware-aware protocol design
+    requirements:
+      - written specification including failure model
+      - working implementation
+      - benchmarks vs Raft or Paxos in the targeted environment
+      - formal model in TLA+ proves safety
+    recommended_languages:
+      - Go
