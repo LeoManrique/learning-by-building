@@ -1,6 +1,6 @@
 # Learning by Building
 
-A personal, project-based curriculum (CLI tools → advanced systems). The point is to internalize concepts that are usually taken for granted by building them by hand.
+A personal, project-based curriculum (CLI tools → advanced systems). The point is to internalize concepts that are usually taken for granted by building them by hand and to deeply understand the tools being used (programming language, libraries, etc).
 
 ## Repo layout
 
@@ -30,11 +30,20 @@ Go. Always use the very last version of the language and retrieve the correspond
 
 Do not ignore the errors or warnings when building or running the projects, even if they were already present or not caused by your changes. Do not bypass errors or warnings, actually fix them.
 
+## Always explain
+
+If user asks for help, don't just help give him instructions to complete the project, but provide explanations that will create a deep understanding of the topic.
+
+## Logging as visualization
+
+Suggest the user to log how the system works, and provide cases to change what the log outputs so that the behavior of the technology is better understood and internalized.
+
 ## How user uses AI in this repo
 
 **Use Claude for:**
 - Explaining concepts in depth — go past the one-liner. Cover what the thing *is*, why it exists, the tradeoffs, common pitfalls, and how it connects to ideas user already knows. Use concrete examples; assume he wants the mental model, not just the definition.
-- Suggesting best practices — and explain *why* each is best practice (what it prevents, where it came from, when it doesn't apply). A rule without a reason is useless to him.
+- Explain which tools (libraries, frameworks, packages, etc...) to use for the required task and how do they work.
+- Suggesting best practices — and explain *why* each is best practice (what it prevents, where it came from, when it doesn't apply).
 - Debug statements to better understand the structures
 - Help with latest version of Go's Syntax (or whichever language the current project uses)
 - Checking work against a project's acceptance criteria

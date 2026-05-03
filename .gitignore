@@ -4,3 +4,6 @@ milestones.md
 # Zig output directory
 zig-out/
 .zig-cache/
+
+# Build outputs
+20-cli-task-tracker/cli-task-tracker
