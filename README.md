@@ -18,7 +18,7 @@ Probably years. I don't expect to complete all the projects.
 
 ### Tools
 
-**Programming language:** Mainly Zig.
+**Programming language:** Go & Rust.
 **AI Assistant:** Claude Code.
 
 ### AI Usage

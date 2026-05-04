@@ -6,9 +6,18 @@ A personal, project-based curriculum (CLI tools → advanced systems). The point
 
 Monorepo. Each project lives in its own top-level folder named `<level>-<slug>` (e.g. `20-cli-task-tracker`). Folders are created as projects are started and stay in the repo once they meet the project's acceptance criteria — no separate "completed" state.
 
-The curriculum itself lives in [curriculum.yaml](curriculum.yaml): 100 projects ordered by `level` (20 → 2000). The level number is purely an ordering — gaps aren't difficulty units, just room to insert later.
+The curriculum itself lives in [curriculum.yaml](curriculum.yaml). Projects span 5 phases — Basics, Internals, Systems, Compilers & Languages, Frontier — ordered by `level`. Levels are a build sequence with a soft difficulty trend; gaps are insertion room, not difficulty units.
 
 Each project entry has: `description`, `concepts`, `requirements` (acceptance criteria), `recommended_languages`. A project is done when every requirement ticks.
+
+Phase I projects are built twice (Go first, then Rust). Layout:
+
+    <level>-<slug>/
+      ROADMAP.md     # language-agnostic, only about functionality
+      go/            # Go implementation
+      rust/          # Rust implementation
+
+Phase II onwards: single language at the project root unless the user opts to double, in which case mirror the layout above.
 
 ## Per-project ROADMAP.md
 
@@ -20,11 +29,15 @@ Format:
 - Each phase is a flat list of `- [ ]` steps, ending with a `- [ ] **Verify:** ...` checkbox naming a concrete command or observation user can run end-to-end so he can report pass/fail.
 - Phases slice end-to-end (a user-visible behavior shipped per phase), not horizontally (don't do "all data models" then "all I/O" — there's nothing to demo at the end).
 - For any step whose meaning isn't obvious from the bullet alone (e.g. "atomic rename," "swap-remove," "exit code 2," "idempotent"), follow it with a short indented explainer paragraph — 1-3 sentences covering *what it means and why*. Skip the explainer on self-evident steps so the file doesn't get noisy.
+- Language-agnostic and only about *what* the software does, not *how* it's implemented. No language-specific syntax, type names, or function names. Verify steps use `<run>` as a placeholder for the language-specific run command (`go run .`, `cargo run --`, etc.).
 - Don't restate anything already in `curriculum.yaml` (description, concepts, requirements, recommended languages). The ROADMAP is the actual build steps, not a copy of the spec.
 
-## Default language
+## Programming languages
 
-Go. Always use the very last version of the language and retrieve the corresponding documentation.
+Go and Rust. Use the latest version of each, with current docs and best practices.
+
+- **Phase I (Basics)**: build each project twice — Go first, then Rust.
+- **Phase II onwards**: pick per project. See `recommended_languages` in `curriculum.yaml`. Default to Go unless the user has chosen Rust for that project.
 
 ## Always fix
 

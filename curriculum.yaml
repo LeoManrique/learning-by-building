@@ -23,18 +23,12 @@
 
 
 # =============================================================================
-# PHASE I  -  Foundations of Computation        (Levels 20 -> 840)
+# PHASE I  -  Basics        (Levels 20 -> 340)
 # =============================================================================
-# Goal: stop relying on libraries to do the thinking. Internalize control flow,
-# data structures, parsing, and basic concurrency by building these by hand.
-#
-# Recommended language: Go. The point of Phase I is to feel comfortable
-# orchestrating I/O, parsing arguments, and round-tripping data without
-# reaching for a framework, while building the data structures (hash maps,
-# B-trees, regex engines) that later levels will treat as primitives.
-#
-# Pair with: "Crafting Interpreters" (early chapters) and "Designing
-# Data-Intensive Applications".
+# Goal: internalize Go and Rust idioms on small projects (CLI tools, parsing,
+# hand-built data structures). Each project is small enough to build twice.
+# Languages: Go and Rust. Build each project in both, Go first.
+# Pair with: "The Go Programming Language", "Programming Rust".
 # =============================================================================
 
 projects:
@@ -62,6 +56,7 @@ projects:
       - works correctly with at least 1000 tasks
     recommended_languages:
       - Go
+      - Rust
 
   - level: 40
     id: 40-word-frequency-analyzer
@@ -87,6 +82,7 @@ projects:
       - handles files larger than RAM (no Read-all)
     recommended_languages:
       - Go
+      - Rust
 
   - level: 60
     id: 60-csv-json-converter
@@ -110,6 +106,7 @@ projects:
       - round-trip is stable for typical sample inputs
     recommended_languages:
       - Go
+      - Rust
 
   - level: 80
     id: 80-tree-clone
@@ -133,6 +130,7 @@ projects:
       - handles symlink loops without infinite recursion
     recommended_languages:
       - Go
+      - Rust
 
   - level: 100
     id: 100-hex-dump
@@ -155,6 +153,7 @@ projects:
       - non-printable bytes are shown as '.' in the ASCII column
     recommended_languages:
       - Go
+      - Rust
 
   - level: 120
     id: 120-pomodoro-timer
@@ -178,6 +177,7 @@ projects:
       - supports a Pomodoro mode (work/break cycles) with --cycles N
     recommended_languages:
       - Go
+      - Rust
 
   - level: 140
     id: 140-json-parser
@@ -200,6 +200,7 @@ projects:
       - passes a representative subset of the JSON conformance suite
     recommended_languages:
       - Go
+      - Rust
 
   - level: 160
     id: 160-cli-with-cobra-viper
@@ -224,6 +225,7 @@ projects:
       - the tool is genuinely useful enough that you keep using it after
     recommended_languages:
       - Go
+      - Rust
 
   - level: 180
     id: 180-cli-framework-cobra-clone
@@ -251,6 +253,7 @@ projects:
       - typo correction suggests close commands when input is unrecognized
     recommended_languages:
       - Go
+      - Rust
 
   - level: 200
     id: 200-http-file-downloader
@@ -276,6 +279,7 @@ projects:
       - Ctrl-C cancels via context and removes the partial file
     recommended_languages:
       - Go
+      - Rust
 
   - level: 220
     id: 220-markdown-to-html-converter
@@ -298,6 +302,7 @@ projects:
       - output validates as well-formed HTML
     recommended_languages:
       - Go
+      - Rust
 
   - level: 240
     id: 240-cron-expression-evaluator
@@ -321,6 +326,7 @@ projects:
       - handles timezone via flag, including DST transitions correctly
     recommended_languages:
       - Go
+      - Rust
 
   - level: 260
     id: 260-math-expression-evaluator
@@ -343,6 +349,7 @@ projects:
       - reports meaningful errors for malformed input
     recommended_languages:
       - Go
+      - Rust
 
   - level: 280
     id: 280-hash-indexed-address-book
@@ -365,6 +372,7 @@ projects:
       - benchmark vs the language's built-in map shows a comprehensible gap
     recommended_languages:
       - Go
+      - Rust
 
   - level: 300
     id: 300-file-deduplicator
@@ -388,6 +396,7 @@ projects:
       - symlinks are not followed by default
     recommended_languages:
       - Go
+      - Rust
 
   - level: 320
     id: 320-diff-tool-myers
@@ -411,6 +420,7 @@ projects:
       - handles the empty-file case correctly
     recommended_languages:
       - Go
+      - Rust
 
   - level: 340
     id: 340-mini-git-plumbing
@@ -434,11 +444,22 @@ projects:
       - log walks history and prints messages in topological order
     recommended_languages:
       - Go
+      - Rust
+
+
+# =============================================================================
+# PHASE II  -  Internals        (Levels 360 -> 880)
+# =============================================================================
+# Goal: build the things that get imported — concurrency primitives, libraries,
+# single-process servers, storage engines, interpreters, runtimes.
+# Languages: pick per project. See each project's recommended_languages.
+# Pair with: "Designing Data-Intensive Applications", "Crafting Interpreters".
+# =============================================================================
 
   - level: 360
     id: 360-unix-shell
     name: "Unix Shell"
-    phase: I
+    phase: II
     description: >-
       A POSIX-style shell. Read a command line, parse it (pipes,
       redirections, quoting), fork the child, exec the program, wait for
@@ -460,11 +481,12 @@ projects:
       - history with up/down arrow recall, persisted between sessions
     recommended_languages:
       - Go
+      - Rust
 
   - level: 380
     id: 380-concurrent-port-scanner
     name: "Concurrent Port Scanner"
-    phase: I
+    phase: II
     description: >-
       A bounded-concurrency TCP port scanner. Given a host and port range,
       scan in parallel with N workers, connect with a timeout, and report
@@ -484,11 +506,12 @@ projects:
       - results stream out as found, with a --sort flag for ordered output
     recommended_languages:
       - Go
+      - Rust
 
   - level: 400
     id: 400-concurrent-web-crawler
     name: "Concurrent Web Crawler"
-    phase: I
+    phase: II
     description: >-
       Given a starting URL, fetch the page, extract links, queue them, and
       continue across N worker goroutines. Respects robots.txt, deduplicates
@@ -507,6 +530,7 @@ projects:
       - crawls 1000 pages without leaking threads or crashing
     recommended_languages:
       - Go
+      - Rust
 
   - level: 420
     id: 420-structured-logger-and-metrics-library
@@ -535,11 +559,12 @@ projects:
       - 1M observations/sec on a single core without lock contention
     recommended_languages:
       - Go
+      - Rust
 
   - level: 440
     id: 440-thread-pool-job-queue
     name: "Thread Pool + Job Queue"
-    phase: I
+    phase: II
     description: >-
       Build the concurrency runtime itself. A fixed pool of OS threads pulls
       tasks from a shared bounded queue. Submitters block when the queue is
@@ -559,11 +584,12 @@ projects:
       - 1M tasks across 8 workers with no deadlock or lost work
     recommended_languages:
       - Go
+      - Rust
 
   - level: 460
     id: 460-in-memory-kv-redis-lite
     name: "In-Memory KV / Redis-lite"
-    phase: I
+    phase: II
     description: >-
       A TCP server that speaks a tiny text protocol (GET key, SET key value,
       DEL key) and stores everything in memory. Connect from netcat, send
@@ -582,11 +608,12 @@ projects:
       - 50k ops/sec single-threaded on commodity hardware
     recommended_languages:
       - Go
+      - Rust
 
   - level: 480
     id: 480-cache-with-lru-lfu-eviction
     name: "Cache with LRU/LFU Eviction"
-    phase: I
+    phase: II
     description: >-
       Extend your KV store with bounded capacity and an eviction policy. When
       full, evict the least-recently-used (or least-frequently-used) entry.
@@ -605,11 +632,12 @@ projects:
       - benchmark shows the eviction cost is independent of cache size
     recommended_languages:
       - Go
+      - Rust
 
   - level: 500
     id: 500-tui-tool-bubbletea
     name: "TUI Tool (Bubbletea)"
-    phase: I
+    phase: II
     description: >-
       Build a real terminal UI tool using charmbracelet/bubbletea - a fuzzy
       file picker, git status viewer, or process explorer. Practice the
@@ -629,11 +657,12 @@ projects:
       - exits cleanly to a non-broken terminal state
     recommended_languages:
       - Go
+      - Rust
 
   - level: 520
     id: 520-terminal-text-editor
     name: "Terminal Text Editor"
-    phase: I
+    phase: II
     description: >-
       A modal text editor in the spirit of kilo and hecto. Switch the
       terminal to raw mode, draw via ANSI escape sequences, manage the
@@ -655,11 +684,12 @@ projects:
       - undo / redo with at least 280 levels
     recommended_languages:
       - Go
+      - Rust
 
   - level: 540
     id: 540-json-serializer-library
     name: "JSON Serializer Library"
-    phase: I
+    phase: II
     description: >-
       The other direction from level 140. Take an arbitrary in-memory value
       and produce JSON text. Use reflection or type introspection to walk the
@@ -678,11 +708,12 @@ projects:
       - pretty-print mode with configurable indentation
     recommended_languages:
       - Go
+      - Rust
 
   - level: 560
     id: 560-dependency-injection-container
     name: "Dependency Injection Container"
-    phase: I
+    phase: II
     description: >-
       A tiny IoC container. Register types and their constructors; ask the
       container for an instance and it builds the whole dependency graph for
@@ -701,11 +732,12 @@ projects:
       - example app wires 20+ services without manual plumbing
     recommended_languages:
       - Go
+      - Rust
 
   - level: 580
     id: 580-event-driven-game-loop
     name: "Event-Driven Game Loop"
-    phase: I
+    phase: II
     description: >-
       A headless engine that ticks at a fixed rate, processes input events
       from a queue, updates entity state, and "renders" (logs or writes to a
@@ -725,11 +757,12 @@ projects:
       - determinism - same input sequence produces the same output
     recommended_languages:
       - Go
+      - Rust
 
   - level: 600
     id: 600-rest-api-net-http
     name: "REST API with net/http"
-    phase: I
+    phase: II
     description: >-
       Build a real CRUD JSON API using only Go's standard library: net/http,
       encoding/json, log/slog. Routing tree, middleware chain, structured
@@ -750,11 +783,12 @@ projects:
       - handles JSON decode errors with helpful, structured messages
     recommended_languages:
       - Go
+      - Rust
 
   - level: 620
     id: 620-http-1-1-server-from-sockets
     name: "HTTP/1.1 Server from Sockets"
-    phase: I
+    phase: II
     description: >-
       A web server built on raw TCP. Parse the request line, headers, body.
       Implement keep-alive, chunked transfer encoding, content-length
@@ -772,11 +806,12 @@ projects:
       - passes a curl-based conformance suite for the HTTP/1.1 grammar
     recommended_languages:
       - Go
+      - Rust
 
   - level: 640
     id: 640-http-2-server
     name: "HTTP/2 Server"
-    phase: I
+    phase: II
     description: >-
       Implement HTTP/2 server-side from raw TCP. Frame layer (DATA, HEADERS,
       SETTINGS, WINDOW_UPDATE, PING, GOAWAY), HPACK header compression with
@@ -799,11 +834,12 @@ projects:
       - passes a curl --http2 conformance suite
     recommended_languages:
       - Go
+      - Rust
 
   - level: 660
     id: 660-append-only-log
     name: "Append-Only Log"
-    phase: I
+    phase: II
     description: >-
       A crash-safe append-only log file. Writes encode a length-prefixed,
       checksummed record and append it. fsync on commit. Recovery scans
@@ -823,11 +859,12 @@ projects:
       - 1M records appended and replayed without corruption
     recommended_languages:
       - Go
+      - Rust
 
   - level: 680
     id: 680-persistent-b-tree-kv-store-with-wal
     name: "Persistent B-Tree KV Store with WAL"
-    phase: I
+    phase: II
     description: >-
       A KV store backed by a B-tree on disk, with a write-ahead log for crash
       recovery. Writes go to the WAL first, then the B-tree page cache, then
@@ -846,11 +883,12 @@ projects:
       - 100M ops without corruption
     recommended_languages:
       - Go
+      - Rust
 
   - level: 700
     id: 700-tls-and-acme-automatic-https
     name: "TLS + ACME Automatic HTTPS"
-    phase: I
+    phase: II
     description: >-
       TLS 1.3 from sockets up through Caddy-style automatic HTTPS. Parse and
       validate x509 chains, run the full TLS 1.3 handshake state machine,
@@ -875,11 +913,12 @@ projects:
       - OCSP stapling on served certificates
     recommended_languages:
       - Go
+      - Rust
 
   - level: 720
     id: 720-regex-tester-visualizer
     name: "Regex Tester / Visualizer"
-    phase: I
+    phase: II
     description: >-
       Paste a regex and a sample text. The tool highlights matches in the
       terminal, shows capture groups in distinct colors, prints group
@@ -900,11 +939,12 @@ projects:
       - --dot flag emits Graphviz DOT for the regex's structure
     recommended_languages:
       - Go
+      - Rust
 
   - level: 740
     id: 740-regex-engine-nfa-dfa
     name: "Regex Engine (NFA/DFA)"
-    phase: I
+    phase: II
     description: >-
       A regex matcher built from automata. Parse the regex into an AST,
       build an NFA via Thompson's construction, optionally subset-construct
@@ -923,11 +963,12 @@ projects:
       - 100+ pattern/input pairs in a regression suite
     recommended_languages:
       - Go
+      - Rust
 
   - level: 760
     id: 760-grep-like-streaming-text-searcher
     name: "grep-like Streaming Text Searcher"
-    phase: I
+    phase: II
     description: >-
       A grep clone. Takes a regex and a file (or stdin), prints matching
       lines. Files larger than RAM must work - read in chunks, buffer lines,
@@ -946,11 +987,12 @@ projects:
       - at least 100MB/s on warm-cache files
     recommended_languages:
       - Go
+      - Rust
 
   - level: 780
     id: 780-sqlite-app-database-sql
     name: "SQLite App with database/sql"
-    phase: I
+    phase: II
     description: >-
       Build a real app backed by SQLite using Go's database/sql - schema
       migrations, prepared statements, transactions, connection pooling,
@@ -970,11 +1012,12 @@ projects:
       - includes a benchmark comparing prepared vs ad-hoc query throughput
     recommended_languages:
       - Go
+      - Rust
 
   - level: 800
     id: 800-sql-subset-engine
     name: "SQL Subset Engine"
-    phase: I
+    phase: II
     description: >-
       Parse and execute SELECT, WHERE, JOIN, ORDER BY, LIMIT against tables
       loaded from CSV (or your B-tree KV from level 680). Build the AST,
@@ -993,11 +1036,12 @@ projects:
       - 30+ queries in a regression suite with known expected output
     recommended_languages:
       - Go
+      - Rust
 
   - level: 820
     id: 820-tree-walking-interpreter
     name: "Tree-Walking Interpreter"
-    phase: I
+    phase: II
     description: >-
       Build a tiny interpreted language - arithmetic, variables, if/else,
       while, functions, closures. No bytecode, no compiler - just walk the
@@ -1018,11 +1062,12 @@ projects:
       - REPL mode in addition to file execution
     recommended_languages:
       - Go
+      - Rust
 
   - level: 840
     id: 840-bytecode-vm-executor
     name: "Bytecode VM (Executor)"
-    phase: I
+    phase: II
     description: >-
       A stack-based VM that loads and executes a hand-written or
       pre-generated bytecode stream. You define the opcodes (push, pop, add,
@@ -1041,22 +1086,16 @@ projects:
       - 100M ops/sec on a tight integer loop
     recommended_languages:
       - Go
+      - Rust
 
 
 # =============================================================================
-# PHASE II  -  Systems & Concurrency        (Levels 420 -> 1580)
+# PHASE III  -  Systems        (Levels 900 -> 1580)
 # =============================================================================
-# Goal: now start building the things that get imported. The discomfort of
-# writing 2,000 lines of Go to do what one library call does is the *point*.
-#
-# Recommended language: Go. The distributed projects - container runtime
-# (1200), distributed KV store (1300), Raft consensus (1360), message
-# broker (1400) - have canonical Go reference implementations in
-# Kubernetes, etcd, hashicorp/raft, and NATS. Contributing back to those
-# projects becomes possible after the curriculum.
-#
-# Pair with: "Designing Data-Intensive Applications" and "Operating Systems:
-# Three Easy Pieces".
+# Goal: cross the single-process boundary — RPC, networking stacks, distributed
+# storage and consensus, container and WASM runtimes.
+# Languages: pick per project. See each project's recommended_languages.
+# Pair with: "Designing Data-Intensive Applications", "OSTEP", Jepsen.
 # =============================================================================
 
   - level: 860
@@ -1079,6 +1118,7 @@ projects:
       - stress test - 10M allocations with random retention pattern
     recommended_languages:
       - Go
+      - Rust
 
   - level: 880
     id: 880-event-loop-async-runtime
@@ -1100,11 +1140,12 @@ projects:
       - clean shutdown drains pending tasks
     recommended_languages:
       - Go
+      - Rust
 
   - level: 900
     id: 900-real-grpc-service
     name: "Real gRPC Service"
-    phase: II
+    phase: III
     description: >-
       Define a .proto schema, generate Go code with protoc-gen-go and
       protoc-gen-go-grpc, and build a real client and server. Cover all four
@@ -1125,11 +1166,12 @@ projects:
       - uses TLS (real certs or self-signed via mkcert)
     recommended_languages:
       - Go
+      - Rust
 
   - level: 920
     id: 920-grpc-style-rpc-framework
     name: "gRPC-Style RPC Framework"
-    phase: II
+    phase: III
     description: >-
       A miniature gRPC. Define services in a small IDL (Protobuf-shaped or
       your own); a code generator emits Go server stubs and client stubs
@@ -1154,11 +1196,12 @@ projects:
       - 100k unary RPCs/sec on a single connection
     recommended_languages:
       - Go
+      - Rust
 
   - level: 940
     id: 940-layer-4-load-balancer
     name: "Layer 4 Load Balancer"
-    phase: II
+    phase: III
     description: >-
       A reverse proxy operating purely on TCP. Accept connections, pick a
       backend (round-robin, least-connections), forward bytes both ways,
@@ -1175,11 +1218,12 @@ projects:
       - 10k concurrent forwarding connections without leaks
     recommended_languages:
       - Go
+      - Rust
 
   - level: 960
     id: 960-reverse-proxy-httputil
     name: "Reverse Proxy with httputil"
-    phase: II
+    phase: III
     description: >-
       Build an auth-injecting or path-rewriting reverse proxy using
       httputil.NewSingleHostReverseProxy. Modify request headers in flight,
@@ -1201,11 +1245,12 @@ projects:
       - structured access logs for every proxied request
     recommended_languages:
       - Go
+      - Rust
 
   - level: 980
     id: 980-http-reverse-proxy-l7
     name: "HTTP Reverse Proxy (L7)"
-    phase: II
+    phase: III
     description: >-
       An HTTP-aware load balancer. Parse the request, apply routing rules
       (path-based, host-based), rewrite headers, forward to a backend.
@@ -1223,11 +1268,12 @@ projects:
       - 5k+ concurrent connections without head-of-line blocking
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1000
     id: 1000-reliable-udp
     name: "Reliable UDP"
-    phase: II
+    phase: III
     description: >-
       Build a reliability layer on top of UDP. Sender numbers each
       datagram; receiver ACKs by sequence number. Sender retransmits
@@ -1249,11 +1295,12 @@ projects:
       - in-order delivery to the receiver despite out-of-order arrival
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1020
     id: 1020-userspace-tcp-ip-stack
     name: "Userspace TCP/IP Stack"
-    phase: II
+    phase: III
     description: >-
       Open a TUN/TAP device. Read raw IP packets. Implement ARP, IPv4, ICMP,
       and a minimal TCP. Make `ping` work. Then make `nc` connect to a TCP
@@ -1270,11 +1317,12 @@ projects:
       - curl can fetch a page from a server bound to your stack
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1040
     id: 1040-software-defined-router
     name: "Software-Defined Router"
-    phase: II
+    phase: III
     description: >-
       A daemon that maintains routing tables and forwards packets between
       subnets. Implement Dijkstra or Bellman-Ford for shortest-path; toy BGP
@@ -1290,11 +1338,12 @@ projects:
       - topology change events do not drop in-flight traffic
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1060
     id: 1060-dns-server
     name: "DNS Server"
-    phase: II
+    phase: III
     description: >-
       An authoritative + recursive DNS server speaking the wire protocol
       directly. Parse and emit DNS messages with label compression, answer
@@ -1319,11 +1368,12 @@ projects:
         source ports and transaction IDs
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1080
     id: 1080-distributed-lock-manager
     name: "Distributed Lock Manager"
-    phase: II
+    phase: III
     description: >-
       A service that multiple machines call to coordinate exclusive access to
       shared resources. Implement leases (time-bounded locks), fencing
@@ -1341,11 +1391,12 @@ projects:
       - chaos test - kill the node holding a lock, lock recovers
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1100
     id: 1100-app-on-pebble
     name: "App on Pebble (Production LSM)"
-    phase: II
+    phase: III
     description: >-
       Build a small but real KV-backed app on cockroachdb/pebble - a link
       shortener, simple queue, or metrics buffer. Use batches, snapshots,
@@ -1366,11 +1417,12 @@ projects:
       - handles graceful shutdown (close DB, flush WAL)
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1120
     id: 1120-lsm-tree-storage-engine
     name: "LSM-Tree Storage Engine"
-    phase: II
+    phase: III
     description: >-
       A LevelDB-style storage engine. Writes go into an in-memory memtable,
       which flushes to immutable SSTables on disk. Background compaction
@@ -1387,11 +1439,12 @@ projects:
       - sustained 100k writes/sec
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1140
     id: 1140-time-series-database
     name: "Time-Series Database"
-    phase: II
+    phase: III
     description: >-
       A database tuned for timestamped numeric data - millions of (timestamp,
       metric, value) tuples per second in, range queries out. Columnar
@@ -1409,11 +1462,12 @@ projects:
       - downsampling rollups (1m/5m/1h aggregates)
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1160
     id: 1160-full-text-search-engine
     name: "Full-Text Search Engine"
-    phase: II
+    phase: III
     description: >-
       A document indexer and searcher. Build inverted indexes from text;
       tokenize and stem; support phrase queries and BM25 ranking. The kind
@@ -1429,11 +1483,12 @@ projects:
       - p99 query latency under 50ms on the 100k corpus
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1180
     id: 1180-actor-model-library
     name: "Actor Model Library"
-    phase: II
+    phase: III
     description: >-
       An Erlang/Akka-style concurrency framework. Actors are isolated
       processes that communicate only by message passing. Each has a
@@ -1451,11 +1506,12 @@ projects:
       - distributed mode - actors on two nodes communicate transparently
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1200
     id: 1200-container-runtime-mini-docker
     name: "Container Runtime (Mini-Docker)"
-    phase: II
+    phase: III
     description: >-
       Spawn isolated processes using Linux primitives directly - namespaces
       (PID, NET, MNT, USER), cgroups v2, an overlayfs-based root filesystem.
@@ -1473,11 +1529,12 @@ projects:
       - networking - the contained process can talk to the host
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1220
     id: 1220-oci-container-image-registry
     name: "OCI Container Image Registry"
-    phase: II
+    phase: III
     description: >-
       A container registry speaking the OCI Distribution Specification.
       Stores manifests and content-addressed blob layers; serves them to
@@ -1499,11 +1556,12 @@ projects:
       - GC removes blobs not referenced by any manifest
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1240
     id: 1240-webassembly-runtime
     name: "WebAssembly Runtime"
-    phase: II
+    phase: III
     description: >-
       A VM that loads .wasm modules and executes them. Parse the binary
       format, validate types on load, execute the stack-based instructions.
@@ -1521,11 +1579,12 @@ projects:
       - runs at least one nontrivial guest program
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1260
     id: 1260-profiler-flame-graph-tool
     name: "Profiler / Flame-Graph Tool"
-    phase: II
+    phase: III
     description: >-
       A sampling profiler. Periodically interrupt a target process, walk its
       stack via ptrace or perf events, accumulate samples, render as a flame
@@ -1542,11 +1601,12 @@ projects:
       - profiles a real workload and produces a usable SVG
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1280
     id: 1280-distributed-job-queue
     name: "Distributed Job Queue"
-    phase: II
+    phase: III
     description: >-
       A multi-node task queue. Producers submit jobs; consumers across
       machines pull and execute them. At-least-once delivery, leader
@@ -1563,11 +1623,12 @@ projects:
       - 50k jobs/sec across 5 nodes
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1300
     id: 1300-distributed-kv-store
     name: "Distributed KV Store"
-    phase: II
+    phase: III
     description: >-
       A KV store sharded across nodes with replication. Hash the key to
       pick a shard; replicate each shard to N nodes; route reads to any
@@ -1583,11 +1644,12 @@ projects:
       - membership change (add/remove node) triggers correct rebalance
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1320
     id: 1320-real-time-collaborative-text-editor
     name: "Real-Time Collaborative Text Editor"
-    phase: II
+    phase: III
     description: >-
       Two clients editing the same document concurrently over WebSockets.
       Use Operational Transformation or a simple CRDT (RGA, Yjs-style) so
@@ -1603,11 +1665,12 @@ projects:
       - server restart preserves the document
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1340
     id: 1340-gossip-protocol-swim
     name: "Gossip Protocol (SWIM)"
-    phase: II
+    phase: III
     description: >-
       An epidemic-style cluster membership service. Each node periodically
       pings a random peer; if the peer doesn't respond, K other random peers
@@ -1631,11 +1694,12 @@ projects:
       - chaos test - random partitions and recoveries do not corrupt membership
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1360
     id: 1360-raft-consensus
     name: "Raft Consensus"
-    phase: II
+    phase: III
     description: >-
       Implement Raft from the paper. Leader election, log replication,
       snapshotting, membership changes. Test it with a chaos harness (kill
@@ -1654,11 +1718,12 @@ projects:
       - passes a Jepsen-like fault-injection test suite
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1380
     id: 1380-agent-tool-use-loop-with-mcp-server
     name: "Agent Tool-Use Loop with MCP Server"
-    phase: II
+    phase: III
     description: >-
       A coding-agent harness. Talk to an LLM API with streaming
       responses, parse tool-call JSON out of the deltas as they arrive,
@@ -1689,11 +1754,12 @@ projects:
         subprocesses
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1400
     id: 1400-message-broker-distributed-log
     name: "Message Broker / Distributed Log"
-    phase: II
+    phase: III
     description: >-
       A Kafka-lite. Producers append messages to partitioned, replicated
       logs. Consumer groups read at offsets; the broker tracks them.
@@ -1711,11 +1777,12 @@ projects:
       - 500k msgs/sec on commodity hardware
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1420
     id: 1420-sql-query-planner
     name: "SQL Query Planner"
-    phase: II
+    phase: III
     description: >-
       Take the parsed AST from level 800 and produce an execution plan.
       Choose join order, pick indexes, decide between nested-loop and hash
@@ -1732,11 +1799,12 @@ projects:
       - plan visualizer outputs the chosen tree
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1440
     id: 1440-database-driver-and-connection-pool
     name: "Database Driver + Connection Pool"
-    phase: II
+    phase: III
     description: >-
       A driver for the Postgres wire protocol. Connect, authenticate via
       SCRAM, parse the wire protocol, marshal Go values to and from Postgres
@@ -1760,11 +1828,12 @@ projects:
       - p99 query latency under 5ms on a warm pool, sustained 5k QPS
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1460
     id: 1460-mvcc-storage-engine
     name: "MVCC Storage Engine"
-    phase: II
+    phase: III
     description: >-
       Multi-version concurrency control. Every row has multiple versions;
       readers see a snapshot; writers create new versions. Transactions get
@@ -1781,11 +1850,12 @@ projects:
       - detects write skew under serializable isolation
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1480
     id: 1480-distributed-hash-table-kademlia
     name: "Distributed Hash Table (Kademlia)"
-    phase: II
+    phase: III
     description: >-
       A peer-to-peer overlay network. Nodes find each other and find data
       via XOR-distance routing tables. Like BitTorrent's mainline DHT.
@@ -1801,11 +1871,12 @@ projects:
       - survives 30% node churn without losing data
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1500
     id: 1500-crdt-library-sync-engine
     name: "CRDT Library / Sync Engine"
-    phase: II
+    phase: III
     description: >-
       A library of conflict-free replicated data types (counter, set,
       register, sequence) plus a sync engine that propagates ops between
@@ -1824,11 +1895,12 @@ projects:
         interleavings
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1520
     id: 1520-distributed-tracing-system
     name: "Distributed Tracing System"
-    phase: II
+    phase: III
     description: >-
       An end-to-end trace pipeline. The instrumentation library generates
       spans with W3C TraceContext propagation; spans flow over OTLP to a
@@ -1851,11 +1923,12 @@ projects:
       - end-to-end demo - instrument a 5-service request flow and visualize the trace
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1540
     id: 1540-fuse-filesystem
     name: "FUSE Filesystem"
-    phase: II
+    phase: III
     description: >-
       A real filesystem in user space. Implement the FUSE callbacks -
       getattr, readdir, open, read, write - and mount it. ls and cat operate
@@ -1873,11 +1946,12 @@ projects:
       - crash safety via journal or atomic-write strategy
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1560
     id: 1560-distributed-task-scheduler
     name: "Distributed Task Scheduler"
-    phase: II
+    phase: III
     description: >-
       An Airflow / Kubernetes-style scheduler. Tasks have constraints
       (CPU, memory, locality); workers have capacity. The scheduler decides
@@ -1897,11 +1971,12 @@ projects:
       - gang scheduling for tasks that must start together
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1580
     id: 1580-versioned-data-lake
     name: "Versioned Data Lake"
-    phase: II
+    phase: III
     description: >-
       A Delta Lake / Iceberg-style data lake. Data is immutable; "writes"
       produce new manifest files pointing to new data files. Time-travel
@@ -1919,28 +1994,22 @@ projects:
       - concurrent writes resolved via optimistic concurrency
     recommended_languages:
       - Go
+      - Rust
 
 
 # =============================================================================
-# PHASE III  -  Compilers, Languages & Internals        (Levels 1600 -> 2000)
+# PHASE IV  -  Compilers & Languages        (Levels 1600 -> 2000)
 # =============================================================================
-# Goal: leave the world of "running programs" and enter the world of "making
-# programs runnable". The most mathematically rigorous part of the curriculum.
-#
-# Recommended language: Go. The Go compiler is itself written in Go and is
-# the canonical reference for SSA, codegen, and linker work (1780, 1800,
-# 1820). gopls is the canonical Go LSP server (1860). OCaml is still useful
-# as a pairing language for the type-inference work (1660, 1680) where
-# Hindley-Milner literature is OCaml-native, but you don't need to use it.
-#
-# Pair with: "Crafting Interpreters" (in full), the Dragon Book, Pierce's
-# "Types and Programming Languages".
+# Goal: stop running programs, start making programs runnable. Lexers, parsers,
+# type systems, SSA, codegen, linkers, LSPs, self-hosting.
+# Languages: pick per project. See each project's recommended_languages.
+# Pair with: "Crafting Interpreters", the Dragon Book, Pierce's TAPL.
 # =============================================================================
 
   - level: 1600
     id: 1600-lexer-recursive-descent-parser
     name: "Lexer + Recursive-Descent Parser"
-    phase: III
+    phase: IV
     description: >-
       Tokenize a C-like language, then parse into an AST. Handle operators
       with precedence, statements with control flow, error recovery so one
@@ -1958,11 +2027,12 @@ projects:
       - 100+ test programs (good and bad) with expected ASTs / errors
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1620
     id: 1620-tree-walking-lisp-functional-interpreter
     name: "Tree-Walking / Lisp / Functional Interpreter"
-    phase: III
+    phase: IV
     description: >-
       Walk the AST and execute. Variables, lexical scope, closures,
       first-class functions. Lambda calculus is the underlying model. A REPL
@@ -1980,11 +2050,12 @@ projects:
       - 3+ example programs (factorial, FizzBuzz, a small data structure)
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1640
     id: 1640-bytecode-compiler
     name: "Bytecode Compiler"
-    phase: III
+    phase: IV
     description: >-
       Compile your AST into bytecode for the VM at level 840. Add simple
       optimizations like constant folding and peephole. Now you have a real
@@ -2001,11 +2072,12 @@ projects:
       - disassembler for produced bytecode
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1660
     id: 1660-static-type-checker-simple-types
     name: "Static Type Checker (Simple Types)"
-    phase: III
+    phase: IV
     description: >-
       A monomorphic type system - function signatures, primitives, basic
       algebraic data types. Reject programs with type errors before they
@@ -2022,11 +2094,12 @@ projects:
       - type errors include location and explanation
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1680
     id: 1680-hindley-milner-type-inference
     name: "Hindley-Milner Type Inference"
-    phase: III
+    phase: IV
     description: >-
       Algorithm W. Programs are unannotated; types are inferred.
       Polymorphism via let-generalization. Unification is the core
@@ -2044,11 +2117,12 @@ projects:
       - errors phrased as "expected X, got Y at location Z"
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1700
     id: 1700-static-analyzer-abstract-interpretation
     name: "Static Analyzer / Abstract Interpretation"
-    phase: III
+    phase: IV
     description: >-
       A whole-program analyzer that detects null deref, use-before-init,
       and taint flow. Built on lattices - each variable carries an abstract
@@ -2065,11 +2139,12 @@ projects:
       - soundness clearly stated, false-positive rate measured
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1720
     id: 1720-garbage-collected-runtime
     name: "Garbage-Collected Runtime"
-    phase: III
+    phase: IV
     description: >-
       Integrate a real GC into the VM from levels 840 and 1640. Generational
       with write barriers and remembered sets, building on the mark-and-sweep
@@ -2086,11 +2161,12 @@ projects:
       - pause times under 10ms on a 1GB heap
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1740
     id: 1740-incremental-build-system
     name: "Incremental Build System"
-    phase: III
+    phase: IV
     description: >-
       A make-like tool but smarter. Hash inputs, cache outputs. If nothing
       changed, rebuild nothing. Bazel/Buck-style hermetic builds - a target
@@ -2107,11 +2183,12 @@ projects:
       - distributed cache - two machines share cached artifacts
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1760
     id: 1760-go-compiler-ssa-tour
     name: "Go Compiler SSA Tour"
-    phase: III
+    phase: IV
     description: >-
       Build the Go compiler with GOSSAFUNC=funcname for a handful of
       carefully chosen functions - a tight loop, a function with branches,
@@ -2134,11 +2211,12 @@ projects:
       - identify one rewrite rule from the compiler source that fired and what it does
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1780
     id: 1780-ssa-optimizing-compiler-front-end
     name: "SSA Optimizing Compiler Front-End"
-    phase: III
+    phase: IV
     description: >-
       Lower your AST to SSA-form intermediate representation. Implement
       standard optimization passes - constant propagation, dead-code
@@ -2155,11 +2233,12 @@ projects:
       - measurably better output than unoptimized on benchmarks
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1800
     id: 1800-native-code-generator-x86-64-backend
     name: "Native Code Generator (x86-64 Backend)"
-    phase: III
+    phase: IV
     description: >-
       AOT compilation. Take SSA IR (level 1780), do register allocation,
       emit x86-64 assembly, emit ELF object files. Link them into a real
@@ -2176,11 +2255,12 @@ projects:
       - performance within 2x of `gcc -O0`
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1820
     id: 1820-linker-and-loader
     name: "Linker and Loader"
-    phase: III
+    phase: IV
     description: >-
       A static linker that combines ELF object files plus a dynamic loader
       that resolves symbols at runtime. Now you control the entire path
@@ -2197,11 +2277,12 @@ projects:
       - links against musl or similar libc
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1840
     id: 1840-incremental-compiler
     name: "Incremental Compiler"
-    phase: III
+    phase: IV
     description: >-
       A compiler that re-typechecks and re-codegens only the changed
       modules. Like rust-analyzer or Roslyn. Demand-driven - re-derive only
@@ -2218,11 +2299,12 @@ projects:
       - persistent cache across invocations
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1860
     id: 1860-language-server-protocol-lsp-server
     name: "Language Server Protocol (LSP) Server"
-    phase: III
+    phase: IV
     description: >-
       An LSP server for the toy language you've built across levels 1600
       / 1140 / 1160. Speak the LSP wire protocol over stdio - respond to
@@ -2248,11 +2330,12 @@ projects:
       - works in real VSCode via a thin client extension
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1880
     id: 1880-dsl-for-infrastructure
     name: "DSL for Infrastructure"
-    phase: III
+    phase: IV
     description: >-
       A Terraform/Pulumi-lite. Write declarative descriptions of resources
       (VMs, DNS records, files). The tool computes a plan (what changes),
@@ -2270,11 +2353,12 @@ projects:
       - at least 3 resource types implemented end to end
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1900
     id: 1900-plugin-system-rpc-over-stdio
     name: "Plugin System (RPC-over-stdio)"
-    phase: III
+    phase: IV
     description: >-
       HashiCorp-style plugins. The host process spawns a plugin binary as a
       subprocess; communication is JSON-RPC or gob over stdin/stdout with a
@@ -2298,11 +2382,12 @@ projects:
       - benchmarked overhead under 1ms per round-trip RPC
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1920
     id: 1920-graph-query-engine
     name: "Graph Query Engine"
-    phase: III
+    phase: IV
     description: >-
       A query engine for graphs (Cypher / Gremlin-like). Match patterns like
       "(a)-[:KNOWS]->(b)-[:WORKS_AT]->(c)" against in-memory graphs. Plan
@@ -2319,11 +2404,12 @@ projects:
       - indexed lookups for labeled nodes
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1940
     id: 1940-graph-database
     name: "Graph Database"
-    phase: III
+    phase: IV
     description: >-
       A persistent graph database (Neo4j-like). On-disk storage of nodes,
       edges, and properties. Indexes for labels and edge types. Built on
@@ -2339,11 +2425,12 @@ projects:
       - transactional updates with rollback
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1960
     id: 1960-stream-processing-engine
     name: "Stream Processing Engine"
-    phase: III
+    phase: IV
     description: >-
       A Flink-lite. Operators (map, filter, join, aggregate). Windows
       (tumbling, sliding, session). Watermarks for handling late events.
@@ -2360,11 +2447,12 @@ projects:
       - checkpoint and recovery enable exactly-once
     recommended_languages:
       - Go
+      - Rust
 
   - level: 1980
     id: 1980-linux-debugger-ptrace-dwarf
     name: "Linux Debugger (ptrace + DWARF)"
-    phase: III
+    phase: IV
     description: >-
       A gdb-lite. Attach to a process via ptrace, set software breakpoints
       by patching INT3, step instruction by instruction, walk the stack,
@@ -2387,11 +2475,12 @@ projects:
       - works on a stripped binary - degraded but the stack still unwinds
     recommended_languages:
       - Go
+      - Rust
 
   - level: 2000
     id: 2000-self-hosting-compiler
     name: "Self-Hosting Compiler"
-    phase: III
+    phase: IV
     description: >-
       Rewrite your compiler in its own language. Bootstrap it - use the old
       compiler to compile the new one, then use the new one to recompile
@@ -2411,26 +2500,18 @@ projects:
 
 
 # =============================================================================
-# PHASE IV  -  Frontier Systems & Bare Metal        (Levels 2020 -> 2280)
+# PHASE V  -  Frontier        (Levels 2020 -> 2280)
 # =============================================================================
-# Goal: frontier distributed systems - SQL across data centers, cost-based
-# query optimization, edge platforms, novel storage and consensus designs.
-# By the end you are someone who could plausibly contribute meaningfully to
-# CockroachDB, etcd, Kubernetes' scheduler, or design original systems work.
-#
-# Recommended language: Go. Spanner-class distributed SQL (2040), Cascades
-# optimization (2080), and edge platforms (2120) all have serious Go OSS -
-# CockroachDB and its optimizer, KubeEdge - as references. ZK-SNARKs (2220)
-# has gnark. Original-design work at the end (2260, 2280) is open-ended.
-#
-# Pair with: the original Spanner / Cascades / Calvin papers, plus Jepsen
-# write-ups for fault-tolerance reasoning.
+# Goal: distributed SQL, cost-based optimization, edge platforms, ZK proofs,
+# novel storage and consensus designs. Open-ended capstones at the end.
+# Languages: pick per project. See each project's recommended_languages.
+# Pair with: the Spanner / Cascades / Calvin papers, Jepsen write-ups.
 # =============================================================================
 
   - level: 2020
     id: 2020-cockroachdb-lab
     name: "CockroachDB Lab"
-    phase: IV
+    phase: V
     description: >-
       Deploy a 3-node CockroachDB cluster locally, load TPC-C, and observe
       the system under stress - kill nodes during queries, watch ranges
@@ -2451,11 +2532,12 @@ projects:
       - writeup mapping a slow query to the optimizer's plan choice
     recommended_languages:
       - Go
+      - Rust
 
   - level: 2040
     id: 2040-distributed-sql-spanner-lite
     name: "Distributed SQL (Spanner-lite)"
-    phase: IV
+    phase: V
     description: >-
       A SQL database spanning multiple data centers with global ACID
       transactions. Two-phase commit for cross-shard transactions. Clock
@@ -2472,11 +2554,12 @@ projects:
       - linearizable reads from any replica via timestamped reads
     recommended_languages:
       - Go
+      - Rust
 
   - level: 2060
     id: 2060-controller-operator-framework
     name: "Controller / Operator Framework"
-    phase: IV
+    phase: V
     description: >-
       A Kubernetes-flavored controller framework. The runtime ships
       informers (watch-then-cache), a rate-limited work queue, and a
@@ -2501,11 +2584,12 @@ projects:
       - demo controller manages a CRD-like custom resource end to end
     recommended_languages:
       - Go
+      - Rust
 
   - level: 2080
     id: 2080-cascades-cost-based-query-optimizer
     name: "Cascades / Cost-Based Query Optimizer"
-    phase: IV
+    phase: V
     description: >-
       An advanced SQL optimizer using the Cascades framework. Memo
       structure stores equivalent plans; transformation rules expand it;
@@ -2524,11 +2608,12 @@ projects:
       - beats the rule-based planner from level 1420 on TPC-H queries
     recommended_languages:
       - Go
+      - Rust
 
   - level: 2100
     id: 2100-crd-and-admission-webhook-framework
     name: "CRD + Admission Webhook Framework"
-    phase: IV
+    phase: V
     description: >-
       Build the extensibility layer around the controller framework from
       level 2060. CRDs declare new types with OpenAPI schemas; admission
@@ -2552,11 +2637,12 @@ projects:
       - runs on top of the controller framework from level 2060
     recommended_languages:
       - Go
+      - Rust
 
   - level: 2120
     id: 2120-edge-computing-platform
     name: "Edge Computing Platform"
-    phase: IV
+    phase: V
     description: >-
       A platform for running distributed workloads across edge nodes with
       intermittent connectivity. Hierarchical scheduling, locality-aware
@@ -2573,11 +2659,12 @@ projects:
       - at least 3 example workloads (cache, ML inference, IoT aggregation)
     recommended_languages:
       - Go
+      - Rust
 
   - level: 2140
     id: 2140-oauth-2-and-oidc-authorization-server
     name: "OAuth 2.0 / OIDC Authorization Server"
-    phase: IV
+    phase: V
     description: >-
       An identity server that issues tokens. Implements OAuth 2.0
       authorization-code with PKCE, OIDC discovery and ID tokens, JWT
@@ -2600,11 +2687,12 @@ projects:
       - conformance against the OIDC certification suite for the basic profile
     recommended_languages:
       - Go
+      - Rust
 
   - level: 2160
     id: 2160-secrets-manager-vault-mini
     name: "Secrets Manager (Vault-mini)"
-    phase: IV
+    phase: V
     description: >-
       A Vault-shaped secrets service. Pluggable auth methods (token,
       userpass, K8s service-account JWT); pluggable secret engines (KV,
@@ -2627,11 +2715,12 @@ projects:
       - hash-chained audit log proves no entries were tampered with
     recommended_languages:
       - Go
+      - Rust
 
   - level: 2180
     id: 2180-service-mesh-sidecar-proxy
     name: "Service Mesh / Sidecar Proxy"
-    phase: IV
+    phase: V
     description: >-
       A Linkerd-shaped data plane. Each application gets a sidecar proxy
       that intercepts all inbound and outbound traffic transparently,
@@ -2655,11 +2744,12 @@ projects:
       - control plane (using level 2060 framework) configures all sidecars
     recommended_languages:
       - Go
+      - Rust
 
   - level: 2200
     id: 2200-gnark-tiny-circuit
     name: "gnark Tiny Circuit"
-    phase: IV
+    phase: V
     description: >-
       Use gnark to write a 'I know x such that hash(x) == y' circuit.
       Generate a proof, verify it, then extend to a small Merkle membership
@@ -2680,11 +2770,12 @@ projects:
       - extend the circuit to a Merkle inclusion proof
     recommended_languages:
       - Go
+      - Rust
 
   - level: 2220
     id: 2220-zk-snark-prover
     name: "ZK-SNARK Prover"
-    phase: IV
+    phase: V
     description: >-
       A prover and verifier for zero-knowledge succinct arguments. Take a
       computation, encode it as R1CS or a Plonkish arithmetization,
@@ -2702,11 +2793,12 @@ projects:
         preimage
     recommended_languages:
       - Go
+      - Rust
 
   - level: 2240
     id: 2240-wireguard-style-encrypted-mesh
     name: "WireGuard-Style Encrypted Mesh"
-    phase: IV
+    phase: V
     description: >-
       A modern VPN. Implements the Noise Protocol Framework (IK pattern) for
       peer key exchange, sets up a TUN device to ingest user-space packets,
@@ -2729,11 +2821,12 @@ projects:
       - iperf3 over the tunnel hits at least 50% of plain-UDP bandwidth
     recommended_languages:
       - Go
+      - Rust
 
   - level: 2260
     id: 2260-new-storage-engine-design
     name: "New Storage Engine Design"
-    phase: IV
+    phase: V
     description: >-
       Invent something. Combine ideas from B-trees, LSMs, and learned
       indexes into a hybrid design - or take a single workload and design
@@ -2748,11 +2841,12 @@ projects:
       - worth a workshop paper at HotStorage or VLDB
     recommended_languages:
       - Go
+      - Rust
 
   - level: 2280
     id: 2280-novel-topology-consensus-algorithm
     name: "Novel Topology Consensus Algorithm"
-    phase: IV
+    phase: V
     description: >-
       Design and implement a distributed agreement algorithm tailored for
       specific hardware (RDMA networks, satellite clusters, low-latency
@@ -2767,3 +2861,4 @@ projects:
       - formal model in TLA+ proves safety
     recommended_languages:
       - Go
+      - Rust
