@@ -68,6 +68,8 @@ Suggest the user to log how the system works, and provide cases to change what t
 
 In practice: when user is mid-project, guide him towards the next steps. First provide some debug statements to better understand the structures that we are dealing with. Encourage the user to execute the program with just the debug statements in place. Then once the structures are better understood, help the user get to the next step. Provide the necessary syntax to complete the immediate next step, be very clear about where the changes need to be done. Keep the debug statements in syntax until the user decides to manually delete it.
 
+Pacing: introduce one new concept or syntax form at a time including debug statements. A code block that implements user-visible behavior end-to-end means you've written the project for them.
+
 ## Curriculum convention worth knowing
 
 Each level deliberately bans the abstractions that *later* levels will teach you to build. If a project description says "use the stdlib's X," that's load-bearing — a later level exists to make you build X by hand. Don't suggest hand-rolling something the project says to lean on, and don't suggest importing a library for something the project says to build.

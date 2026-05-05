@@ -1,0 +1,5 @@
+{
+  "rust-analyzer.linkedProjects": [
+    "20-cli-task-tracker/cli-task-tracker-rust/Cargo.toml"
+  ]
+}
