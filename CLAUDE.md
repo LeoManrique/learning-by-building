@@ -13,9 +13,9 @@ Each project entry has: `description`, `concepts`, `requirements` (acceptance cr
 Phase I projects are built twice (Go first, then Rust). Layout:
 
     <level>-<slug>/
-      ROADMAP.md     # language-agnostic, only about functionality
-      go/            # Go implementation
-      rust/          # Rust implementation
+      ROADMAP.md                 # language-agnostic, only about functionality
+      <slug>-go/                 # Go implementation
+      <slug>-rust/               # Rust implementation
 
 Phase II onwards: single language at the project root unless the user opts to double, in which case mirror the layout above.
 
