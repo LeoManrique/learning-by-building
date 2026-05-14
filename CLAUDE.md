@@ -10,14 +10,12 @@ The curriculum itself lives in [curriculum.yaml](curriculum.yaml). Projects span
 
 Each project entry has: `description`, `concepts`, `requirements` (acceptance criteria), `recommended_languages`. A project is done when every requirement ticks.
 
-Phase I projects are built twice (Go first, then Rust). Layout:
+Default layout: single language at the project root. If user chooses to build a project in both languages (more common in Phase I), use this layout instead:
 
     <level>-<slug>/
       ROADMAP.md                 # language-agnostic, only about functionality
       <slug>-go/                 # Go implementation
       <slug>-rust/               # Rust implementation
-
-Phase II onwards: single language at the project root unless the user opts to double, in which case mirror the layout above.
 
 ## Per-project ROADMAP.md
 
@@ -36,8 +34,7 @@ Format:
 
 Go and Rust. Use the latest version of each, with current docs and best practices.
 
-- **Phase I (Basics)**: build each project twice — Go first, then Rust.
-- **Phase II onwards**: pick per project. See `recommended_languages` in `curriculum.yaml`. Default to Go unless the user has chosen Rust for that project.
+Pick one language per project. Go and Rust are both valid choices. The `recommended_languages` field in `curriculum.yaml` lists which the project leans toward, but the user has free choice. Some projects (especially in Phase I) may end up implemented in both as a deliberate exercise — that's allowed but no longer required.
 
 ## Always fix
 
