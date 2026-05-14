@@ -746,6 +746,39 @@ projects:
       - Go
       - Rust
 
+  - level: 490
+    id: 490-persistent-job-worker
+    name: "Persistent Job Worker (Asynq/Sidekiq-shape)"
+    phase: II
+    description: >-
+      A single-node background job framework backed by your level-460
+      Redis-lite (or Postgres). Producers enqueue jobs; workers pull,
+      execute, retry on failure, and dead-letter after N attempts. The
+      common pattern under real apps - different in shape from the
+      in-process thread pool at level 440 and from the distributed,
+      leader-elected queue at level 1280. Pre-stages 1280 by making the
+      single-node semantics solid before you distribute them.
+    concepts:
+      - durable enqueue (the job survives a worker crash)
+      - exponential backoff retries with jitter
+      - scheduled and delayed jobs (process at T+N seconds)
+      - idempotency keys and exactly-once-in-practice
+      - dead-letter queues and poison-message handling
+      - unique-job constraints (no two of the same in flight)
+      - graceful drain on SIGTERM (finish in-flight, refuse new)
+    requirements:
+      - enqueue is durable - kill the process mid-flight, the job survives
+      - workers retry failed jobs with exponential backoff + jitter
+      - scheduled jobs fire at the requested time within a stated drift bound
+      - idempotency keys prevent double-processing on retry
+      - dead-letter topic captures jobs that fail N times
+      - small CLI or web dashboard lists queues, in-flight, retried, dead
+      - 10k jobs/sec single-node with at-least-once semantics intact
+      - SIGTERM drains in-flight jobs without dropping work
+    recommended_languages:
+      - Go
+      - Rust
+
   - level: 500
     id: 500-tui-tool-bubbletea
     name: "TUI Tool (Bubbletea)"
@@ -928,6 +961,39 @@ projects:
       - a scheduled job creates daily Postgres backups to MinIO and verifies a restore
       - secrets are sourced from a single configurable location, not committed
       - a deliberate process kill is recovered automatically by the supervisor
+    recommended_languages:
+      - Go
+      - Rust
+
+  - level: 615
+    id: 615-application-auth-and-rbac
+    name: "Application Auth + RBAC"
+    phase: II
+    description: >-
+      Add real users to the level-600 REST API. Build the application-side
+      identity layer by hand: password hashing with argon2id, session
+      cookies with sliding expiry, service-to-service JWT issuance against
+      a self-managed signing key with a JWKS endpoint, and a policy engine
+      for role- and attribute-based access control. The OAuth/OIDC server
+      at level 2140 builds the IdP side - this project builds the relying
+      party side and the in-app policy logic, which is what 90% of backend
+      jobs actually touch.
+    concepts:
+      - password hashing tradeoffs (argon2id, bcrypt) and rotation
+      - session cookies vs bearer tokens; CSRF and SameSite
+      - JWT signing with rotating keys; JWKS for verification
+      - RBAC vs ABAC and how to write a small policy engine
+      - the auth middleware pattern and why authorization is per-resource
+      - audit logging of authentication and authorization events
+    requirements:
+      - register / login / logout endpoints with argon2id-hashed passwords
+      - session cookies with sliding expiry, absolute timeout, and SameSite=Lax
+      - JWT issuance for service-to-service calls with a published JWKS
+      - signing key rotation works without invalidating live tokens
+      - a small policy engine enforces RBAC (and at least one ABAC rule)
+      - all auth and authz events emit structured audit logs
+      - a CSRF or token-replay attack is demonstrably blocked
+      - password reset flow with single-use, expiring tokens
     recommended_languages:
       - Go
       - Rust
@@ -1863,6 +1929,40 @@ projects:
       - multi-arch images via image index
       - chunked upload with resume (PATCH with Content-Range)
       - GC removes blobs not referenced by any manifest
+    recommended_languages:
+      - Go
+      - Rust
+
+  - level: 1230
+    id: 1230-self-hosted-ci-cd
+    name: "Self-Hosted CI/CD Pipeline"
+    phase: III
+    description: >-
+      Run a real, self-hostable CI server (Woodpecker, Forgejo Actions, or
+      Drone) against your own services. Wire it end-to-end: code push
+      triggers a pipeline that builds images, pushes them to your
+      level-1220 registry, deploys to your level-970 k3s cluster, and
+      reports back. Secrets, build caches, parallel jobs, manual-approval
+      gates, and rollback. Pre-stages the level-1740 incremental build
+      system - the smart-cache core - by making you feel a real CI loop
+      end-to-end first.
+    concepts:
+      - the trigger -> pipeline -> step -> runner hierarchy
+      - ephemeral build environments (containerized runners)
+      - secret injection at runtime without leakage in logs
+      - artifact and layer caching between runs
+      - pipeline-as-code (YAML) and how it composes
+      - manual approval gates and protected deploys
+      - rollback as a first-class pipeline action
+    requirements:
+      - self-hosted CI server brought up by one command, runner included
+      - a pipeline-as-code file triggers on push to a feature branch
+      - pipeline builds, tests, and pushes an image to the level-1220 registry
+      - deploy stage updates the level-970 k3s deployment via your Helm chart
+      - layer / dependency cache makes the second run measurably faster
+      - secrets are injected at run time and do not appear in logs
+      - production deploy requires a manual approval gate
+      - one-button rollback redeploys the previous image tag
     recommended_languages:
       - Go
       - Rust
