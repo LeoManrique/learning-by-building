@@ -13,22 +13,26 @@ Each project entry has: `description`, `concepts`, `requirements` (acceptance cr
 Default layout: single language at the project root. If user chooses to build a project in both languages (more common in Phase I), use this layout instead:
 
     <level>-<slug>/
-      ROADMAP.md                 # language-agnostic, only about functionality
+      REQUIREMENTS.md            # language-agnostic, functional + technical requirements
       <slug>-go/                 # Go implementation
       <slug>-rust/               # Rust implementation
 
-## Per-project ROADMAP.md
+## Per-project REQUIREMENTS.md
 
-Every project folder contains a `ROADMAP.md`. It tracks the *actual* steps user needs to build the project. If not present, we need to create it.
+Every project folder contains a `REQUIREMENTS.md`. It describes the project as if a customer's requirements had already been analyzed and translated by a technical analyst — what the software does (functional) and how it has to behave (technical), language-agnostic, before any code is written. If not present, we need to create it.
 
 Format:
 
-- Short title at the top, then `## Phase N — <name>` sections in build order.
-- Each phase is a flat list of `- [ ]` steps, ending with a `- [ ] **Verify:** ...` checkbox naming a concrete command or observation user can run end-to-end so he can report pass/fail.
-- Phases slice end-to-end (a user-visible behavior shipped per phase), not horizontally (don't do "all data models" then "all I/O" — there's nothing to demo at the end).
-- For any step whose meaning isn't obvious from the bullet alone (e.g. "atomic rename," "swap-remove," "exit code 2," "idempotent"), follow it with a short indented explainer paragraph — 1-3 sentences covering *what it means and why*. Skip the explainer on self-evident steps so the file doesn't get noisy.
-- Language-agnostic and only about *what* the software does, not *how* it's implemented. No language-specific syntax, type names, or function names. Verify steps use `<run>` as a placeholder for the language-specific run command (`go run .`, `cargo run --`, etc.).
-- Don't restate anything already in `curriculum.yaml` (description, concepts, requirements, recommended languages). The ROADMAP is the actual build steps, not a copy of the spec.
+- Short title at the top followed by a 1-2 paragraph overview: what the app is, who uses it, and the headline shape of the system (e.g. short-lived CLI process, long-running server, etc.).
+- Three sections, in this order:
+    - `## Functional Requirements` — what the system does from the user's point of view. Numbered `FR-1`, `FR-2`, … each with a short heading (`### FR-1: Add a task`) and a 1-3 sentence body.
+    - `## Technical Requirements` — how the system behaves under the hood: data model, persistence, atomicity, error handling, exit codes, performance targets, ordering guarantees, etc. Numbered `TR-1`, `TR-2`, … same heading + short body shape.
+    - `## Acceptance Criteria` — a flat bulleted list of verifiable conditions, numbered `AC-1`, `AC-2`, …. Each one names a concrete command or observation the user can run end-to-end so he can report pass/fail.
+- Tone is declarative ("the system records…", "the user provides…"), not imperative ("decide on…", "implement…"). The file describes the finished state, not the build sequence.
+- For any requirement whose meaning isn't obvious from the heading alone (e.g. "atomic save," "swap-remove vs preserve-order," "exit code 2 distinguishes user error from internal error"), spend a sentence in the body covering *what it means and why*. Skip the explainer on self-evident requirements so the file doesn't get noisy.
+- Language-agnostic. No language-specific syntax, type names, library names, or function names. Acceptance criteria use `<run>` as a placeholder for the language-specific run command (`go run .`, `cargo run --`, etc.).
+- Don't restate anything already in `curriculum.yaml` (description, concepts, requirements, recommended languages). The REQUIREMENTS file is the analyst-grade expansion of those — it adds the technical detail and acceptance criteria that the curriculum entry intentionally leaves terse.
+- Build sequencing (phases, order of work, which feature to ship first) does *not* belong in this file. It's a requirements doc, not a roadmap.
 
 ## Programming languages
 
