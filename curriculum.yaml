@@ -35,8 +35,8 @@
 
 projects:
 
-  - level: 4
-    id: 4-number-guessing-game
+  - level: 20
+    id: 20-number-guessing-game
     name: "Number Guessing Game"
     phase: I
     description: >-
@@ -62,8 +62,8 @@ projects:
       - Go
       - Rust
 
-  - level: 8
-    id: 8-unit-converter
+  - level: 40
+    id: 40-unit-converter
     name: "Unit Converter"
     phase: I
     description: >-
@@ -89,8 +89,8 @@ projects:
       - Go
       - Rust
 
-  - level: 10
-    id: 10-anagram-palindrome-checker
+  - level: 60
+    id: 60-anagram-palindrome-checker
     name: "Anagram & Palindrome Checker"
     phase: I
     description: >-
@@ -116,8 +116,8 @@ projects:
       - Go
       - Rust
 
-  - level: 12
-    id: 12-roman-numeral-converter
+  - level: 80
+    id: 80-roman-numeral-converter
     name: "Roman Numeral Converter"
     phase: I
     description: >-
@@ -141,8 +141,8 @@ projects:
       - Go
       - Rust
 
-  - level: 14
-    id: 14-caesar-cipher
+  - level: 100
+    id: 100-caesar-cipher
     name: "Caesar Cipher"
     phase: I
     description: >-
@@ -168,8 +168,8 @@ projects:
       - Go
       - Rust
 
-  - level: 18
-    id: 18-bank-account-repl
+  - level: 120
+    id: 120-bank-account-repl
     name: "Bank Account REPL"
     phase: I
     description: >-
@@ -196,15 +196,14 @@ projects:
       - Go
       - Rust
 
-  - level: 20
-    id: 20-cli-task-tracker
+  - level: 140
+    id: 140-cli-task-tracker
     name: "CLI Task Tracker"
     phase: I
     description: >-
       A terminal app for managing a personal todo list: add, list, mark
       complete, delete. State persists to a JSON file on disk between runs,
-      using the stdlib's JSON encoder - you'll build your own parser at
-      level 140. The point is to feel comfortable orchestrating I/O, parsing
+      using the stdlib's JSON encoder. The point is to feel comfortable orchestrating I/O, parsing
       arguments, and round-tripping data without reaching for any framework.
     concepts:
       - imperative control flow
@@ -221,8 +220,8 @@ projects:
       - Go
       - Rust
 
-  - level: 40
-    id: 40-word-frequency-analyzer
+  - level: 160
+    id: 160-word-frequency-analyzer
     name: "Word Frequency Analyzer"
     phase: I
     description: >-
@@ -253,16 +252,15 @@ projects:
       clusters with representative phrases. Same shape as the original -
       stream input, aggregate, rank - with a different similarity metric.
 
-  - level: 60
-    id: 60-csv-json-converter
+  - level: 180
+    id: 180-csv-json-converter
     name: "CSV <-> JSON Converter"
     phase: I
     description: >-
       A bidirectional converter that streams rows: CSV-to-JSON-array and
       JSON-array-to-CSV. Uses the language's CSV reader/writer and JSON
       encoder/decoder - the goal is to feel comfortable with the language's
-      stdlib encoders before level 140 makes you build JSON parsing from
-      scratch.
+      stdlib encoders.
     concepts:
       - streaming JSON and CSV encoders/decoders
       - structs/records vs heterogeneous (untyped) maps
@@ -278,8 +276,8 @@ projects:
       - Go
       - Rust
 
-  - level: 80
-    id: 80-tree-clone
+  - level: 200
+    id: 200-tree-clone
     name: "tree clone"
     phase: I
     description: >-
@@ -302,8 +300,8 @@ projects:
       - Go
       - Rust
 
-  - level: 100
-    id: 100-hex-dump
+  - level: 220
+    id: 220-hex-dump
     name: "Hex Dump (xxd clone)"
     phase: I
     description: >-
@@ -325,8 +323,8 @@ projects:
       - Go
       - Rust
 
-  - level: 120
-    id: 120-pomodoro-timer
+  - level: 240
+    id: 240-pomodoro-timer
     name: "Pomodoro / Countdown Timer"
     phase: I
     description: >-
@@ -349,8 +347,8 @@ projects:
       - Go
       - Rust
 
-  - level: 140
-    id: 140-json-parser
+  - level: 260
+    id: 260-json-parser
     name: "JSON Parser"
     phase: I
     description: >-
@@ -372,8 +370,8 @@ projects:
       - Go
       - Rust
 
-  - level: 150
-    id: 150-bpe-tokenizer
+  - level: 280
+    id: 280-bpe-tokenizer
     name: "BPE Tokenizer"
     phase: I
     description: >-
@@ -381,8 +379,7 @@ projects:
       use. Train a vocabulary from a text corpus by greedily merging the
       most frequent adjacent byte pairs, then implement encode (text -> token
       IDs) and decode (token IDs -> text) using the merges table. A
-      lexer-shaped problem - you've written one at level 140 - applied to
-      the input layer of every modern LLM.
+      lexer-shaped problem applied to the input layer of every modern LLM.
     concepts:
       - the byte-pair encoding training loop
       - merge tables and how they encode greedy choices
@@ -400,8 +397,8 @@ projects:
       - Go
       - Rust
 
-  - level: 160
-    id: 160-cli-with-mature-framework
+  - level: 300
+    id: 300-cli-with-mature-framework
     name: "CLI with a Mature Framework"
     phase: I
     description: >-
@@ -409,7 +406,7 @@ projects:
       a note-taker, snippet manager, or system info dashboard. Lay out the
       command tree, declare flags, wire env-var fallback through the config
       layer, and generate completion scripts. The point is to feel the
-      framework's ergonomics before level 180 makes you clone it from scratch.
+      framework's ergonomics.
     concepts:
       - command tree declaration
       - config precedence (flags > env > config > defaults)
@@ -425,8 +422,8 @@ projects:
       - Go
       - Rust
 
-  - level: 180
-    id: 180-cli-framework-cobra-clone
+  - level: 320
+    id: 320-cli-framework-cobra-clone
     name: "CLI Framework (Cobra-style clone)"
     phase: I
     description: >-
@@ -453,8 +450,8 @@ projects:
       - Go
       - Rust
 
-  - level: 200
-    id: 200-http-file-downloader
+  - level: 340
+    id: 340-http-file-downloader
     name: "HTTP File Downloader with Progress Bar"
     phase: I
     description: >-
@@ -479,8 +476,8 @@ projects:
       - Go
       - Rust
 
-  - level: 210
-    id: 210-resilient-http-client
+  - level: 360
+    id: 360-resilient-http-client
     name: "Resilient HTTP Client"
     phase: I
     description: >-
@@ -514,8 +511,8 @@ projects:
       - Go
       - Rust
 
-  - level: 220
-    id: 220-markdown-to-html-converter
+  - level: 380
+    id: 380-markdown-to-html-converter
     name: "Markdown-to-HTML Converter"
     phase: I
     description: >-
@@ -537,8 +534,8 @@ projects:
       - Go
       - Rust
 
-  - level: 240
-    id: 240-cron-expression-evaluator
+  - level: 400
+    id: 400-cron-expression-evaluator
     name: "Cron Expression Evaluator"
     phase: I
     description: >-
@@ -561,8 +558,8 @@ projects:
       - Go
       - Rust
 
-  - level: 260
-    id: 260-math-expression-evaluator
+  - level: 420
+    id: 420-math-expression-evaluator
     name: "Math Expression Evaluator"
     phase: I
     description: >-
@@ -584,8 +581,8 @@ projects:
       - Go
       - Rust
 
-  - level: 280
-    id: 280-hash-indexed-address-book
+  - level: 440
+    id: 440-hash-indexed-address-book
     name: "Hash-Indexed Address Book"
     phase: I
     description: >-
@@ -607,17 +604,17 @@ projects:
       - Go
       - Rust
 
-  - level: 290
-    id: 290-vector-index-hnsw
+  - level: 460
+    id: 460-vector-index-hnsw
     name: "Vector Index (HNSW)"
     phase: I
     description: >-
       An approximate nearest-neighbor index over high-dimensional vectors -
       the data structure under every modern semantic search and RAG system.
       Build the Hierarchical Navigable Small World graph by hand: insert
-      vectors layer by layer, search by greedy descent. Same exercise as
-      level 280 (a specialized indexing structure), but the keys are
-      embeddings and the answer is "the K closest things, fast".
+      vectors layer by layer, search by greedy descent. A specialized
+      indexing structure where the keys are embeddings and the answer is
+      "the K closest things, fast".
     concepts:
       - dense vector embeddings as keys
       - cosine vs Euclidean vs dot-product similarity
@@ -635,8 +632,8 @@ projects:
       - Go
       - Rust
 
-  - level: 300
-    id: 300-file-deduplicator
+  - level: 480
+    id: 480-file-deduplicator
     name: "File Deduplicator"
     phase: I
     description: >-
@@ -659,8 +656,8 @@ projects:
       - Go
       - Rust
 
-  - level: 320
-    id: 320-diff-tool-myers
+  - level: 500
+    id: 500-diff-tool-myers
     name: "Diff Tool (line-level Myers)"
     phase: I
     description: >-
@@ -683,8 +680,8 @@ projects:
       - Go
       - Rust
 
-  - level: 340
-    id: 340-mini-git-plumbing
+  - level: 520
+    id: 520-mini-git-plumbing
     name: "Mini-Git (Plumbing)"
     phase: I
     description: >-
@@ -732,8 +729,8 @@ projects:
 #   normal level ordering, not segregated.
 # =============================================================================
 
-  - level: 360
-    id: 360-unix-shell
+  - level: 540
+    id: 540-unix-shell
     name: "Unix Shell"
     phase: II
     description: >-
@@ -759,16 +756,15 @@ projects:
       - Go
       - Rust
 
-  - level: 380
-    id: 380-concurrent-port-scanner
+  - level: 560
+    id: 560-concurrent-port-scanner
     name: "Concurrent Port Scanner"
     phase: II
     description: >-
       A bounded-concurrency TCP port scanner. Given a host and port range,
       scan in parallel with N workers, connect with a timeout, and report
       open ports. The goal is to feel goroutines, channels, contexts, and
-      bounded worker pools as everyday tools before they become load-bearing
-      in level 400 (Concurrent Web Crawler) and level 440 (Thread Pool).
+      bounded worker pools as everyday tools.
     concepts:
       - goroutines and channels for fan-out / fan-in
       - bounded worker pool via buffered channel as semaphore
@@ -784,8 +780,8 @@ projects:
       - Go
       - Rust
 
-  - level: 400
-    id: 400-concurrent-web-crawler
+  - level: 580
+    id: 580-concurrent-web-crawler
     name: "Concurrent Web Crawler"
     phase: II
     description: >-
@@ -808,8 +804,8 @@ projects:
       - Go
       - Rust
 
-  - level: 420
-    id: 420-structured-logger-and-metrics-library
+  - level: 600
+    id: 600-structured-logger-and-metrics-library
     name: "Structured Logger + Metrics Library"
     phase: II
     description: >-
@@ -837,13 +833,13 @@ projects:
       - Go
       - Rust
 
-  - level: 430
-    id: 430-self-hosted-observability-stack
+  - level: 620
+    id: 620-self-hosted-observability-stack
     name: "Self-Hosted Observability Stack"
     phase: II
     description: >-
       Stand up a real observability stack on your own machine and point your
-      level-420 logger and metrics library at it. Compose Prometheus +
+      logger and metrics library at it. Compose Prometheus +
       Grafana + Loki + Tempo (or Jaeger) behind an OpenTelemetry collector,
       then instrument a small service end-to-end so a single request shows
       up as logs, metrics, and a distributed trace you can click through.
@@ -859,7 +855,7 @@ projects:
       - dashboard and alert hygiene (RED, USE methods)
     requirements:
       - docker-compose (or equivalent) brings the whole stack up with one command
-      - your level-420 metrics library exports to Prometheus via the OTel collector
+      - your metrics library exports to Prometheus via the OTel collector
       - structured logs flow into Loki and are queryable by trace ID
       - a sample request produces a trace spanning at least 2 services in Tempo/Jaeger
       - a Grafana dashboard shows RED metrics for the sample service
@@ -868,8 +864,8 @@ projects:
       - Go
       - Rust
 
-  - level: 440
-    id: 440-thread-pool-job-queue
+  - level: 640
+    id: 640-thread-pool-job-queue
     name: "Thread Pool + Job Queue"
     phase: II
     description: >-
@@ -893,8 +889,8 @@ projects:
       - Go
       - Rust
 
-  - level: 460
-    id: 460-in-memory-kv-redis-lite
+  - level: 660
+    id: 660-in-memory-kv-redis-lite
     name: "In-Memory KV / Redis-lite"
     phase: II
     description: >-
@@ -917,8 +913,8 @@ projects:
       - Go
       - Rust
 
-  - level: 480
-    id: 480-cache-with-lru-lfu-eviction
+  - level: 680
+    id: 680-cache-with-lru-lfu-eviction
     name: "Cache with LRU/LFU Eviction"
     phase: II
     description: >-
@@ -941,18 +937,15 @@ projects:
       - Go
       - Rust
 
-  - level: 490
-    id: 490-persistent-job-worker
+  - level: 700
+    id: 700-persistent-job-worker
     name: "Persistent Job Worker (Asynq/Sidekiq-shape)"
     phase: II
     description: >-
-      A single-node background job framework backed by your level-460
-      Redis-lite (or Postgres). Producers enqueue jobs; workers pull,
+      A single-node background job framework backed by your Redis-lite
+      (or Postgres). Producers enqueue jobs; workers pull,
       execute, retry on failure, and dead-letter after N attempts. The
-      common pattern under real apps - different in shape from the
-      in-process thread pool at level 440 and from the distributed,
-      leader-elected queue at level 1280. Pre-stages 1280 by making the
-      single-node semantics solid before you distribute them.
+      common pattern under real apps.
     concepts:
       - durable enqueue (the job survives a worker crash)
       - exponential backoff retries with jitter
@@ -974,16 +967,15 @@ projects:
       - Go
       - Rust
 
-  - level: 500
-    id: 500-tui-tool-bubbletea
+  - level: 720
+    id: 720-tui-tool-bubbletea
     name: "TUI Tool (Bubbletea)"
     phase: II
     description: >-
       Build a real terminal UI tool using charmbracelet/bubbletea - a fuzzy
       file picker, git status viewer, or process explorer. Practice the
       Elm-architecture pattern (Model / Update / View) and feel a production
-      TUI library before level 520 makes you build a text editor mostly by
-      hand on raw terminal codes.
+      TUI library.
     concepts:
       - Bubbletea's Model-Update-View pattern
       - tea.Cmd for async work (filesystem walks, shell calls)
@@ -999,8 +991,8 @@ projects:
       - Go
       - Rust
 
-  - level: 520
-    id: 520-terminal-text-editor
+  - level: 740
+    id: 740-terminal-text-editor
     name: "Terminal Text Editor"
     phase: II
     description: >-
@@ -1032,15 +1024,14 @@ projects:
       editor's render loop. The interesting part isn't the model call; it's
       the cancellation semantics in your IO loop.
 
-  - level: 540
-    id: 540-json-serializer-library
+  - level: 760
+    id: 760-json-serializer-library
     name: "JSON Serializer Library"
     phase: II
     description: >-
-      The other direction from level 140. Take an arbitrary in-memory value
-      and produce JSON text. Use reflection or type introspection to walk the
-      structure. Detect cycles. Let users opt into custom encoders for
-      specific types.
+      Take an arbitrary in-memory value and produce JSON text. Use
+      reflection or type introspection to walk the structure. Detect cycles.
+      Let users opt into custom encoders for specific types.
     concepts:
       - tree traversal
       - type introspection / reflection
@@ -1048,7 +1039,7 @@ projects:
       - cycle detection
     requirements:
       - encodes structs/records, slices/arrays, maps, primitives, pointers
-      - round-trip stability with the parser from level 140
+      - round-trip stability with a JSON parser
       - cycle detection returns an error rather than recursing forever
       - user-supplied custom encoder hook for specific types
       - pretty-print mode with configurable indentation
@@ -1056,8 +1047,8 @@ projects:
       - Go
       - Rust
 
-  - level: 560
-    id: 560-dependency-injection-container
+  - level: 780
+    id: 780-dependency-injection-container
     name: "Dependency Injection Container"
     phase: II
     description: >-
@@ -1080,8 +1071,8 @@ projects:
       - Go
       - Rust
 
-  - level: 580
-    id: 580-event-driven-game-loop
+  - level: 800
+    id: 800-event-driven-game-loop
     name: "Event-Driven Game Loop"
     phase: II
     description: >-
@@ -1105,8 +1096,8 @@ projects:
       - Go
       - Rust
 
-  - level: 590
-    id: 590-postgres-without-orm
+  - level: 820
+    id: 820-postgres-without-orm
     name: "Postgres Without an ORM"
     phase: II
     description: >-
@@ -1115,9 +1106,7 @@ projects:
       schema migrations by hand, write every query by hand, manage
       transactions explicitly. The lesson is feeling what an ORM hides:
       connection pooling, isolation levels, deadlocks, query plans, and the
-      cost of an N+1. Pre-stages level 600 (REST API) - by the time you
-      build the API, the database half is already understood, not a black
-      box.
+      cost of an N+1.
     concepts:
       - connection pooling and pool exhaustion
       - parameterized queries vs string concatenation (and SQL injection)
@@ -1143,17 +1132,15 @@ projects:
       - Go
       - Rust
 
-  - level: 600
-    id: 600-rest-api-net-http
+  - level: 840
+    id: 840-rest-api-net-http
     name: "REST API with the Standard Library"
     phase: II
     description: >-
       Build a real CRUD JSON API using only the language's standard library:
       HTTP server, JSON encoder/decoder, structured logging. Routing tree,
       middleware chain, structured errors, graceful shutdown via context-based
-      cancellation. Critical pre-stage to level 620 (HTTP/1.1 from Sockets) -
-      you have to know what the standard HTTP layer feels like before you can
-      appreciate what it's hiding from you.
+      cancellation.
     concepts:
       - HTTP request multiplexing and method-aware routing
       - middleware chains via handler composition
@@ -1170,12 +1157,12 @@ projects:
       - Go
       - Rust
 
-  - level: 610
-    id: 610-self-hosted-service-stack
+  - level: 860
+    id: 860-self-hosted-service-stack
     name: "Self-Hosted Service Stack"
     phase: II
     description: >-
-      Take the level-600 REST API and run it like you'd run a small
+      Take your REST API project and run it like you'd run a small
       production service. Compose Postgres + MinIO (S3-compatible object
       store) + nginx in front of your API, with managed secrets, scheduled
       backups, log rotation, and a health-check probe. Self-hosted on
@@ -1199,19 +1186,18 @@ projects:
       - Go
       - Rust
 
-  - level: 615
-    id: 615-application-auth-and-rbac
+  - level: 880
+    id: 880-application-auth-and-rbac
     name: "Application Auth + RBAC"
     phase: II
     description: >-
-      Add real users to the level-600 REST API. Build the application-side
+      Add real users to your REST API. Build the application-side
       identity layer by hand: password hashing with argon2id, session
       cookies with sliding expiry, service-to-service JWT issuance against
       a self-managed signing key with a JWKS endpoint, and a policy engine
-      for role- and attribute-based access control. The OAuth/OIDC server
-      at level 2140 builds the IdP side - this project builds the relying
-      party side and the in-app policy logic, which is what 90% of backend
-      jobs actually touch.
+      for role- and attribute-based access control. This project builds the
+      relying party side and the in-app policy logic, which is what 90% of
+      backend jobs actually touch.
     concepts:
       - password hashing tradeoffs (argon2id, bcrypt) and rotation
       - session cookies vs bearer tokens; CSRF and SameSite
@@ -1232,8 +1218,8 @@ projects:
       - Go
       - Rust
 
-  - level: 620
-    id: 620-http-1-1-server-from-sockets
+  - level: 900
+    id: 900-http-1-1-server-from-sockets
     name: "HTTP/1.1 Server from Sockets"
     phase: II
     description: >-
@@ -1255,16 +1241,15 @@ projects:
       - Go
       - Rust
 
-  - level: 640
-    id: 640-http-2-server
+  - level: 920
+    id: 920-http-2-server
     name: "HTTP/2 Server"
     phase: II
     description: >-
       Implement HTTP/2 server-side from raw TCP. Frame layer (DATA, HEADERS,
       SETTINGS, WINDOW_UPDATE, PING, GOAWAY), HPACK header compression with
       static and dynamic tables, stream multiplexing with per-stream and
-      connection-level flow control, server push, prioritization. Plug it
-      into the routing table from level 620.
+      connection-level flow control, server push, prioritization.
     concepts:
       - HTTP/2 binary framing
       - HPACK header compression with static and dynamic tables
@@ -1283,8 +1268,8 @@ projects:
       - Go
       - Rust
 
-  - level: 660
-    id: 660-append-only-log
+  - level: 940
+    id: 940-append-only-log
     name: "Append-Only Log"
     phase: II
     description: >-
@@ -1292,7 +1277,7 @@ projects:
       checksummed record and append it. fsync on commit. Recovery scans
       the file from start, validates each record's checksum, and stops at
       the first torn write. The simplest possible introduction to disk
-      durability - the WAL piece you'll reuse in level 680.
+      durability.
     concepts:
       - fsync semantics (data vs metadata, fsync vs fdatasync)
       - record framing with length prefix and CRC32
@@ -1308,8 +1293,8 @@ projects:
       - Go
       - Rust
 
-  - level: 680
-    id: 680-persistent-b-tree-kv-store-with-wal
+  - level: 960
+    id: 960-persistent-b-tree-kv-store-with-wal
     name: "Persistent B-Tree KV Store with WAL"
     phase: II
     description: >-
@@ -1332,8 +1317,8 @@ projects:
       - Go
       - Rust
 
-  - level: 700
-    id: 700-tls-and-acme-automatic-https
+  - level: 980
+    id: 980-tls-and-acme-automatic-https
     name: "TLS + ACME Automatic HTTPS"
     phase: II
     description: >-
@@ -1362,8 +1347,8 @@ projects:
       - Go
       - Rust
 
-  - level: 720
-    id: 720-regex-tester-visualizer
+  - level: 1000
+    id: 1000-regex-tester-visualizer
     name: "Regex Tester / Visualizer"
     phase: II
     description: >-
@@ -1388,8 +1373,8 @@ projects:
       - Go
       - Rust
 
-  - level: 740
-    id: 740-regex-engine-nfa-dfa
+  - level: 1020
+    id: 1020-regex-engine-nfa-dfa
     name: "Regex Engine (NFA/DFA)"
     phase: II
     description: >-
@@ -1412,14 +1397,14 @@ projects:
       - Go
       - Rust
 
-  - level: 760
-    id: 760-grep-like-streaming-text-searcher
+  - level: 1040
+    id: 1040-grep-like-streaming-text-searcher
     name: "grep-like Streaming Text Searcher"
     phase: II
     description: >-
       A grep clone. Takes a regex and a file (or stdin), prints matching
       lines. Files larger than RAM must work - read in chunks, buffer lines,
-      never load the whole file. Builds on the regex engine from level 740.
+      never load the whole file.
     concepts:
       - streaming I/O
       - manual memory management
@@ -1438,20 +1423,18 @@ projects:
     ai_variant: >-
       Add a --semantic mode that swaps the regex matcher for vector
       similarity. Embed each line (or paragraph) with a small local
-      sentence model, push them into your level-290 HNSW index, and return
+      sentence model, push them into your HNSW index, and return
       the K passages closest to the query. The CLI surface stays grep-like;
       the matching predicate is now meaning, not literal text.
 
-  - level: 780
-    id: 780-sqlite-app-database-sql
+  - level: 1060
+    id: 1060-sqlite-app-database-sql
     name: "SQLite App via the Standard SQL Layer"
     phase: II
     description: >-
       Build a real app backed by SQLite using the language's standard SQL
       driver layer - schema migrations, prepared statements, transactions,
-      connection pooling, NULL handling. Pre-stages level 800 (SQL Subset
-      Engine) - you can't build a SQL engine without first feeling what SQL
-      is actually for.
+      connection pooling, NULL handling.
     concepts:
       - the standard SQL driver pattern
       - schema migrations (manual or with a migration tool)
@@ -1468,15 +1451,15 @@ projects:
       - Go
       - Rust
 
-  - level: 800
-    id: 800-sql-subset-engine
+  - level: 1080
+    id: 1080-sql-subset-engine
     name: "SQL Subset Engine"
     phase: II
     description: >-
       Parse and execute SELECT, WHERE, JOIN, ORDER BY, LIMIT against tables
-      loaded from CSV (or your B-tree KV from level 680). Build the AST,
-      walk it, return rows. The query planner is naive (nested-loop joins,
-      full scans); that comes later.
+      loaded from CSV (or a B-tree KV store). Build the AST, walk it, return
+      rows. The query planner is naive (nested-loop joins, full scans); that
+      comes later.
     concepts:
       - recursive-descent parsing of SQL
       - relational algebra
@@ -1492,16 +1475,14 @@ projects:
       - Go
       - Rust
 
-  - level: 820
-    id: 820-tree-walking-interpreter
+  - level: 1100
+    id: 1100-tree-walking-interpreter
     name: "Tree-Walking Interpreter"
     phase: II
     description: >-
       Build a tiny interpreted language - arithmetic, variables, if/else,
       while, functions, closures. No bytecode, no compiler - just walk the
-      AST and recursively evaluate. Pre-stages level 840 (Bytecode VM): the
-      leap from source text to a stack machine is too big without first
-      feeling what evaluation actually is.
+      AST and recursively evaluate.
     concepts:
       - lexer/parser for a tiny grammar
       - AST node types (visitor pattern or type switch)
@@ -1518,8 +1499,8 @@ projects:
       - Go
       - Rust
 
-  - level: 830
-    id: 830-autodiff-engine
+  - level: 1120
+    id: 1120-autodiff-engine
     name: "Reverse-Mode Autodiff Engine"
     phase: II
     description: >-
@@ -1527,8 +1508,8 @@ projects:
       one file. You build expressions out of Value nodes that record their
       parents and the local derivative of the op that produced them; calling
       .backward() walks the graph in topological order accumulating
-      gradients. Same mental model as level 820 (an AST you walk to compute
-      something) - here, the something is partial derivatives. Train a 2-layer
+      gradients. The same mental model as an AST you walk to compute
+      something - here, the something is partial derivatives. Train a 2-layer
       MLP on a toy classification task to prove the gradients are correct.
     concepts:
       - the computation graph as a DAG of operations
@@ -1547,8 +1528,8 @@ projects:
       - Rust
       - Go
 
-  - level: 840
-    id: 840-bytecode-vm-executor
+  - level: 1140
+    id: 1140-bytecode-vm-executor
     name: "Bytecode VM (Executor)"
     phase: II
     description: >-
@@ -1571,15 +1552,15 @@ projects:
       - Go
       - Rust
 
-  - level: 850
-    id: 850-local-llm-inference-engine
+  - level: 1160
+    id: 1160-local-llm-inference-engine
     name: "Local LLM Inference Engine"
     phase: II
     description: >-
       Take an open-weights small model (Llama 3.2 1B, Phi, Qwen 0.5B) and
       build the inference loop yourself: load the weights, do the matmuls,
       sample tokens, stream output. This is the same kind of
-      dispatch-loop-over-an-instruction-stream you built at level 840 - the
+      dispatch-loop-over-an-instruction-stream you've already built - the
       "instructions" are now tensor ops, but the shape of the work is
       familiar. Use a real BLAS for the heavy linear algebra (you're not
       writing GEMM); the lesson is the loop, the cache, and the sampling.
@@ -1589,7 +1570,7 @@ projects:
       - sampling strategies (greedy, temperature, top-k, top-p)
       - quantization tradeoffs (fp16 vs int8 vs int4)
       - prefill vs decode and why they have different bottlenecks
-      - tokenizer integration (reuse your level-150 BPE tokenizer)
+      - tokenizer integration (reuse your BPE tokenizer)
     requirements:
       - loads a real open-weights checkpoint (GGUF or safetensors) under 3B params
       - generates correct text matching the reference implementation on N test prompts
@@ -1611,14 +1592,13 @@ projects:
 # Pair with: "Designing Data-Intensive Applications", "OSTEP", Jepsen.
 # =============================================================================
 
-  - level: 860
-    id: 860-garbage-collector-mark-and-sweep
+  - level: 1180
+    id: 1180-garbage-collector-mark-and-sweep
     name: "Garbage Collector (Mark-and-Sweep)"
     phase: II
     description: >-
       A tracing GC for a toy heap of objects with pointers between them.
       Stop the world, walk roots, mark reachable, sweep unreachable.
-      Foundation for the generational GC at level 1720.
     concepts:
       - reachability analysis
       - tri-color marking
@@ -1633,8 +1613,8 @@ projects:
       - Go
       - Rust
 
-  - level: 880
-    id: 880-event-loop-async-runtime
+  - level: 1200
+    id: 1200-event-loop-async-runtime
     name: "Event Loop / Async Runtime"
     phase: II
     description: >-
@@ -1655,16 +1635,15 @@ projects:
       - Go
       - Rust
 
-  - level: 900
-    id: 900-real-grpc-service
+  - level: 1220
+    id: 1220-real-grpc-service
     name: "Real gRPC Service"
     phase: III
     description: >-
       Define a .proto schema, generate code with the language's protoc
       plugin and gRPC plugin, and build a real client and server. Cover all four
       RPC types (unary, server-stream, client-stream, bidirectional-stream),
-      use metadata, deadlines, and interceptors. Pre-stages level 920 (gRPC
-      framework clone).
+      use metadata, deadlines, and interceptors.
     concepts:
       - protobuf schema design
       - the four gRPC method types
@@ -1681,17 +1660,16 @@ projects:
       - Go
       - Rust
 
-  - level: 920
-    id: 920-grpc-style-rpc-framework
+  - level: 1240
+    id: 1240-grpc-style-rpc-framework
     name: "gRPC-Style RPC Framework"
     phase: III
     description: >-
       A miniature gRPC. Define services in a small IDL (Protobuf-shaped or
       your own); a code generator emits server stubs and client stubs in your
-      language. Wire format is length-prefixed Protobuf over HTTP/2 (built at
-      level 640). All four call patterns - unary, server-streaming,
-      client-streaming, bidirectional. Add interceptors and deadline
-      propagation.
+      language. Wire format is length-prefixed Protobuf over HTTP/2. All four
+      call patterns - unary, server-streaming, client-streaming,
+      bidirectional. Add interceptors and deadline propagation.
     concepts:
       - IDL design and code generation
       - Protobuf wire format (varint, length-delimited, packed)
@@ -1703,7 +1681,7 @@ projects:
     requirements:
       - IDL parser plus host-language code generator (protoc-shaped, but yours)
       - Protobuf wire format encode/decode round-trips against the official protoc
-      - runs on top of the HTTP/2 server from level 640
+      - runs on top of the HTTP/2 server
       - all four RPC patterns work
       - interceptors compose - deadlines flow client to server
       - 100k unary RPCs/sec on a single connection
@@ -1711,8 +1689,8 @@ projects:
       - Go
       - Rust
 
-  - level: 940
-    id: 940-layer-4-load-balancer
+  - level: 1260
+    id: 1260-layer-4-load-balancer
     name: "Layer 4 Load Balancer"
     phase: III
     description: >-
@@ -1733,17 +1711,15 @@ projects:
       - Go
       - Rust
 
-  - level: 960
-    id: 960-reverse-proxy-httputil
+  - level: 1280
+    id: 1280-reverse-proxy-httputil
     name: "Reverse Proxy with httputil"
     phase: III
     description: >-
       Build an auth-injecting or path-rewriting reverse proxy using
       httputil.NewSingleHostReverseProxy. Modify request headers in flight,
       rewrite paths, log structured access events, handle WebSocket
-      upgrades. Pre-stages level 980 (HTTP Reverse Proxy from scratch) - the
-      stdlib already gives you a reverse proxy, understand it before
-      reimplementing one.
+      upgrades.
     concepts:
       - httputil.ReverseProxy with Director and ModifyResponse hooks
       - http.Header manipulation in flight
@@ -1760,18 +1736,16 @@ projects:
       - Go
       - Rust
 
-  - level: 970
-    id: 970-kubernetes-self-hosted-app
+  - level: 1300
+    id: 1300-kubernetes-self-hosted-app
     name: "Kubernetes Self-Hosted App"
     phase: III
     description: >-
-      Containerize the level-610 service stack and deploy it to a real
+      Containerize your service stack and deploy it to a real
       Kubernetes cluster running on your own machine (k3s or kind, not a
       managed cloud). Write the Helm chart yourself - no generators -
       configure ingress, autoscaling, secrets, persistent volumes, and a
-      rolling deploy. Pre-stage to the from-scratch container runtime work
-      at level 1200; you should know what k8s feels like before you build
-      its primitives by hand.
+      rolling deploy.
     concepts:
       - the Pod / Deployment / Service / Ingress object hierarchy
       - declarative state and the reconciliation loop
@@ -1791,8 +1765,8 @@ projects:
       - Go
       - Rust
 
-  - level: 980
-    id: 980-http-reverse-proxy-l7
+  - level: 1320
+    id: 1320-http-reverse-proxy-l7
     name: "HTTP Reverse Proxy (L7)"
     phase: III
     description: >-
@@ -1814,8 +1788,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1000
-    id: 1000-reliable-udp
+  - level: 1340
+    id: 1340-reliable-udp
     name: "Reliable UDP"
     phase: III
     description: >-
@@ -1824,8 +1798,7 @@ projects:
       unACKed packets on timeout. Add a small sliding window so multiple
       datagrams can be in flight. The point is to learn the building
       blocks of TCP - sequence numbers, cumulative ACKs, retransmit
-      timers, sliding windows - in their simplest form, before
-      implementing TCP itself at level 1020.
+      timers, sliding windows - in their simplest form.
     concepts:
       - sequence numbers and cumulative ACKs
       - retransmit on timeout, simple RTO estimation
@@ -1841,8 +1814,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1020
-    id: 1020-userspace-tcp-ip-stack
+  - level: 1360
+    id: 1360-userspace-tcp-ip-stack
     name: "Userspace TCP/IP Stack"
     phase: III
     description: >-
@@ -1863,8 +1836,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1040
-    id: 1040-software-defined-router
+  - level: 1380
+    id: 1380-software-defined-router
     name: "Software-Defined Router"
     phase: III
     description: >-
@@ -1884,17 +1857,15 @@ projects:
       - Go
       - Rust
 
-  - level: 1050
-    id: 1050-self-hosted-iac-with-opentofu
+  - level: 1400
+    id: 1400-self-hosted-iac-with-opentofu
     name: "Self-Hosted Infrastructure as Code with OpenTofu"
     phase: III
     description: >-
-      Manage everything you've stood up so far - the level-970 k3s cluster,
+      Manage everything you've stood up so far - the k3s cluster,
       the MinIO bucket, the Postgres instance, DNS records - declaratively
       with OpenTofu (the open-source Terraform fork). Write your own
-      provider for one resource you actually use. Pre-stages level 1880
-      (IaC DSL clone) - you have to know what `tofu plan` and provider
-      lifecycles feel like before you can reimplement them.
+      provider for one resource you actually use.
     concepts:
       - declarative vs imperative configuration management
       - the OpenTofu provider model (CRUD lifecycle, schema, state)
@@ -1913,8 +1884,8 @@ projects:
     recommended_languages:
       - Go
 
-  - level: 1060
-    id: 1060-dns-server
+  - level: 1420
+    id: 1420-dns-server
     name: "DNS Server"
     phase: III
     description: >-
@@ -1943,8 +1914,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1080
-    id: 1080-distributed-lock-manager
+  - level: 1440
+    id: 1440-distributed-lock-manager
     name: "Distributed Lock Manager"
     phase: III
     description: >-
@@ -1966,16 +1937,14 @@ projects:
       - Go
       - Rust
 
-  - level: 1100
-    id: 1100-app-on-pebble
+  - level: 1460
+    id: 1460-app-on-pebble
     name: "App on Pebble (Production LSM)"
     phase: III
     description: >-
       Build a small but real KV-backed app on cockroachdb/pebble - a link
       shortener, simple queue, or metrics buffer. Use batches, snapshots,
-      iterators, and prefix scans. Pre-stages level 1120 (LSM-Tree Storage
-      Engine): you'll feel what a production LSM offers before you build
-      one.
+      iterators, and prefix scans.
     concepts:
       - Pebble batches for atomic multi-key writes
       - iterators and prefix scans
@@ -1992,8 +1961,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1120
-    id: 1120-lsm-tree-storage-engine
+  - level: 1480
+    id: 1480-lsm-tree-storage-engine
     name: "LSM-Tree Storage Engine"
     phase: III
     description: >-
@@ -2014,8 +1983,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1140
-    id: 1140-time-series-database
+  - level: 1500
+    id: 1500-time-series-database
     name: "Time-Series Database"
     phase: III
     description: >-
@@ -2037,8 +2006,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1160
-    id: 1160-full-text-search-engine
+  - level: 1520
+    id: 1520-full-text-search-engine
     name: "Full-Text Search Engine"
     phase: III
     description: >-
@@ -2059,21 +2028,21 @@ projects:
       - Rust
     ai_variant: >-
       Hybrid retrieval: combine your BM25 ranker with dense vector
-      similarity from a level-290 HNSW index over the same corpus, and
+      similarity from your HNSW index over the same corpus, and
       fuse the two rankings (reciprocal rank fusion or learned weights).
       Measure on a held-out query set whether hybrid genuinely beats
       BM25-alone - the answer often surprises, and that's the point.
 
-  - level: 1170
-    id: 1170-rag-over-real-corpus
+  - level: 1540
+    id: 1540-rag-over-real-corpus
     name: "RAG Over a Real Corpus"
     phase: III
     description: >-
       A retrieval-augmented generation pipeline over a corpus you actually
       use - your notes, this curriculum, a codebase, your inbox. Chunk and
-      embed the documents, store them in your level-290 HNSW index plus a
-      level-1160 BM25 index, run hybrid retrieval, and feed the top
-      results to an LLM via the level-1380 agent loop. The point is to
+      embed the documents, store them in your HNSW index plus a
+      BM25 index, run hybrid retrieval, and feed the top
+      results to an LLM via your agent loop. The point is to
       learn what RAG actually fails at - chunk boundaries, query rewriting,
       stale embeddings - by living with it on data you care about.
     concepts:
@@ -2095,8 +2064,8 @@ projects:
       - Go
       - Python
 
-  - level: 1180
-    id: 1180-actor-model-library
+  - level: 1560
+    id: 1560-actor-model-library
     name: "Actor Model Library"
     phase: III
     description: >-
@@ -2118,8 +2087,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1200
-    id: 1200-container-runtime-mini-docker
+  - level: 1580
+    id: 1580-container-runtime-mini-docker
     name: "Container Runtime (Mini-Docker)"
     phase: III
     description: >-
@@ -2141,8 +2110,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1220
-    id: 1220-oci-container-image-registry
+  - level: 1600
+    id: 1600-oci-container-image-registry
     name: "OCI Container Image Registry"
     phase: III
     description: >-
@@ -2168,19 +2137,17 @@ projects:
       - Go
       - Rust
 
-  - level: 1230
-    id: 1230-self-hosted-ci-cd
+  - level: 1620
+    id: 1620-self-hosted-ci-cd
     name: "Self-Hosted CI/CD Pipeline"
     phase: III
     description: >-
       Run a real, self-hostable CI server (Woodpecker, Forgejo Actions, or
       Drone) against your own services. Wire it end-to-end: code push
       triggers a pipeline that builds images, pushes them to your
-      level-1220 registry, deploys to your level-970 k3s cluster, and
+      registry, deploys to your k3s cluster, and
       reports back. Secrets, build caches, parallel jobs, manual-approval
-      gates, and rollback. Pre-stages the level-1740 incremental build
-      system - the smart-cache core - by making you feel a real CI loop
-      end-to-end first.
+      gates, and rollback.
     concepts:
       - the trigger -> pipeline -> step -> runner hierarchy
       - ephemeral build environments (containerized runners)
@@ -2192,8 +2159,8 @@ projects:
     requirements:
       - self-hosted CI server brought up by one command, runner included
       - a pipeline-as-code file triggers on push to a feature branch
-      - pipeline builds, tests, and pushes an image to the level-1220 registry
-      - deploy stage updates the level-970 k3s deployment via your Helm chart
+      - pipeline builds, tests, and pushes an image to the registry
+      - deploy stage updates the k3s deployment via your Helm chart
       - layer / dependency cache makes the second run measurably faster
       - secrets are injected at run time and do not appear in logs
       - production deploy requires a manual approval gate
@@ -2202,8 +2169,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1240
-    id: 1240-webassembly-runtime
+  - level: 1640
+    id: 1640-webassembly-runtime
     name: "WebAssembly Runtime"
     phase: III
     description: >-
@@ -2225,8 +2192,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1260
-    id: 1260-profiler-flame-graph-tool
+  - level: 1660
+    id: 1660-profiler-flame-graph-tool
     name: "Profiler / Flame-Graph Tool"
     phase: III
     description: >-
@@ -2247,8 +2214,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1280
-    id: 1280-distributed-job-queue
+  - level: 1680
+    id: 1680-distributed-job-queue
     name: "Distributed Job Queue"
     phase: III
     description: >-
@@ -2269,8 +2236,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1300
-    id: 1300-distributed-kv-store
+  - level: 1700
+    id: 1700-distributed-kv-store
     name: "Distributed KV Store"
     phase: III
     description: >-
@@ -2290,8 +2257,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1320
-    id: 1320-real-time-collaborative-text-editor
+  - level: 1720
+    id: 1720-real-time-collaborative-text-editor
     name: "Real-Time Collaborative Text Editor"
     phase: III
     description: >-
@@ -2311,8 +2278,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1340
-    id: 1340-gossip-protocol-swim
+  - level: 1740
+    id: 1740-gossip-protocol-swim
     name: "Gossip Protocol (SWIM)"
     phase: III
     description: >-
@@ -2320,8 +2287,8 @@ projects:
       pings a random peer; if the peer doesn't respond, K other random peers
       are asked to indirectly probe before declaring it dead. Membership
       changes piggyback on regular gossip messages so news propagates
-      without extra traffic. Complementary to Raft (level 1360) - gossip
-      handles who is alive, Raft handles what the agreed value is.
+      without extra traffic. Complementary to Raft - gossip handles who is
+      alive, Raft handles what the agreed value is.
     concepts:
       - epidemic / rumor-mongering dissemination
       - direct vs indirect probes (SWIM's key insight against false positives)
@@ -2340,8 +2307,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1360
-    id: 1360-raft-consensus
+  - level: 1760
+    id: 1760-raft-consensus
     name: "Raft Consensus"
     phase: III
     description: >-
@@ -2364,8 +2331,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1380
-    id: 1380-agent-tool-use-loop-with-mcp-server
+  - level: 1780
+    id: 1780-agent-tool-use-loop-with-mcp-server
     name: "Agent Tool-Use Loop with MCP Server"
     phase: III
     description: >-
@@ -2381,8 +2348,7 @@ projects:
       - streaming HTTP and Server-Sent Events
       - JSON-RPC over stdio with framing
       - the tool-use loop (action -> observation -> continuation)
-      - sandbox execution (subprocess with restricted permissions, reuse
-        the container runtime work from level 1200)
+      - sandbox execution (subprocess with restricted permissions)
       - parsing partial JSON across stream boundaries
       - timeouts, backoff, and graceful cancellation
     requirements:
@@ -2400,8 +2366,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1390
-    id: 1390-llm-eval-harness
+  - level: 1800
+    id: 1800-llm-eval-harness
     name: "LLM Eval Harness"
     phase: III
     description: >-
@@ -2429,13 +2395,13 @@ projects:
       - Go
       - Python
 
-  - level: 1395
-    id: 1395-kafka-real-app
+  - level: 1820
+    id: 1820-kafka-real-app
     name: "Real App on Kafka / Redpanda"
     phase: III
     description: >-
-      Before you build a Kafka-lite at level 1400, build a real producer
-      and consumer pair against a self-hosted Redpanda or Kafka cluster.
+      Build a real producer and consumer pair against a self-hosted
+      Redpanda or Kafka cluster.
       Implement the patterns the docs only hint at - idempotent producers,
       transactional outbox, dead-letter queues, partition-aware consumer
       rebalancing - so that when you reimplement the broker you know which
@@ -2455,13 +2421,13 @@ projects:
       - dead-letter topic captures messages that fail processing N times
       - consumer rebalancing keeps in-flight processing working without duplicates
       - a deliberate broker kill in a 3-node cluster does not drop committed data
-      - throughput and lag are visible in your level-430 observability stack
+      - throughput and lag are visible in your observability stack
     recommended_languages:
       - Go
       - Rust
 
-  - level: 1400
-    id: 1400-message-broker-distributed-log
+  - level: 1840
+    id: 1840-message-broker-distributed-log
     name: "Message Broker / Distributed Log"
     phase: III
     description: >-
@@ -2483,13 +2449,13 @@ projects:
       - Go
       - Rust
 
-  - level: 1410
-    id: 1410-inference-in-request-path
+  - level: 1860
+    id: 1860-inference-in-request-path
     name: "ML Inference in the Request Path"
     phase: III
     description: >-
       Put a real model in the hot path of a real service: a request comes
-      in, you run inference (your level-850 local engine, or an embedding
+      in, you run inference (your local inference engine, or an embedding
       model, or a small classifier), and you respond inside a strict
       latency budget. Wire batching, request coalescing, timeout-driven
       fallbacks, and load-shedding so the service degrades gracefully
@@ -2508,19 +2474,19 @@ projects:
       - timeout triggers a documented fallback path (cached/heuristic/smaller model)
       - load test demonstrates graceful degradation past saturation, not collapse
       - metrics for queue depth, batch size, p50/p95/p99 latency, and fallback rate
-        flow into the level-430 observability stack
+        flow into your observability stack
     recommended_languages:
       - Go
       - Rust
 
-  - level: 1420
-    id: 1420-sql-query-planner
+  - level: 1880
+    id: 1880-sql-query-planner
     name: "SQL Query Planner"
     phase: III
     description: >-
-      Take the parsed AST from level 800 and produce an execution plan.
-      Choose join order, pick indexes, decide between nested-loop and hash
-      join. Rule-based for now; cost-based at level 2080.
+      Take a parsed SQL AST and produce an execution plan. Choose join
+      order, pick indexes, decide between nested-loop and hash join.
+      Rule-based for now.
     concepts:
       - relational algebra
       - rule-based optimization
@@ -2535,8 +2501,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1440
-    id: 1440-database-driver-and-connection-pool
+  - level: 1900
+    id: 1900-database-driver-and-connection-pool
     name: "Database Driver + Connection Pool"
     phase: III
     description: >-
@@ -2565,8 +2531,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1460
-    id: 1460-mvcc-storage-engine
+  - level: 1920
+    id: 1920-mvcc-storage-engine
     name: "MVCC Storage Engine"
     phase: III
     description: >-
@@ -2587,8 +2553,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1480
-    id: 1480-distributed-hash-table-kademlia
+  - level: 1940
+    id: 1940-distributed-hash-table-kademlia
     name: "Distributed Hash Table (Kademlia)"
     phase: III
     description: >-
@@ -2608,8 +2574,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1500
-    id: 1500-crdt-library-sync-engine
+  - level: 1960
+    id: 1960-crdt-library-sync-engine
     name: "CRDT Library / Sync Engine"
     phase: III
     description: >-
@@ -2632,8 +2598,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1520
-    id: 1520-distributed-tracing-system
+  - level: 1980
+    id: 1980-distributed-tracing-system
     name: "Distributed Tracing System"
     phase: III
     description: >-
@@ -2645,13 +2611,13 @@ projects:
     concepts:
       - W3C TraceContext propagation across HTTP and gRPC boundaries
       - head sampling vs tail sampling
-      - OTLP wire protocol (built on the gRPC framework from level 920)
+      - OTLP wire protocol (built on the gRPC framework)
       - columnar storage of traces
       - service-graph derivation from span links
       - bounded retention with index pruning
     requirements:
       - instrumentation library exposes Tracer, Span, and propagation API
-      - OTLP/gRPC export to a collector built on level 920
+      - OTLP/gRPC export to a collector
       - collector writes columnar trace files with bloom-filter-indexed trace IDs
       - query API exposes GetTrace(traceID) and GetServiceGraph(timeRange)
       - head sampling at the SDK with configurable rate, tail sampling at collector
@@ -2660,8 +2626,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1540
-    id: 1540-fuse-filesystem
+  - level: 2000
+    id: 2000-fuse-filesystem
     name: "FUSE Filesystem"
     phase: III
     description: >-
@@ -2683,15 +2649,14 @@ projects:
       - Go
       - Rust
 
-  - level: 1560
-    id: 1560-distributed-task-scheduler
+  - level: 2020
+    id: 2020-distributed-task-scheduler
     name: "Distributed Task Scheduler"
     phase: III
     description: >-
       An Airflow / Kubernetes-style scheduler. Tasks have constraints
       (CPU, memory, locality); workers have capacity. The scheduler decides
-      which task goes on which worker. About *placement*, not delivery
-      (delivery was level 1280).
+      which task goes on which worker. About *placement*, not delivery.
     concepts:
       - scheduling algorithms
       - bin-packing
@@ -2708,8 +2673,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1580
-    id: 1580-versioned-data-lake
+  - level: 2040
+    id: 2040-versioned-data-lake
     name: "Versioned Data Lake"
     phase: III
     description: >-
@@ -2741,8 +2706,8 @@ projects:
 # Pair with: "Crafting Interpreters", the Dragon Book, Pierce's TAPL.
 # =============================================================================
 
-  - level: 1600
-    id: 1600-lexer-recursive-descent-parser
+  - level: 2060
+    id: 2060-lexer-recursive-descent-parser
     name: "Lexer + Recursive-Descent Parser"
     phase: IV
     description: >-
@@ -2764,8 +2729,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1620
-    id: 1620-tree-walking-lisp-functional-interpreter
+  - level: 2080
+    id: 2080-tree-walking-lisp-functional-interpreter
     name: "Tree-Walking / Lisp / Functional Interpreter"
     phase: IV
     description: >-
@@ -2787,12 +2752,12 @@ projects:
       - Go
       - Rust
 
-  - level: 1640
-    id: 1640-bytecode-compiler
+  - level: 2100
+    id: 2100-bytecode-compiler
     name: "Bytecode Compiler"
     phase: IV
     description: >-
-      Compile your AST into bytecode for the VM at level 840. Add simple
+      Compile your AST into bytecode for the bytecode VM. Add simple
       optimizations like constant folding and peephole. Now you have a real
       lex - parse - compile - execute pipeline.
     concepts:
@@ -2801,7 +2766,7 @@ projects:
       - instruction selection
       - peephole optimizations
     requirements:
-      - lowers AST to bytecode emitted by the level-840 VM
+      - lowers AST to bytecode emitted by the bytecode VM
       - constant folding and dead-code elimination passes
       - at least 2x faster than the tree-walking interpreter
       - disassembler for produced bytecode
@@ -2809,14 +2774,14 @@ projects:
       - Go
       - Rust
 
-  - level: 1660
-    id: 1660-static-type-checker-simple-types
+  - level: 2120
+    id: 2120-static-type-checker-simple-types
     name: "Static Type Checker (Simple Types)"
     phase: IV
     description: >-
       A monomorphic type system - function signatures, primitives, basic
       algebraic data types. Reject programs with type errors before they
-      run. Foundation for the inference at level 1680.
+      run.
     concepts:
       - type judgments
       - typing rules
@@ -2831,8 +2796,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1680
-    id: 1680-hindley-milner-type-inference
+  - level: 2140
+    id: 2140-hindley-milner-type-inference
     name: "Hindley-Milner Type Inference"
     phase: IV
     description: >-
@@ -2854,8 +2819,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1700
-    id: 1700-static-analyzer-abstract-interpretation
+  - level: 2160
+    id: 2160-static-analyzer-abstract-interpretation
     name: "Static Analyzer / Abstract Interpretation"
     phase: IV
     description: >-
@@ -2876,14 +2841,14 @@ projects:
       - Go
       - Rust
 
-  - level: 1720
-    id: 1720-garbage-collected-runtime
+  - level: 2180
+    id: 2180-garbage-collected-runtime
     name: "Garbage-Collected Runtime"
     phase: IV
     description: >-
-      Integrate a real GC into the VM from levels 840 and 1640. Generational
-      with write barriers and remembered sets, building on the mark-and-sweep
-      from level 860. Now your language manages its own memory at runtime.
+      Integrate a real GC into the bytecode VM. Generational
+      with write barriers and remembered sets, building on the mark-and-sweep.
+      Now your language manages its own memory at runtime.
     concepts:
       - generational hypothesis
       - write barriers
@@ -2898,8 +2863,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1740
-    id: 1740-incremental-build-system
+  - level: 2200
+    id: 2200-incremental-build-system
     name: "Incremental Build System"
     phase: IV
     description: >-
@@ -2920,8 +2885,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1760
-    id: 1760-production-compiler-ssa-tour
+  - level: 2220
+    id: 2220-production-compiler-ssa-tour
     name: "Production Compiler SSA Tour"
     phase: IV
     description: >-
@@ -2930,8 +2895,6 @@ projects:
       chosen functions - a tight loop, a function with branches, one with
       inlining. Read the SSA dumps, identify the rule-based optimizer
       transformations that fired, and inspect the resulting assembly.
-      Pre-stages level 1780 (SSA Optimizing Compiler Front-End) - you should
-      know what real-world SSA looks like before designing your own.
     concepts:
       - SSA (Static Single Assignment) form
       - "compiler phases: build SSA, opt, lower, regalloc, schedule"
@@ -2948,8 +2911,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1780
-    id: 1780-ssa-optimizing-compiler-front-end
+  - level: 2240
+    id: 2240-ssa-optimizing-compiler-front-end
     name: "SSA Optimizing Compiler Front-End"
     phase: IV
     description: >-
@@ -2970,14 +2933,14 @@ projects:
       - Go
       - Rust
 
-  - level: 1800
-    id: 1800-native-code-generator-x86-64-backend
+  - level: 2260
+    id: 2260-native-code-generator-x86-64-backend
     name: "Native Code Generator (x86-64 Backend)"
     phase: IV
     description: >-
-      AOT compilation. Take SSA IR (level 1780), do register allocation,
-      emit x86-64 assembly, emit ELF object files. Link them into a real
-      executable that runs on Linux.
+      AOT compilation. Take SSA IR, do register allocation, emit x86-64
+      assembly, emit ELF object files. Link them into a real executable
+      that runs on Linux.
     concepts:
       - linear-scan and graph-coloring register allocation
       - instruction selection (BURS / maximal munch)
@@ -2992,8 +2955,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1820
-    id: 1820-linker-and-loader
+  - level: 2280
+    id: 2280-linker-and-loader
     name: "Linker and Loader"
     phase: IV
     description: >-
@@ -3014,8 +2977,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1840
-    id: 1840-incremental-compiler
+  - level: 2300
+    id: 2300-incremental-compiler
     name: "Incremental Compiler"
     phase: IV
     description: >-
@@ -3036,17 +2999,16 @@ projects:
       - Go
       - Rust
 
-  - level: 1860
-    id: 1860-language-server-protocol-lsp-server
+  - level: 2320
+    id: 2320-language-server-protocol-lsp-server
     name: "Language Server Protocol (LSP) Server"
     phase: IV
     description: >-
-      An LSP server for the toy language you've built across levels 1600
-      / 1620 / 1640. Speak the LSP wire protocol over stdio - respond to
+      An LSP server for the toy language you've built. Speak the LSP wire
+      protocol over stdio - respond to
       didOpen, didChange, hover, completion, go-to-definition, and
       diagnostics. Wire it into VSCode with a 30-line client and watch
-      your toy language get IDE features. Uses your incremental compiler
-      from level 1840.
+      your toy language get IDE features. Uses your incremental compiler.
     concepts:
       - JSON-RPC over stdio, with framing headers
       - the LSP wire protocol and capability negotiation
@@ -3057,7 +3019,7 @@ projects:
       - speaks LSP over stdio with the framing protocol (Content-Length
         headers + JSON body)
       - responds to initialize, didOpen, didChange, didClose
-      - hover shows types from the type checker at level 1660
+      - hover shows types from the type checker
       - completion suggests in-scope identifiers
       - go-to-definition resolves names across files
       - diagnostics published on save and on didChange
@@ -3074,8 +3036,8 @@ projects:
       lesson is partial-result handling and cancellation under
       mid-stream invalidation - all the things real Copilot servers solve.
 
-  - level: 1880
-    id: 1880-dsl-for-infrastructure
+  - level: 2340
+    id: 2340-dsl-for-infrastructure
     name: "DSL for Infrastructure"
     phase: IV
     description: >-
@@ -3097,8 +3059,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1900
-    id: 1900-plugin-system-rpc-over-stdio
+  - level: 2360
+    id: 2360-plugin-system-rpc-over-stdio
     name: "Plugin System (RPC-over-stdio)"
     phase: IV
     description: >-
@@ -3119,15 +3081,15 @@ projects:
       - host spawns plugin binary, exchanges handshake, verifies protocol version
       - plugin crash isolated - host detects and reports cleanly
       - bidirectional streaming - plugin can call back into host services
-      - example - a plugin in your toy lang from level 1620 plus one in host-language interop
+      - example - a plugin in your toy lang plus one in host-language interop
       - protocol version mismatch produces a clear error, not a hang
       - benchmarked overhead under 1ms per round-trip RPC
     recommended_languages:
       - Go
       - Rust
 
-  - level: 1920
-    id: 1920-graph-query-engine
+  - level: 2380
+    id: 2380-graph-query-engine
     name: "Graph Query Engine"
     phase: IV
     description: >-
@@ -3148,14 +3110,14 @@ projects:
       - Go
       - Rust
 
-  - level: 1940
-    id: 1940-graph-database
+  - level: 2400
+    id: 2400-graph-database
     name: "Graph Database"
     phase: IV
     description: >-
       A persistent graph database (Neo4j-like). On-disk storage of nodes,
       edges, and properties. Indexes for labels and edge types. Built on
-      top of the query engine from level 1920.
+      top of the graph query engine.
     concepts:
       - graph storage layouts
       - adjacency indexing
@@ -3169,8 +3131,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1960
-    id: 1960-stream-processing-engine
+  - level: 2420
+    id: 2420-stream-processing-engine
     name: "Stream Processing Engine"
     phase: IV
     description: >-
@@ -3191,8 +3153,8 @@ projects:
       - Go
       - Rust
 
-  - level: 1980
-    id: 1980-linux-debugger-ptrace-dwarf
+  - level: 2440
+    id: 2440-linux-debugger-ptrace-dwarf
     name: "Linux Debugger (ptrace + DWARF)"
     phase: IV
     description: >-
@@ -3200,8 +3162,8 @@ projects:
       by patching INT3, step instruction by instruction, walk the stack,
       read and modify registers and memory. Parse DWARF debug info to map
       machine addresses back to source lines and variables. The symmetric
-      tool to the native code generator at level 1800 - that turned source
-      into machine code, this turns machine code back into source.
+      tool to the native code generator - that turned source into machine
+      code, this turns machine code back into source.
     concepts:
       - ptrace and the process control ABI
       - software breakpoints via INT3 patching
@@ -3219,8 +3181,8 @@ projects:
       - Go
       - Rust
 
-  - level: 2000
-    id: 2000-self-hosting-compiler
+  - level: 2460
+    id: 2460-self-hosting-compiler
     name: "Self-Hosting Compiler"
     phase: IV
     description: >-
@@ -3238,7 +3200,7 @@ projects:
       - stage 3 - recompile with stage 2, produce stage-3 binary identical
         to stage 2
     recommended_languages:
-      - your own language (host - whatever level 1640 / 1800 was written in)
+      - your own language
 
 
 # =============================================================================
@@ -3250,16 +3212,15 @@ projects:
 # Pair with: the Spanner / Cascades / Calvin papers, Jepsen write-ups.
 # =============================================================================
 
-  - level: 2020
-    id: 2020-cockroachdb-lab
+  - level: 2480
+    id: 2480-cockroachdb-lab
     name: "CockroachDB Lab"
     phase: V
     description: >-
       Deploy a 3-node CockroachDB cluster locally, load TPC-C, and observe
       the system under stress - kill nodes during queries, watch ranges
       rebalance, read EXPLAIN ANALYZE output across different query shapes.
-      The reference implementation is open-source. Pre-stages level
-      2040 (Distributed SQL) and level 2080 (Cascades Optimizer).
+      The reference implementation is open-source.
     concepts:
       - distributed SQL execution (gateway -> leaseholder -> range leaders)
       - cost-based optimization (read EXPLAIN ANALYZE output)
@@ -3276,8 +3237,8 @@ projects:
       - Go
       - Rust
 
-  - level: 2040
-    id: 2040-distributed-sql-spanner-lite
+  - level: 2500
+    id: 2500-distributed-sql-spanner-lite
     name: "Distributed SQL (Spanner-lite)"
     phase: V
     description: >-
@@ -3298,8 +3259,8 @@ projects:
       - Go
       - Rust
 
-  - level: 2060
-    id: 2060-controller-operator-framework
+  - level: 2520
+    id: 2520-controller-operator-framework
     name: "Controller / Operator Framework"
     phase: V
     description: >-
@@ -3307,8 +3268,7 @@ projects:
       informers (watch-then-cache), a rate-limited work queue, and a
       level-triggered reconciliation loop. Users register Reconcilers per
       resource kind; the framework drives them on every change. Add
-      finalizers, owner references, and leader election (built on Raft from
-      level 1360).
+      finalizers, owner references, and leader election.
     concepts:
       - watch + cache (informer pattern) - local view of remote state
       - rate-limited work queue with exponential backoff
@@ -3322,21 +3282,21 @@ projects:
       - Reconciler interface with requeue and requeue-after both functioning
       - finalizers run before object deletion proceeds
       - owner refs - parent deletion cascades to children
-      - leader election integrated with Raft from level 1360
+      - leader election integrated with Raft
       - demo controller manages a CRD-like custom resource end to end
     recommended_languages:
       - Go
       - Rust
 
-  - level: 2080
-    id: 2080-cascades-cost-based-query-optimizer
+  - level: 2540
+    id: 2540-cascades-cost-based-query-optimizer
     name: "Cascades / Cost-Based Query Optimizer"
     phase: V
     description: >-
       An advanced SQL optimizer using the Cascades framework. Memo
       structure stores equivalent plans; transformation rules expand it;
-      dynamic programming picks the cheapest. Distinct from the rule-based
-      planner at level 1420.
+      dynamic programming picks the cheapest. Distinct from a rule-based
+      planner.
     concepts:
       - cost-based optimization
       - the memo data structure
@@ -3347,18 +3307,18 @@ projects:
       - cost model based on table statistics
       - rule-based plan transformations (join reorder, predicate pushdown)
       - branch-and-bound prunes the search space
-      - beats the rule-based planner from level 1420 on TPC-H queries
+      - beats the rule-based planner on TPC-H queries
     recommended_languages:
       - Go
       - Rust
 
-  - level: 2100
-    id: 2100-crd-and-admission-webhook-framework
+  - level: 2560
+    id: 2560-crd-and-admission-webhook-framework
     name: "CRD + Admission Webhook Framework"
     phase: V
     description: >-
-      Build the extensibility layer around the controller framework from
-      level 2060. CRDs declare new types with OpenAPI schemas; admission
+      Build the extensibility layer around the controller framework.
+      CRDs declare new types with OpenAPI schemas; admission
       webhooks intercept create/update/delete to mutate or validate before
       persistence. Your framework handles schema validation,
       mutating-vs-validating webhook plumbing, JSON-Patch generation for
@@ -3376,13 +3336,13 @@ projects:
       - validating webhook example - rejects an object failing a custom invariant
       - API conversion - same object served as v1alpha1 or v1beta1, lossless
       - webhook TLS cert rotation without dropped requests
-      - runs on top of the controller framework from level 2060
+      - runs on top of the controller framework
     recommended_languages:
       - Go
       - Rust
 
-  - level: 2120
-    id: 2120-edge-computing-platform
+  - level: 2580
+    id: 2580-edge-computing-platform
     name: "Edge Computing Platform"
     phase: V
     description: >-
@@ -3403,8 +3363,8 @@ projects:
       - Go
       - Rust
 
-  - level: 2140
-    id: 2140-oauth-2-and-oidc-authorization-server
+  - level: 2600
+    id: 2600-oauth-2-and-oidc-authorization-server
     name: "OAuth 2.0 / OIDC Authorization Server"
     phase: V
     description: >-
@@ -3431,8 +3391,8 @@ projects:
       - Go
       - Rust
 
-  - level: 2160
-    id: 2160-secrets-manager-vault-mini
+  - level: 2620
+    id: 2620-secrets-manager-vault-mini
     name: "Secrets Manager (Vault-mini)"
     phase: V
     description: >-
@@ -3442,7 +3402,7 @@ projects:
       revocation; an unsealing flow guarded by Shamir's Secret Sharing.
       Treats every secret as time-bounded.
     concepts:
-      - pluggable auth methods (extension via the plugin pattern from level 1900)
+      - pluggable auth methods (extension via the plugin pattern)
       - pluggable secret engines
       - lease-based secret lifecycle - issue, renew, revoke
       - dynamic secrets - generated on read, expired automatically
@@ -3459,8 +3419,8 @@ projects:
       - Go
       - Rust
 
-  - level: 2180
-    id: 2180-service-mesh-sidecar-proxy
+  - level: 2640
+    id: 2640-service-mesh-sidecar-proxy
     name: "Service Mesh / Sidecar Proxy"
     phase: V
     description: >-
@@ -3468,8 +3428,8 @@ projects:
       that intercepts all inbound and outbound traffic transparently,
       terminates and re-establishes mTLS automatically using SPIFFE-style
       workload identities, enforces traffic policy, and emits observability
-      data. Built on the L7 reverse proxy from level 980 plus the controller
-      framework from level 2060 for the control plane.
+      data. Built on the L7 reverse proxy plus the controller framework
+      for the control plane.
     concepts:
       - traffic interception (iptables redirect on Linux, userspace proxy elsewhere)
       - SPIFFE / SVID workload identity
@@ -3483,21 +3443,20 @@ projects:
       - retry budget prevents retry storms - circuit breaker opens on backend failure
       - canary traffic shifting via percentage-based routing rule
       - p99 added latency under 1ms vs no mesh
-      - control plane (using level 2060 framework) configures all sidecars
+      - control plane configures all sidecars
     recommended_languages:
       - Go
       - Rust
 
-  - level: 2200
-    id: 2200-gnark-tiny-circuit
+  - level: 2660
+    id: 2660-gnark-tiny-circuit
     name: "gnark Tiny Circuit"
     phase: V
     description: >-
       Use gnark to write a 'I know x such that hash(x) == y' circuit.
       Generate a proof, verify it, then extend to a small Merkle membership
       proof. Switch between Groth16 and PLONK and observe the size/time
-      differences. Pre-stages level 2220 (ZK-SNARK Prover) - you should be
-      able to use a SNARK before you implement one.
+      differences.
     concepts:
       - circuit-based computation (everything is constraints)
       - native ops vs circuit ops (and why they differ)
@@ -3514,8 +3473,8 @@ projects:
       - Go
       - Rust
 
-  - level: 2220
-    id: 2220-zk-snark-prover
+  - level: 2680
+    id: 2680-zk-snark-prover
     name: "ZK-SNARK Prover"
     phase: V
     description: >-
@@ -3537,8 +3496,8 @@ projects:
       - Go
       - Rust
 
-  - level: 2240
-    id: 2240-wireguard-style-encrypted-mesh
+  - level: 2700
+    id: 2700-wireguard-style-encrypted-mesh
     name: "WireGuard-Style Encrypted Mesh"
     phase: V
     description: >-
@@ -3565,8 +3524,8 @@ projects:
       - Go
       - Rust
 
-  - level: 2260
-    id: 2260-new-storage-engine-design
+  - level: 2720
+    id: 2720-new-storage-engine-design
     name: "New Storage Engine Design"
     phase: V
     description: >-
@@ -3585,8 +3544,8 @@ projects:
       - Go
       - Rust
 
-  - level: 2280
-    id: 2280-novel-topology-consensus-algorithm
+  - level: 2740
+    id: 2740-novel-topology-consensus-algorithm
     name: "Novel Topology Consensus Algorithm"
     phase: V
     description: >-
