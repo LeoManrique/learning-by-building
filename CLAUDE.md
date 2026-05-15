@@ -19,7 +19,7 @@ Default layout: single language at the project root. If user chooses to build a 
 
 ## Per-project REQUIREMENTS.md
 
-Every project folder contains a `REQUIREMENTS.md`. It describes the project as if a customer's requirements had already been analyzed and translated by a technical analyst — what the software does (functional) and how it has to behave (technical), language-agnostic, before any code is written. If not present, we need to create it.
+Every project folder must contain a `REQUIREMENTS.md`. If it's not already created, create it. It describes the project as if a customer's requirements had already been analyzed and translated by a technical analyst — what the software does (functional) and how it has to behave (technical), language-agnostic, before any code is written. If not present, we need to create it.
 
 Format:
 
@@ -31,7 +31,6 @@ Format:
 - Tone is declarative ("the system records…", "the user provides…"), not imperative ("decide on…", "implement…"). The file describes the finished state, not the build sequence.
 - For any requirement whose meaning isn't obvious from the heading alone (e.g. "atomic save," "swap-remove vs preserve-order," "exit code 2 distinguishes user error from internal error"), spend a sentence in the body covering *what it means and why*. Skip the explainer on self-evident requirements so the file doesn't get noisy.
 - Language-agnostic. No language-specific syntax, type names, library names, or function names. Acceptance criteria use `<run>` as a placeholder for the language-specific run command (`go run .`, `cargo run --`, etc.).
-- Don't restate anything already in `curriculum.yaml` (description, concepts, requirements, recommended languages). The REQUIREMENTS file is the analyst-grade expansion of those — it adds the technical detail and acceptance criteria that the curriculum entry intentionally leaves terse.
 - Build sequencing (phases, order of work, which feature to ship first) does *not* belong in this file. It's a requirements doc, not a roadmap.
 
 ## Programming languages
@@ -66,6 +65,7 @@ Suggest the user to log how the system works, and provide cases to change what t
 
 **Do NOT use Claude for:**
 - Writing most of the core logic of a project — that's the whole point of the exercise
+- Actions the user can do themselves with a single or few commands. Output the commands for the user to run instead of performing them. Examples: project initialization (`go mod init`, `cargo init`, etc.), scaffolding from a generator, adding a dependency, creating an empty file. The user learns the toolchain by using it, and typing one command is faster than waiting for the AI to write the files it produces.
 
 In practice: when user is mid-project, guide him towards the next steps. First provide some debug statements to better understand the structures that we are dealing with. Encourage the user to execute the program with just the debug statements in place. Then once the structures are better understood, help the user get to the next step. Provide the necessary syntax to complete the immediate next step, be very clear about where the changes need to be done. Keep the debug statements in syntax until the user decides to manually delete it.
 
