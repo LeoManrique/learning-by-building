@@ -2,15 +2,12 @@
 # LEARNING BY BUILDING CURRICULUM — Leo
 # =============================================================================
 #
-# 114 projects, ordered by difficulty
-# Levels 20 (easiest) -> 2280 (hardest).
+# Projects are ordered by difficulty from lowest level to highest.
 #
 # The level number is purely an *ordering*. The absolute number has no meaning;
 # only "level X comes before level Y" matters. A larger number simply means
-# "the next harder project". Gaps are not difficulty units.
-#
-# Initial projects were incremented by 20; new projects will be added at 10s
-# or replace existing ones considered no longer relevant.
+# "the next harder project". Gaps are not difficulty units — they're insertion
+# room for projects added later or replacements for ones that aged out.
 #
 # Each project carries:
 #   - description: what to build, in plain words
@@ -19,23 +16,185 @@
 #     them, the project is done
 #   - recommended_languages: informational, not prescriptive. Lists languages
 #     that fit the project's domain in rough order of preference. The user
-#     picks one per project — Go and Rust are both valid. Some projects
-#     (especially in Phase I) may end up implemented in both as a deliberate
-#     exercise; that's allowed but no longer required.
+#     picks one per project. Some projects (especially in Phase I) may end
+#     up implemented in more than one language as a deliberate exercise;
+#     that's allowed but not required.
 # =============================================================================
 
 
 # =============================================================================
-# PHASE I  -  Basics        (Levels 20 -> 340)
+# PHASE I  -  Basics
 # =============================================================================
-# Goal: internalize Go and Rust idioms on small projects (CLI tools, parsing,
-# hand-built data structures). Each project is small enough to build twice if
-# you want the contrast — but a single language per project is the default.
-# Languages: pick Go or Rust per project. Doubling up is optional, not required.
-# Pair with: "The Go Programming Language", "Programming Rust".
+# Goal: internalize the language's idioms on small projects (CLI tools,
+# parsing, hand-built data structures). Each project is small enough to build
+# twice if you want the contrast — but a single language per project is the
+# default.
+# Languages: pick per project. See each project's recommended_languages.
+# Pair with: the language's canonical reference book.
 # =============================================================================
 
 projects:
+
+  - level: 4
+    id: 4-number-guessing-game
+    name: "Number Guessing Game"
+    phase: I
+    description: >-
+      The smallest interactive program: pick a secret integer in a range,
+      then loop reading guesses from stdin and responding "higher", "lower",
+      or "got it" until the user wins. The point is to assemble a complete
+      program end-to-end — print, read a line, parse an integer, compare,
+      branch, loop — without any of the moving parts later projects add
+      (no files, no flags, no structs).
+    concepts:
+      - reading a line from stdin
+      - parsing strings to integers and handling parse failure
+      - the main loop / break-on-condition pattern
+      - random number generation
+    requirements:
+      - secret is a uniformly random integer in a configurable range
+      - invalid input (non-numbers, blank lines) does not crash; the program
+        reprompts
+      - on each guess the program prints higher, lower, or correct
+      - prints the number of guesses on success
+      - a flag (e.g. --range MIN MAX) lets the user widen the range
+    recommended_languages:
+      - Go
+      - Rust
+
+  - level: 8
+    id: 8-unit-converter
+    name: "Unit Converter"
+    phase: I
+    description: >-
+      A one-shot CLI that converts a value between units — start with
+      temperature (C / F / K), then add one other family (length or mass).
+      No state, no loops, no persistence: the entire program is "parse a
+      value and two units, apply a formula, print the result". The point
+      is to feel CLI argument parsing and formatted numeric output in
+      isolation.
+    concepts:
+      - command-line argument parsing
+      - float formatting with precision control
+      - exhaustive matching over an enum-like set of units
+      - exit codes for usage errors vs success
+    requirements:
+      - supports at least two unit families (temperature plus one other)
+      - usage like `<run> 100 C F` or `<run> --from C --to F 100`
+      - rejects unknown units with a usage message and a non-zero exit code
+      - output precision is configurable via a flag (default 2 decimals)
+      - round-trip is stable: converting A to B and back to A returns the
+        original value within the chosen precision
+    recommended_languages:
+      - Go
+      - Rust
+
+  - level: 10
+    id: 10-anagram-palindrome-checker
+    name: "Anagram & Palindrome Checker"
+    phase: I
+    description: >-
+      Two related one-shot checks on strings: is a string a palindrome
+      (reads the same forward and back, ignoring case and non-letters), and
+      are two strings anagrams of each other (same letters, regardless of
+      order). Tiny in scope, but it forces case folding, filtering, and
+      sort-based equivalence in a language you're still learning.
+    concepts:
+      - iterating a string forward and backward
+      - case folding and filtering non-letter characters
+      - sort-based equivalence (sort both sides, compare)
+      - dynamic array ergonomics
+    requirements:
+      - palindrome check is correct for inputs like "A man a plan a canal
+        Panama" and the empty string
+      - anagram check is correct on multi-word inputs and ignores spaces
+      - case folding is applied before comparison
+      - command shape such as `<run> palindrome "..."` and
+        `<run> anagram "..." "..."`
+      - exit code 0 on match, 1 on no-match, 2 on usage error
+    recommended_languages:
+      - Go
+      - Rust
+
+  - level: 12
+    id: 12-roman-numeral-converter
+    name: "Roman Numeral Converter"
+    phase: I
+    description: >-
+      Convert between integers and Roman numerals in both directions. The
+      whole program is two functions plus a CLI wrapper, but it's your
+      first taste of an ordered lookup table driving a small algorithm. The
+      subtractive cases (IV, IX, XL, XC, CD, CM) are what make it interesting.
+    concepts:
+      - ordered lookup tables vs unordered maps
+      - greedy decomposition algorithms
+      - input validation against a small grammar (no IIII, no VV)
+      - bidirectional conversion as inverse functions
+    requirements:
+      - converts integers in [1, 3999] to canonical Roman form
+      - parses canonical Roman numerals back to integers
+      - round-trip is stable over the full supported range
+      - rejects malformed Roman numerals with a clear error
+      - command shape such as `<run> to-roman 1994` and
+        `<run> from-roman MCMXCIV`
+    recommended_languages:
+      - Go
+      - Rust
+
+  - level: 14
+    id: 14-caesar-cipher
+    name: "Caesar Cipher"
+    phase: I
+    description: >-
+      Shift each letter of a string by N positions in the alphabet, wrapping
+      around — encode and decode are the same operation with opposite shift.
+      Trivial as an algorithm; the lesson is the language's string model.
+      Depending on the language, a string may be a sequence of bytes (with
+      multi-byte characters surfaced as code points) or a sequence of UTF-8
+      scalar values you iterate over character by character. This project
+      surfaces that sharp edge before later projects let you gloss over it.
+    concepts:
+      - the distinction between bytes and Unicode code points in a string
+      - modular arithmetic for wrap-around
+      - preserving case and non-letter characters
+      - encode / decode symmetry
+    requirements:
+      - encode and decode work for the full printable ASCII alphabet
+      - case is preserved; non-letter characters pass through untouched
+      - shift can be negative or larger than 26 (normalized modulo 26)
+      - decode(encode(x, k), k) equals x for all valid inputs
+      - reads input from stdin or a positional argument interchangeably
+    recommended_languages:
+      - Go
+      - Rust
+
+  - level: 18
+    id: 18-bank-account-repl
+    name: "Bank Account REPL"
+    phase: I
+    description: >-
+      An interactive loop over a single in-memory account: deposit, withdraw,
+      balance, history, quit. State lives in a struct with methods; the REPL
+      dispatches commands to those methods. No disk, no flags — this is the
+      smallest project that gives you first-class data plus behavior, plus
+      a command-dispatch loop, both of which the next project (CLI Task
+      Tracker) layers persistence onto.
+    concepts:
+      - structs / records and methods
+      - mutable state encapsulated behind operations
+      - command parsing and dispatch (a small switch / match)
+      - error vs validation (overdraft rejection without crashing)
+      - history as an append-only event log in memory
+    requirements:
+      - balance never goes negative; overdraft is rejected with a message
+      - history records every accepted transaction with a sequence number
+        and amount
+      - unknown commands print a help line and continue the loop
+      - quit exits cleanly; EOF on stdin is treated as quit
+      - all monetary values are handled in integer cents (no float arithmetic)
+    recommended_languages:
+      - Go
+      - Rust
 
   - level: 20
     id: 20-cli-task-tracker
@@ -70,13 +229,13 @@ projects:
       Read a stream of text from stdin or a file path. Output the top-N most
       frequent words with counts. Handle case folding, punctuation
       stripping, a min-length filter, and an n-gram mode for K-word phrase
-      counts. The point is to get fluent with Go's stream-processing idioms
-      (bufio.Scanner, maps, sort.Slice) before any later project asks you to
-      invent them.
+      counts. The point is to get fluent with the language's stream-processing
+      idioms (buffered line/token scanners, maps, sorting with a custom
+      comparator) before any later project asks you to invent them.
     concepts:
-      - bufio.Scanner streaming
+      - buffered line/token scanner streaming
       - map idioms (count, get-or-create)
-      - sort.Slice for ranked output
+      - sorting with a custom comparator for ranked output
       - normalization (case folding, punctuation stripping)
     requirements:
       - reads from stdin or any file path interchangeably
@@ -100,12 +259,13 @@ projects:
     phase: I
     description: >-
       A bidirectional converter that streams rows: CSV-to-JSON-array and
-      JSON-array-to-CSV. Uses encoding/csv and encoding/json - the goal is
-      to feel comfortable with Go's stdlib encoders before level 140 makes
-      you build JSON parsing from scratch.
+      JSON-array-to-CSV. Uses the language's CSV reader/writer and JSON
+      encoder/decoder - the goal is to feel comfortable with the language's
+      stdlib encoders before level 140 makes you build JSON parsing from
+      scratch.
     concepts:
-      - streaming encoders (json.Encoder/Decoder, csv.Reader/Writer)
-      - structs vs map[string]any
+      - streaming JSON and CSV encoders/decoders
+      - structs/records vs heterogeneous (untyped) maps
       - type inference in heterogeneous data
       - round-trip stability across encoders
     requirements:
@@ -128,8 +288,8 @@ projects:
       exclude-glob, dirs-only, and show-size flags. Tiny project, but it
       cements filesystem-traversal idioms used by the next several projects.
     concepts:
-      - filepath.WalkDir traversal
-      - glob matching with filepath.Match
+      - directory-tree walker traversal
+      - glob matching
       - terminal output formatting (box-drawing, ANSI color)
       - tty detection for auto-disabling color
     requirements:
@@ -151,9 +311,9 @@ projects:
       columns. The kind of program that's around 50 lines but makes you
       think in bytes for the first time.
     concepts:
-      - bufio.Reader
+      - buffered reader
       - fixed-width formatting
-      - byte vs rune distinction
+      - byte vs code-point distinction
       - ASCII printability checks
     requirements:
       - default output matches xxd byte-for-byte for ASCII input
@@ -172,11 +332,11 @@ projects:
     description: >-
       A terminal countdown timer that redraws in place (no scrolling),
       handles SIGINT cleanly, and rings the bell when done. The smallest
-      project that builds Go-CLI muscle memory: tickers, signal handling,
-      and basic terminal control.
+      project that builds CLI muscle memory in the language: tickers, signal
+      handling, and basic terminal control.
     concepts:
-      - time.Ticker
-      - os/signal handling
+      - a periodic tick source
+      - OS signal handling
       - terminal escape codes (carriage return for in-place redraw)
       - ANSI bell
     requirements:
@@ -241,20 +401,20 @@ projects:
       - Rust
 
   - level: 160
-    id: 160-cli-with-cobra-viper
-    name: "CLI with Cobra & Viper"
+    id: 160-cli-with-mature-framework
+    name: "CLI with a Mature Framework"
     phase: I
     description: >-
-      Build a real, useful CLI using the actual Cobra and Viper libraries -
+      Build a real, useful CLI using the language's standard CLI framework -
       a note-taker, snippet manager, or system info dashboard. Lay out the
-      command tree, declare flags, wire env-var fallback through Viper, and
-      generate completion scripts. The point is to feel the framework's
-      ergonomics before level 180 makes you clone it from scratch.
+      command tree, declare flags, wire env-var fallback through the config
+      layer, and generate completion scripts. The point is to feel the
+      framework's ergonomics before level 180 makes you clone it from scratch.
     concepts:
-      - Cobra command tree declaration
-      - Viper config precedence (flags > env > config > defaults)
-      - shell completion via Cobra's generators
-      - PersistentFlags vs LocalFlags
+      - command tree declaration
+      - config precedence (flags > env > config > defaults)
+      - shell completion via the framework's generators
+      - inherited flags vs per-command flags
     requirements:
       - at least 3 levels of nested subcommands
       - flag -> env -> config-file -> default precedence demonstrably works
@@ -267,7 +427,7 @@ projects:
 
   - level: 180
     id: 180-cli-framework-cobra-clone
-    name: "CLI Framework (Cobra-clone)"
+    name: "CLI Framework (Cobra-style clone)"
     phase: I
     description: >-
       Build the framework that kubectl, helm, and terraform are built on.
@@ -275,7 +435,7 @@ projects:
       declare flags per command, and the framework parses argv, dispatches
       to the right handler, auto-renders help text, and emits
       shell-completion scripts. The point is to internalize the pattern
-      every modern Go infrastructure CLI uses.
+      every modern infrastructure CLI uses.
     concepts:
       - command tree traversal and dispatch
       - flag set composition with parent-flag inheritance
@@ -299,14 +459,14 @@ projects:
     phase: I
     description: >-
       A curl -O clone that downloads a URL to disk and shows a TTY progress
-      bar. The lesson is io.Reader composition - you wrap the HTTP response
+      bar. The lesson is reader/stream composition - you wrap the HTTP response
       body in a counter-reader that updates the progress bar as bytes flow
       through. Once you internalize this decorator pattern you read other
-      people's Go code differently.
+      people's code differently.
     concepts:
-      - net/http client and redirects
-      - io.Reader wrapping (decorator pattern)
-      - context.Context for cancellation
+      - HTTP client and redirects
+      - reader/stream wrapping (decorator pattern)
+      - context-based cancellation
       - atomic file writes (temp + rename)
       - Range header for resume
     requirements:
@@ -315,6 +475,41 @@ projects:
       - handles unknown content-length gracefully (running byte count)
       - supports resume on partial download via the Range header
       - Ctrl-C cancels via context and removes the partial file
+    recommended_languages:
+      - Go
+      - Rust
+
+  - level: 210
+    id: 210-resilient-http-client
+    name: "Resilient HTTP Client"
+    phase: I
+    description: >-
+      Build a client library that consumes a real, flaky third-party API with
+      production-grade resilience patterns. Level 200 taught you to do one
+      HTTP request well; this one teaches you to be a polite, robust client
+      of someone else's service. Pick any open API (GitHub, NWS, OpenWeather,
+      USGS earthquakes - free tiers are fine) and write a library, not a
+      script. The lesson is that "call an API" hides an iceberg of patterns
+      most code skips - and skipping them is why integrations rot.
+    concepts:
+      - exponential backoff with full jitter
+      - idempotency keys and retry safety
+      - conditional requests, ETags, and 304 handling
+      - cursor and offset pagination
+      - rate-limit headers (RateLimit-* / Retry-After) and adaptive throttling
+      - circuit breaker pattern
+    requirements:
+      - retries transient failures with exponential backoff plus jitter,
+        bounded attempts
+      - never retries non-idempotent methods without an idempotency key
+      - honors Retry-After and RateLimit-* headers, throttles preemptively
+      - caches responses by ETag, reissues with If-None-Match, handles 304
+        as a cache hit
+      - paginates transparently - caller iterates results without seeing page
+        boundaries
+      - circuit breaker trips on sustained failures, half-opens after cooldown
+      - all behavior is testable against a mock server with deterministic
+        failure injection (timeouts, 5xx bursts, 429s)
     recommended_languages:
       - Go
       - Rust
@@ -394,8 +589,8 @@ projects:
     name: "Hash-Indexed Address Book"
     phase: I
     description: >-
-      A contact book stored in your own open-addressing hash table. No `dict`,
-      no `HashMap` - you write the hash function, collision handling, and
+      A contact book stored in your own open-addressing hash table. No
+      built-in hash map - you write the hash function, collision handling, and
       resizing yourself. The contact UI is incidental; the hash table is the
       point.
     concepts:
@@ -450,8 +645,8 @@ projects:
       removes the rest. The mental model - content addressed by hash - is
       exactly what the next project (Mini-Git) needs you to already feel.
     concepts:
-      - filepath.WalkDir
-      - streaming hashes with crypto/sha256 (constant memory)
+      - directory-tree walker
+      - streaming SHA-256 hashes (constant memory)
       - maps as multimaps (hash -> []path)
       - content-addressed storage as a concept
     requirements:
@@ -514,7 +709,7 @@ projects:
 
 
 # =============================================================================
-# PHASE II  -  Internals        (Levels 360 -> 880)
+# PHASE II  -  Internals
 # =============================================================================
 # Goal: build the things that get imported — concurrency primitives, libraries,
 # single-process servers, storage engines, interpreters, runtimes.
@@ -910,22 +1105,61 @@ projects:
       - Go
       - Rust
 
-  - level: 600
-    id: 600-rest-api-net-http
-    name: "REST API with net/http"
+  - level: 590
+    id: 590-postgres-without-orm
+    name: "Postgres Without an ORM"
     phase: II
     description: >-
-      Build a real CRUD JSON API using only Go's standard library: net/http,
-      encoding/json, log/slog. Routing tree, middleware chain, structured
-      errors, graceful shutdown via context. Critical pre-stage to level 620
-      (HTTP/1.1 from Sockets) - you have to know what net/http feels like
-      before you can appreciate what it's hiding from you.
+      Build a small CRUD application against a real Postgres instance using
+      only the language's database driver - no ORM, no query builder. Write
+      schema migrations by hand, write every query by hand, manage
+      transactions explicitly. The lesson is feeling what an ORM hides:
+      connection pooling, isolation levels, deadlocks, query plans, and the
+      cost of an N+1. Pre-stages level 600 (REST API) - by the time you
+      build the API, the database half is already understood, not a black
+      box.
     concepts:
-      - http.ServeMux and method-aware routing
-      - middleware chains via http.Handler composition
+      - connection pooling and pool exhaustion
+      - parameterized queries vs string concatenation (and SQL injection)
+      - explicit transactions, BEGIN / COMMIT / ROLLBACK, savepoints
+      - isolation levels (read committed, repeatable read, serializable)
+      - EXPLAIN ANALYZE and how an index changes a query plan
+      - migrations as ordered, idempotent SQL files
+    requirements:
+      - schema lives in numbered .sql migration files applied in order,
+        tracked in a migrations table the app owns
+      - all queries are parameterized - no string concatenation of values,
+        ever
+      - at least one operation spans multiple statements inside an explicit
+        transaction with a meaningful rollback case
+      - one query is deliberately made slow (sequential scan on a sizable
+        table), then EXPLAIN ANALYZE drives adding the right index, with
+        before/after plans saved in the repo
+      - reproduce a deadlock between two concurrent transactions, then
+        resolve it, with a short writeup of what you changed and why
+      - connection pool size is bounded and pool-exhaustion behavior is
+        observed under load (not just assumed)
+    recommended_languages:
+      - Go
+      - Rust
+
+  - level: 600
+    id: 600-rest-api-net-http
+    name: "REST API with the Standard Library"
+    phase: II
+    description: >-
+      Build a real CRUD JSON API using only the language's standard library:
+      HTTP server, JSON encoder/decoder, structured logging. Routing tree,
+      middleware chain, structured errors, graceful shutdown via context-based
+      cancellation. Critical pre-stage to level 620 (HTTP/1.1 from Sockets) -
+      you have to know what the standard HTTP layer feels like before you can
+      appreciate what it's hiding from you.
+    concepts:
+      - HTTP request multiplexing and method-aware routing
+      - middleware chains via handler composition
       - request body decoding and validation
-      - graceful shutdown with context.Context
-      - structured logging with log/slog
+      - graceful shutdown with context-based cancellation
+      - structured logging
     requirements:
       - CRUD endpoints over a real resource (notes, tasks, links, etc.)
       - "middleware: logging, request-ID, panic recovery, basic auth"
@@ -1118,7 +1352,7 @@ projects:
       - on-demand TLS - issue certs as new SNI hostnames arrive
       - OCSP stapling
     requirements:
-      - TLS 1.3 server interoperates with curl, Go stdlib client, openssl s_client
+      - TLS 1.3 server interoperates with curl, the language's stdlib client, openssl s_client
       - x509 chain validation including revocation via OCSP
       - ACME client obtains a cert from Let's Encrypt staging via HTTP-01
       - on-demand issuance on first request for a new SNI hostname (rate-limited)
@@ -1137,10 +1371,10 @@ projects:
       terminal, shows capture groups in distinct colors, prints group
       indices, and reports compilation errors with column position. Bonus
       mode emits a Graphviz DOT file representing the regex structure. The
-      point is to use Go's regexp package fluently before the next project
-      (Regex Engine) makes you build one from scratch.
+      point is to use the language's regex library fluently before the next
+      project (Regex Engine) makes you build one from scratch.
     concepts:
-      - regexp package fluency
+      - regex library fluency
       - terminal coloring (ANSI)
       - capture groups (numbered and named)
       - structural visualization (DOT output)
@@ -1210,19 +1444,20 @@ projects:
 
   - level: 780
     id: 780-sqlite-app-database-sql
-    name: "SQLite App with database/sql"
+    name: "SQLite App via the Standard SQL Layer"
     phase: II
     description: >-
-      Build a real app backed by SQLite using Go's database/sql - schema
-      migrations, prepared statements, transactions, connection pooling,
-      NULL handling. Pre-stages level 800 (SQL Subset Engine) - you can't
-      build a SQL engine without first feeling what SQL is actually for.
+      Build a real app backed by SQLite using the language's standard SQL
+      driver layer - schema migrations, prepared statements, transactions,
+      connection pooling, NULL handling. Pre-stages level 800 (SQL Subset
+      Engine) - you can't build a SQL engine without first feeling what SQL
+      is actually for.
     concepts:
-      - database/sql driver pattern
-      - schema migrations (manual or with golang-migrate / goose)
+      - the standard SQL driver pattern
+      - schema migrations (manual or with a migration tool)
       - prepared statements and parameter binding
       - transactions with proper rollback on error
-      - sql.Null* types for nullable columns
+      - nullable-column handling in the type system
     requirements:
       - schema migrations applied at startup, idempotent
       - all queries use prepared statements with bound parameters (no string concat)
@@ -1368,7 +1603,7 @@ projects:
 
 
 # =============================================================================
-# PHASE III  -  Systems        (Levels 900 -> 1580)
+# PHASE III  -  Systems
 # =============================================================================
 # Goal: cross the single-process boundary — RPC, networking stacks, distributed
 # storage and consensus, container and WASM runtimes.
@@ -1425,8 +1660,8 @@ projects:
     name: "Real gRPC Service"
     phase: III
     description: >-
-      Define a .proto schema, generate Go code with protoc-gen-go and
-      protoc-gen-go-grpc, and build a real client and server. Cover all four
+      Define a .proto schema, generate code with the language's protoc
+      plugin and gRPC plugin, and build a real client and server. Cover all four
       RPC types (unary, server-stream, client-stream, bidirectional-stream),
       use metadata, deadlines, and interceptors. Pre-stages level 920 (gRPC
       framework clone).
@@ -1452,8 +1687,8 @@ projects:
     phase: III
     description: >-
       A miniature gRPC. Define services in a small IDL (Protobuf-shaped or
-      your own); a code generator emits Go server stubs and client stubs
-      from it. Wire format is length-prefixed Protobuf over HTTP/2 (built at
+      your own); a code generator emits server stubs and client stubs in your
+      language. Wire format is length-prefixed Protobuf over HTTP/2 (built at
       level 640). All four call patterns - unary, server-streaming,
       client-streaming, bidirectional. Add interceptors and deadline
       propagation.
@@ -1466,7 +1701,7 @@ projects:
       - deadline and cancellation propagation via context
       - service reflection
     requirements:
-      - IDL parser plus Go code generator (protoc-shaped, but yours)
+      - IDL parser plus host-language code generator (protoc-shaped, but yours)
       - Protobuf wire format encode/decode round-trips against the official protoc
       - runs on top of the HTTP/2 server from level 640
       - all four RPC patterns work
@@ -2306,16 +2541,17 @@ projects:
     phase: III
     description: >-
       A driver for the Postgres wire protocol. Connect, authenticate via
-      SCRAM, parse the wire protocol, marshal Go values to and from Postgres
-      types (including arrays, JSONB, custom enums), support both
+      SCRAM, parse the wire protocol, marshal language values to and from
+      Postgres types (including arrays, JSONB, custom enums), support both
       simple-query and prepared-statement protocols. Front it with a
       connection pool that handles health checks, idle timeouts, and dynamic
-      sizing. Library shape mirrors database/sql + pgx.
+      sizing. Library shape mirrors a standard SQL driver layer plus a
+      Postgres-specific package.
     concepts:
       - Postgres frontend/backend wire protocol
       - SCRAM-SHA-256 authentication
       - prepared statements vs simple query
-      - type marshaling between Go and Postgres types
+      - type marshaling between host language and Postgres types
       - connection pool sizing strategies (max-open, max-idle, max-lifetime)
       - transaction state tracking through pool boundaries
     requirements:
@@ -2405,7 +2641,7 @@ projects:
       spans with W3C TraceContext propagation; spans flow over OTLP to a
       collector; the collector writes to columnar storage. A query API
       returns full traces by ID and aggregate service maps. Library half is
-      OpenTelemetry-Go-shaped; storage half is Tempo-shaped.
+      OpenTelemetry-shaped; storage half is Tempo-shaped.
     concepts:
       - W3C TraceContext propagation across HTTP and gRPC boundaries
       - head sampling vs tail sampling
@@ -2497,7 +2733,7 @@ projects:
 
 
 # =============================================================================
-# PHASE IV  -  Compilers & Languages        (Levels 1600 -> 2000)
+# PHASE IV  -  Compilers & Languages
 # =============================================================================
 # Goal: stop running programs, start making programs runnable. Lexers, parsers,
 # type systems, SSA, codegen, linkers, LSPs, self-hosting.
@@ -2685,28 +2921,28 @@ projects:
       - Rust
 
   - level: 1760
-    id: 1760-go-compiler-ssa-tour
-    name: "Go Compiler SSA Tour"
+    id: 1760-production-compiler-ssa-tour
+    name: "Production Compiler SSA Tour"
     phase: IV
     description: >-
-      Build the Go compiler with GOSSAFUNC=funcname for a handful of
-      carefully chosen functions - a tight loop, a function with branches,
-      one with inlining. Read the SSA dumps, identify the rule-based
-      optimizer transformations that fired, and inspect the resulting
-      assembly. Pre-stages level 1780 (SSA Optimizing Compiler Front-End) -
-      you should know what real-world SSA looks like before designing your
-      own.
+      Tour a production compiler's SSA pipeline (Go, GraalVM, LLVM, rustc -
+      pick one). Set the compiler's SSA-dump flag for a handful of carefully
+      chosen functions - a tight loop, a function with branches, one with
+      inlining. Read the SSA dumps, identify the rule-based optimizer
+      transformations that fired, and inspect the resulting assembly.
+      Pre-stages level 1780 (SSA Optimizing Compiler Front-End) - you should
+      know what real-world SSA looks like before designing your own.
     concepts:
       - SSA (Static Single Assignment) form
-      - "Go compiler phases: build SSA, opt, lower, regalloc, schedule"
-      - rule-based rewrite optimizer (cmd/compile/internal/ssa/_gen)
-      - reading SSA HTML dumps
+      - "compiler phases: build SSA, opt, lower, regalloc, schedule"
+      - rule-based rewrite optimizers in production compilers
+      - reading SSA dumps (HTML or text)
       - register allocation as a visible transformation
     requirements:
-      - successfully build at least 5 functions with GOSSAFUNC and review the dumps
+      - successfully dump SSA for at least 5 functions and review the output
       - identify at least 3 distinct optimizer transformations applied across them
       - write a short writeup mapping source -> SSA -> assembly for one function
-      - inspect the resulting assembly with go tool objdump
+      - inspect the resulting assembly with the platform's disassembler
       - identify one rewrite rule from the compiler source that fired and what it does
     recommended_languages:
       - Go
@@ -2883,7 +3119,7 @@ projects:
       - host spawns plugin binary, exchanges handshake, verifies protocol version
       - plugin crash isolated - host detects and reports cleanly
       - bidirectional streaming - plugin can call back into host services
-      - example - a plugin in your toy lang from level 1620 plus one in Go interop
+      - example - a plugin in your toy lang from level 1620 plus one in host-language interop
       - protocol version mismatch produces a clear error, not a hang
       - benchmarked overhead under 1ms per round-trip RPC
     recommended_languages:
@@ -3006,7 +3242,7 @@ projects:
 
 
 # =============================================================================
-# PHASE V  -  Frontier        (Levels 2020 -> 2280)
+# PHASE V  -  Frontier
 # =============================================================================
 # Goal: distributed SQL, cost-based optimization, edge platforms, ZK proofs,
 # novel storage and consensus designs. Open-ended capstones at the end.
@@ -3022,7 +3258,7 @@ projects:
       Deploy a 3-node CockroachDB cluster locally, load TPC-C, and observe
       the system under stress - kill nodes during queries, watch ranges
       rebalance, read EXPLAIN ANALYZE output across different query shapes.
-      The reference implementation is Go-native and open. Pre-stages level
+      The reference implementation is open-source. Pre-stages level
       2040 (Distributed SQL) and level 2080 (Cascades Optimizer).
     concepts:
       - distributed SQL execution (gateway -> leaseholder -> range leaders)
@@ -3313,7 +3549,7 @@ projects:
       user-space cousin of the Linux WireGuard kernel module.
     concepts:
       - Noise Protocol Framework (IK handshake pattern)
-      - TUN device plus Go event loop for raw IP packets
+      - TUN device plus an event loop for raw IP packets
       - ChaCha20-Poly1305 AEAD record protection
       - session re-keying without dropping the data plane
       - NAT traversal (STUN, hole punching)
