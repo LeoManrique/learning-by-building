@@ -4,7 +4,7 @@ A personal, project-based curriculum (CLI tools → advanced systems). The point
 
 ## Repo layout
 
-Monorepo. Each project lives in its own top-level folder named `<level>-<slug>` (e.g. `20-cli-task-tracker`). Folders are created as projects are started and stay in the repo once they meet the project's acceptance criteria — no separate "completed" state.
+Monorepo. Each project lives in its own top-level folder named `<level>-<slug>` (e.g. `20-number-guessing-game`). Folders are created as projects are started and stay in the repo once they meet the project's acceptance criteria — no separate "completed" state.
 
 The curriculum itself lives in [curriculum.yaml](curriculum.yaml). Projects span 5 phases — Basics, Internals, Systems, Compilers & Languages, Frontier — ordered by `level`. Levels are a build sequence with a soft difficulty trend; gaps are insertion room, not difficulty units.
 

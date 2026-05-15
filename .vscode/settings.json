@@ -1,5 +1,6 @@
 {
   "rust-analyzer.linkedProjects": [
-    "20-cli-task-tracker/cli-task-tracker-rust/Cargo.toml"
+    "20-number-guessing-game/number-guessing-game-rust/Cargo.toml",
+    "140-cli-task-tracker/cli-task-tracker-rust/Cargo.toml"
   ]
 }
