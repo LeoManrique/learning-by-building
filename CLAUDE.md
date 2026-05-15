@@ -32,6 +32,7 @@ Format:
 - For any requirement whose meaning isn't obvious from the heading alone (e.g. "atomic save," "swap-remove vs preserve-order," "exit code 2 distinguishes user error from internal error"), spend a sentence in the body covering *what it means and why*. Skip the explainer on self-evident requirements so the file doesn't get noisy.
 - Language-agnostic. No language-specific syntax, type names, library names, or function names. Acceptance criteria use `<run>` as a placeholder for the language-specific run command (`go run .`, `cargo run --`, etc.).
 - Build sequencing (phases, order of work, which feature to ship first) does *not* belong in this file. It's a requirements doc, not a roadmap.
+- Keep the spec minimal — this is a learning exercise, not a production system. Leave out robustness, performance, and edge-case requirements that don't earn their keep at the project's current learning level. If the project ever graduates into a real product, the user will write an enhanced version separately.
 
 ## Programming languages
 
