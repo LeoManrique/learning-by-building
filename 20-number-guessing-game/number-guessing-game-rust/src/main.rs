@@ -1,4 +1,5 @@
 use rand::RngExt;
+use std::io::{self, BufRead};
 
 fn main() {
     // parse flags
@@ -37,7 +38,12 @@ fn main() {
 
     //game logic
     loop {
-        let user_picked_number = 10;
+        let mut line = String::new();
+        io::stdin()
+            .lock()
+            .read_line(&mut line)
+            .expect("failed to read stdin");
+        let user_picked_number: i32 = line.trim().parse().expect("not a valid integer");
         number_of_attempts += 1;
         if user_picked_number == picked_number || true {
             println!("That's the right number! In only {number_of_attempts} attempts");

@@ -423,16 +423,17 @@ projects:
       - Rust
 
   - level: 320
-    id: 320-cli-framework-cobra-clone
-    name: "CLI Framework (Cobra-style clone)"
+    id: 320-cli-framework-clone
+    name: "CLI Framework (declarative command tree)"
     phase: I
     description: >-
-      Build the framework that kubectl, helm, and terraform are built on.
-      Users register commands in a tree (root, subcommand, sub-subcommand),
-      declare flags per command, and the framework parses argv, dispatches
-      to the right handler, auto-renders help text, and emits
-      shell-completion scripts. The point is to internalize the pattern
-      every modern infrastructure CLI uses.
+      Build the framework that kubectl, helm, terraform, cargo, rustup,
+      and ripgrep are built on top of. Users register commands in a tree
+      (root, subcommand, sub-subcommand), declare flags per command, and
+      the framework parses argv, dispatches to the right handler,
+      auto-renders help text, and emits shell-completion scripts. The
+      point is to internalize the pattern every modern infrastructure
+      CLI uses.
     concepts:
       - command tree traversal and dispatch
       - flag set composition with parent-flag inheritance
@@ -968,18 +969,19 @@ projects:
       - Rust
 
   - level: 720
-    id: 720-tui-tool-bubbletea
-    name: "TUI Tool (Bubbletea)"
+    id: 720-tui-tool-elm-architecture
+    name: "TUI Tool (Elm Architecture)"
     phase: II
     description: >-
-      Build a real terminal UI tool using charmbracelet/bubbletea - a fuzzy
-      file picker, git status viewer, or process explorer. Practice the
-      Elm-architecture pattern (Model / Update / View) and feel a production
-      TUI library.
+      Build a real terminal UI tool using the language's standard
+      TEA-style TUI framework (Bubbletea in Go, ratatui + tui-realm or
+      iced in Rust) - a fuzzy file picker, git status viewer, or process
+      explorer. Practice the Elm-architecture pattern (Model / Update /
+      View) and feel a production TUI library.
     concepts:
-      - Bubbletea's Model-Update-View pattern
-      - tea.Cmd for async work (filesystem walks, shell calls)
-      - lipgloss for styling
+      - Model-Update-View (Elm Architecture) pattern
+      - framework primitive for async work (filesystem walks, shell calls)
+      - the framework's styling and layout layer
       - keyboard event handling and focus management
     requirements:
       - clean Model/Update/View separation, no logic in View
