@@ -1,85 +1,74 @@
+use clap::Parser;
 use rand::RngExt;
+use std::cmp::Ordering;
 use std::io::{self, BufRead};
 
+#[derive(Parser)]
+#[command(about = "Guess a secret number in a configurable range")]
+struct Args {
+    #[arg(long, default_value_t = 1)]
+    lower: i32,
+
+    #[arg(long, default_value_t = 100)]
+    upper: i32,
+}
+
 fn main() {
-    // parse flags
-    /*let lowerLimit, upperLimit int
-	flag.IntVar(&lowerLimit, "lower", 1, "lower bound (inclusive)")
-	flag.IntVar(&upperLimit, "upper", 100, "upper bound (inclusive)")
-	flag.Parse()*/
-    let lower_limit = 1;
-    let upper_limit = 100;
+    let args = Args::parse();
 
-    //check flags
-	/*if lowerLimit > upperLimit {
-		fmt.Fprintf(os.Stderr, "lower (%d) should not exceed upper (%d)\n", lowerLimit, upperLimit)
-		os.Exit(2)
-	}*/
+    let lower_limit = args.lower;
+    let upper_limit = args.upper;
 
-    //initalize vars
-	/*numberOfAttempts := 0
-	notYetGuessed := true
-	pickedNumber := lowerLimit + rand.IntN(upperLimit-lowerLimit+1)
-
-	scanner := bufio.NewScanner(os.Stdin)*/
+    if lower_limit > upper_limit {
+        eprintln!("lower ({lower_limit}) should not exceed upper ({upper_limit})");
+        std::process::exit(2);
+    }
 
     let mut number_of_attempts = 0;
 
     let mut rng = rand::rng();
     let picked_number = rng.random_range(lower_limit..=upper_limit);
-
-    //welcome user
-	/*fmt.Println("Welcome to Number Guessing Game!")
-	fmt.Printf("I've picked a number between %d and %d, can you guess it?\n",
-		lowerLimit,
-		upperLimit)*/
     println!("Welcome to Number Guessing Game!");
     println!("I've picked a number between {lower_limit} and {upper_limit}, can you guess it?");
 
     //game logic
     loop {
         let mut line = String::new();
-        io::stdin()
-            .lock()
-            .read_line(&mut line)
-            .expect("failed to read stdin");
-        let user_picked_number: i32 = line.trim().parse().expect("not a valid integer");
+        match io::stdin().lock().read_line(&mut line) {
+            Ok(0) => {
+                eprintln!("No more input, goodbye!");
+                std::process::exit(1);
+            }
+            Ok(_) => {}
+            Err(e) => {
+                eprintln!("input error: {e}");
+                std::process::exit(1);
+            }
+        }
+        let user_picked_number: i32 = match line.trim().parse() {
+            Ok(n) => n,
+            Err(_) => {
+                println!("That's not a valid number, try again:");
+                continue;
+            }
+        };
+
+        if user_picked_number > upper_limit || user_picked_number < lower_limit {
+            println!("That's not between {lower_limit} and {upper_limit}");
+            continue;
+        }
+
         number_of_attempts += 1;
-        if user_picked_number == picked_number || true {
-            println!("That's the right number! In only {number_of_attempts} attempts");
-            break;
+
+        match user_picked_number.cmp(&picked_number) {
+            Ordering::Less => println!("Higher :D, try again:"),
+            Ordering::Greater => println!("Lower :P, try again:"),
+            Ordering::Equal => {
+                println!(
+                    "That's correct! The right number was {picked_number}. In only {number_of_attempts} attempts"
+                );
+                break;
+            }
         }
     }
-	/*for notYetGuessed {
-		if ok := scanner.Scan(); !ok {
-			if err := scanner.Err(); err != nil {
-				fmt.Fprintln(os.Stderr, "input error:", err)
-				os.Exit(1)
-			}
-			fmt.Println("No more input — goodbye!")
-			os.Exit(1)
-		}
-		line := scanner.Text()
-		num, err := strconv.Atoi(line)
-		if err != nil {
-			fmt.Println("That's not a valid number, try again:")
-			continue
-		}
-
-		if num > upperLimit || num < lowerLimit {
-			fmt.Printf("That's not between %d and %d, try again:\n", lowerLimit, upperLimit)
-			continue
-		}
-
-		numberOfAttempts++
-
-		if num == pickedNumber {
-			fmt.Printf("You guessed it after %d attempts! It was %d. See you! :)\n", numberOfAttempts, pickedNumber)
-			notYetGuessed = false
-		} else if num > pickedNumber {
-			fmt.Println("Lower :P, try again:")
-		} else {
-			fmt.Println("Higher :D, try again:")
-		}
-	}*/
 }
