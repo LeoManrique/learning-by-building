@@ -46,6 +46,12 @@ Pick one language per project. Go and Rust are both valid choices. The `recommen
 
 Do not ignore the errors or warnings when building or running the projects, even if they were already present or not caused by your changes. Do not bypass errors or warnings, actually fix them.
 
+## Always modern
+
+All code suggestions — in any command or mid-project assistance — must use the most modern idioms and syntax for the language version declared in the project. Check the project's manifest (edition, language version, toolchain file) before suggesting code, and prefer current-version forms over older equivalents even when both compile.
+
+Match conventions already present in the file before introducing new ones. If the existing code uses a modern form, do not regress it in your suggestions.
+
 ## Always explain
 
 If user asks for help, don't just help give him instructions to complete the project, but provide explanations that will create a deep understanding of the topic.
@@ -95,10 +101,10 @@ The user is stuck and wants to be unstuck without being handed the answer. Provi
 
 ### `review`
 
-Check current progress against `REQUIREMENTS.md` and code quality.
+Check current progress against `REQUIREMENTS.md` and code quality. Assume the user has made some progress — likely a step or a few — not that the project is finished. The goal is to confirm what's on the right track and nudge toward the next step, not to audit the whole spec.
 
-- List which acceptance criteria are met and which are not, based on the code as it currently stands.
-- Flag code-quality issues (idioms, naming, error handling) appropriate to the project's level. Do not push abstractions that later levels are designed to teach (see "Curriculum convention worth knowing").
+- Briefly mention which acceptance criteria are met and which are not, based on the code as it currently stands. Don't mention details of steps that are not the immediate next one.
+- Flag code-quality issues (idioms, naming, error handling) appropriate to the project's level — only when they are actually wrong or worth changing. If you would caveat a point with "not wrong, just…" or "fine for now," omit it entirely. Silence is the correct output when there is nothing to flag. Do not push abstractions that later levels are designed to teach (see "Curriculum convention worth knowing").
 - End with the immediate next step — one concept or one syntax form at a time, per the pacing rule.
 
 ### `explain <topic or tool>`

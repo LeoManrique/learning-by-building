@@ -45,12 +45,11 @@ fn main() {
                 std::process::exit(1);
             }
         }
-        let user_picked_number: i32 = match line.trim().parse() {
-            Ok(n) => n,
-            Err(_) => {
-                println!("That's not a valid number, try again:");
-                continue;
-            }
+        let user_picked_number: i32 = if let Ok(n) = line.trim().parse() {
+            n
+        } else {
+            println!("That's not a valid number, try again:");
+            continue;
         };
 
         if user_picked_number > upper_limit || user_picked_number < lower_limit {
