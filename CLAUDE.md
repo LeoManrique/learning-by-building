@@ -10,12 +10,14 @@ The curriculum itself lives in [curriculum.yaml](curriculum.yaml). Projects span
 
 Each project entry has: `description`, `concepts`, `requirements` (acceptance criteria), `recommended_languages`. A project is done when every requirement ticks.
 
-Default layout: single language at the project root. If user chooses to build a project in both languages (more common in Phase I), use this layout instead:
+Project folder layout: `REQUIREMENTS.md` lives at the project root; each language implementation lives in its own subfolder named `<slug>-<language>/`. This applies even when only one language is implemented — the subfolder is always present so a second language can be added later without restructuring.
 
     <level>-<slug>/
       REQUIREMENTS.md            # language-agnostic, functional + technical requirements
-      <slug>-go/                 # Go implementation
-      <slug>-rust/               # Rust implementation
+      <slug>-go/                 # Go implementation (if present)
+      <slug>-rust/               # Rust implementation (if present)
+
+The language package/module name inside each subfolder is the slug alone (e.g. `unit-converter`), without the language suffix — the language is already implied by which subfolder the code lives in. In Rust, run `cargo init --name <slug>` inside the subfolder so the crate name in `Cargo.toml` is `<slug>`. In Go, run `go mod init <slug>` inside the subfolder so the module path is `<slug>`. Projects 20 and 140 predate this rule and keep their older `<slug>-<language>` package names; do not retroactively rename them.
 
 ## Per-project REQUIREMENTS.md
 
@@ -71,6 +73,37 @@ Suggest the user to log how the system works, and provide cases to change what t
 In practice: when user is mid-project, guide him towards the next steps. First provide some debug statements to better understand the structures that we are dealing with. Encourage the user to execute the program with just the debug statements in place. Then once the structures are better understood, help the user get to the next step. Provide the necessary syntax to complete the immediate next step, be very clear about where the changes need to be done. Keep the debug statements in syntax until the user decides to manually delete it.
 
 Pacing: introduce one new concept or syntax form at a time including debug statements. A code block that implements user-visible behavior end-to-end means you've written the project for them.
+
+## Commands
+
+These commands are the only ways to invoke help in this repo. If a message does not begin with one of these commands, refuse to act and reply with the list of available commands. The rule applies to messages that initiate a new request — once a command is active, follow-up exchanges within that thread continue normally without needing the keyword again.
+
+### `start <level> [language]`
+
+Project initialization. The level must match a `level` in `curriculum.yaml`. The language defaults to `rust` when omitted; the only other accepted value is `go`.
+
+Behavior:
+
+- If the project folder `<level>-<slug>` does not exist, create it (slug is derived from the matching `id` in `curriculum.yaml`).
+- Create `REQUIREMENTS.md` at the project root if not present, following the format in "Per-project REQUIREMENTS.md". If it is already present, leave it alone.
+- Create the empty language subfolder `<slug>-<language>/` if not present.
+- Print the toolchain command the user runs inside the language subfolder to initialize the project: `cargo init --name <slug>` for Rust, `go mod init <slug>` for Go. Do not run the init yourself.
+
+### `help`
+
+The user is stuck and wants to be unstuck without being handed the answer. Provide hints, point at the relevant concept, and lead toward a next step the user can take. If the structures or runtime behavior are unclear, suggest log statements to add and ask the user to run the program with them. Never produce a code block that implements user-visible behavior end-to-end.
+
+### `review`
+
+Check current progress against `REQUIREMENTS.md` and code quality.
+
+- List which acceptance criteria are met and which are not, based on the code as it currently stands.
+- Flag code-quality issues (idioms, naming, error handling) appropriate to the project's level. Do not push abstractions that later levels are designed to teach (see "Curriculum convention worth knowing").
+- End with the immediate next step — one concept or one syntax form at a time, per the pacing rule.
+
+### `explain <topic or tool>`
+
+Deep explainer for a concept, library, framework, or language feature. Cover what it is, why it exists, the main tradeoffs, common pitfalls, and how it connects to ideas already in the curriculum. Use concrete examples; assume the user wants the mental model, not just the definition.
 
 ## Curriculum convention worth knowing
 
