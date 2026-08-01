@@ -10,11 +10,12 @@ The curriculum itself lives in [curriculum.yaml](curriculum.yaml). Projects span
 
 Each project entry has: `description`, `concepts`, `requirements` (acceptance criteria), `recommended_languages`. A project is done when every requirement ticks.
 
-Project folder layout: `REQUIREMENTS.md` lives in `docs/`; each language implementation lives in its own subfolder named `<slug>-<language>/`. This applies even when only one language is implemented — the subfolder is always present so a second language can be added later without restructuring. Black-box acceptance tests live in `e2e/` (see "E2E tests"). There is no `scripts/` folder — the e2e suite replaced the old bash harnesses; do not create new ones.
+Project folder layout: `REQUIREMENTS.md` and the numbered step guides live in `docs/`; each language implementation lives in its own subfolder named `<slug>-<language>/`. This applies even when only one language is implemented — the subfolder is always present so a second language can be added later without restructuring. Black-box acceptance tests live in `e2e/` (see "E2E tests"). There is no `scripts/` folder — the e2e suite replaced the old bash harnesses; do not create new ones.
 
     <level>-<slug>/
       docs/
         REQUIREMENTS.md          # language-agnostic functional requirements + acceptance criteria
+        NN_<step>.md             # numbered step guides, one per milestone (see "Per-project step guides")
       e2e/                       # black-box acceptance tests; standalone Go module
       <slug>-go/                 # Go implementation (if present)
         Makefile                 # build/test/e2e targets for this implementation
@@ -35,6 +36,24 @@ Format:
 - Tone is declarative ("the system records…"), in plain, everyday language — no academic or jargony phrasings. The file describes the finished state, not the build sequence; no roadmap or phases.
 - Language-agnostic. No language-specific syntax, type names, library names, or function names. Acceptance criteria use `<run>` as a placeholder for the language-specific run command (`go run .`, `cargo run --`, etc.).
 - List only the minimum requirements needed to exercise the project's headline concepts. Do not pad the spec with extra features, configurability knobs, robustness guarantees, or edge-case handling unless the curriculum entry specifically calls for them — if the user wants more, he adds those requirements himself.
+
+## Per-project step guides
+
+Alongside `REQUIREMENTS.md`, `docs/` holds a short sequence of numbered guides — `01_<step>.md`, `02_<step>.md`, … (lowercase snake_case) — one per milestone, created when the project starts. They guide *what* to do, not *how*: concise, high level, never an exact step-by-step, never code. Writing them is Claude's job; project 60 is the reference example.
+
+Each guide has a fixed shape:
+
+- `# NN — Title`, then a one-line **Goal:** tied to the functional requirement(s) the milestone serves.
+- A few bullets of what to do. Name concepts so they can be looked up, but leave the composition to the user; where a standard-library facility is the intended tool, say it exists ("your standard library has a way to…") without naming it. At least one bullet is a logging step (see "Logging as visualization") — run the program and see the structure before building on it.
+- A closing **Done when:** checklist — `- [ ]` items naming the acceptance tests that pass at the end of the milestone, each with a few words of what the test shows so the box is meaningful without opening `REQUIREMENTS.md`. The user ticks the boxes as he goes; the boxes are how the agent locates current progress. Progress is measured by `make e2e`, never by feel.
+
+Rules:
+
+- Language-agnostic, same rule as `REQUIREMENTS.md`: no language names, no type, library, or function names, no language-specific syntax.
+- Ordering carries the pedagogy: 01 is always setup and ends with a first `make e2e` run where every test fails (the finish line made visible); shared foundations get their own milestone before the features that stand on them; the last milestone ends with the whole suite green.
+- Flag what's worth understanding ("work out why the empty string passes without a special case") — never explain it away in the guide.
+- Guides reference FR and AC numbers, so whoever changes `REQUIREMENTS.md` updates the guides in the same change — same no-drift rule as the e2e suite.
+- During `help` and `review`, the current milestone is the first guide with an unticked box, and its guide anchors what the next step is. `review` cross-checks the ticks against the `make e2e` results — a ticked box the suite disputes gets flagged, and vice versa — but the user's boxes are his to tick; the agent never edits them.
 
 ## E2E tests
 
@@ -104,6 +123,7 @@ Behavior:
 
 - If the project folder `<level>-<slug>` does not exist, create it (slug is derived from the matching `id` in `curriculum.yaml`).
 - Create `docs/REQUIREMENTS.md` if not present, following the format in "Per-project REQUIREMENTS.md". If it is already present, leave it alone.
+- Create the numbered step guides in `docs/` if not present, per "Per-project step guides". If any are present, leave them alone.
 - Create `e2e/` if not present: a standalone Go module `<slug>-e2e` with one black-box test per acceptance criterion, per "E2E tests".
 - Create the language subfolder `<slug>-<language>/` with its `Makefile` if not present.
 - Print the toolchain command the user runs inside the language subfolder to initialize the project: `go mod init <slug>` for Go, `cargo init --name <slug>` for Rust. Do not run the init yourself.
