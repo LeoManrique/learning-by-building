@@ -6,42 +6,53 @@ A personal, project-based curriculum (CLI tools → advanced systems). The point
 
 Monorepo. Each project lives in its own top-level folder named `<level>-<slug>` (e.g. `20-number-guessing-game`). Folders are created as projects are started and stay in the repo once they meet the project's acceptance criteria — no separate "completed" state.
 
-The curriculum itself lives in [curriculum.yaml](curriculum.yaml). Projects span 5 phases — Basics, Internals, Systems, Compilers & Languages, Frontier — ordered by `level`. Levels are a build sequence with a soft difficulty trend; gaps are insertion room, not difficulty units.
+The curriculum itself lives in [curriculum.yaml](curriculum.yaml). Projects span 5 phases — Basics, Internals, Systems, Compilers & Languages, Frontier — ordered by `level`. Levels are a build sequence with a soft difficulty trend; gaps are insertion room, not difficulty units. The user works through projects sequentially by level.
 
 Each project entry has: `description`, `concepts`, `requirements` (acceptance criteria), `recommended_languages`. A project is done when every requirement ticks.
 
-Project folder layout: `REQUIREMENTS.md` lives at the project root; each language implementation lives in its own subfolder named `<slug>-<language>/`. This applies even when only one language is implemented — the subfolder is always present so a second language can be added later without restructuring.
+Project folder layout: `REQUIREMENTS.md` lives in `docs/`; each language implementation lives in its own subfolder named `<slug>-<language>/`. This applies even when only one language is implemented — the subfolder is always present so a second language can be added later without restructuring. Black-box acceptance tests live in `e2e/` (see "E2E tests"). There is no `scripts/` folder — the e2e suite replaced the old bash harnesses; do not create new ones.
 
     <level>-<slug>/
-      REQUIREMENTS.md            # language-agnostic, functional + technical requirements
+      docs/
+        REQUIREMENTS.md          # language-agnostic functional requirements + acceptance criteria
+      e2e/                       # black-box acceptance tests; standalone Go module
       <slug>-go/                 # Go implementation (if present)
+        Makefile                 # build/test/e2e targets for this implementation
       <slug>-rust/               # Rust implementation (if present)
 
 The language package/module name inside each subfolder is the slug alone (e.g. `unit-converter`), without the language suffix — the language is already implied by which subfolder the code lives in. In Rust, run `cargo init --name <slug>` inside the subfolder so the crate name in `Cargo.toml` is `<slug>`. In Go, run `go mod init <slug>` inside the subfolder so the module path is `<slug>`. Projects 20 and 140 predate this rule and keep their older `<slug>-<language>` package names; do not retroactively rename them.
 
 ## Per-project REQUIREMENTS.md
 
-Every project folder must contain a `REQUIREMENTS.md`. If it's not already created, create it. It describes the project as if a customer's requirements had already been analyzed and translated by a technical analyst — what the software does (functional) and how it has to behave (technical), language-agnostic, before any code is written. If not present, we need to create it.
+Every project must contain a `docs/REQUIREMENTS.md`. If it's not already created, create it. It describes what the finished software does, language-agnostic, before any code is written. Keep it short. There is no technical-requirements section: each functional requirement states the observable behavior precisely enough — inputs, outputs, exit codes, what survives a crash or restart, what happens on bad input — that the technical decisions can be inferred from it.
 
 Format:
 
-- Short title at the top followed by a 1-2 paragraph overview: what the app is, who uses it, and the headline shape of the system (e.g. short-lived CLI process, long-running server, etc.).
-- Three sections, in this order:
-    - `## Functional Requirements` — what the system does from the user's point of view. Numbered `FR-1`, `FR-2`, … each with a short heading (`### FR-1: Add a task`) and a 1-3 sentence body.
-    - `## Technical Requirements` — how the system behaves under the hood: data model, persistence, atomicity, error handling, exit codes, performance targets, ordering guarantees, etc. Numbered `TR-1`, `TR-2`, … same heading + short body shape.
-    - `## Acceptance Criteria` — a flat bulleted list of verifiable conditions, numbered `AC-1`, `AC-2`, …. Each one names a concrete command or observation the user can run end-to-end so he can report pass/fail.
-- Tone is declarative ("the system records…", "the user provides…"), not imperative ("decide on…", "implement…"). The file describes the finished state, not the build sequence.
-- Use plain, everyday language. Pick the simplest words that still convey the meaning, and avoid academic or jargony phrasings (e.g. prefer "Only the listed units are accepted" over "Exhaustive matching over a closed unit set"). Section headings should be short and concrete. This is a learning curriculum, not a formal spec — dense phrasing makes simple requirements harder to read.
-- For any requirement whose meaning isn't obvious from the heading alone (e.g. "atomic save," "swap-remove vs preserve-order," "exit code 2 distinguishes user error from internal error"), spend a sentence in the body covering *what it means and why*. Skip the explainer on self-evident requirements so the file doesn't get noisy.
+- Short title followed by a 1-2 sentence overview: what the app is and its headline shape (short-lived CLI process, long-running server, etc.).
+- Two sections, in this order:
+    - `## Functional Requirements` — numbered `FR-1`, `FR-2`, … each with a short heading (`### FR-1: Add a task`) and a 1-3 sentence body. Observable behavior only; internal mechanics appear only through their visible effects (say "a crash mid-save never leaves a half-written file", not "write to a temp file and rename").
+    - `## Acceptance Criteria` — a flat bulleted list of verifiable conditions, numbered `AC-1`, `AC-2`, …. Each one names a concrete command or observation that both the user and the e2e suite can check end-to-end: exit codes, printed output, files left on disk. Avoid criteria only a human can judge — the e2e suite must be able to assert every one.
+- Tone is declarative ("the system records…"), in plain, everyday language — no academic or jargony phrasings. The file describes the finished state, not the build sequence; no roadmap or phases.
 - Language-agnostic. No language-specific syntax, type names, library names, or function names. Acceptance criteria use `<run>` as a placeholder for the language-specific run command (`go run .`, `cargo run --`, etc.).
-- Build sequencing (phases, order of work, which feature to ship first) does *not* belong in this file. It's a requirements doc, not a roadmap.
-- List only the minimum requirements needed to exercise the project's headline concepts. Do not pad the spec with extra features, alternate input shapes, configurability knobs, robustness guarantees, performance targets, or edge-case handling unless the curriculum entry specifically calls for them. If the user wants the app to do more, it's up to him to add those requirements himself — the default REQUIREMENTS.md is the smallest version that still teaches the concepts. If the project ever graduates into a real product, the user will write an enhanced version separately.
+- List only the minimum requirements needed to exercise the project's headline concepts. Do not pad the spec with extra features, configurability knobs, robustness guarantees, or edge-case handling unless the curriculum entry specifically calls for them — if the user wants more, he adds those requirements himself.
+
+## E2E tests
+
+Every project has an `e2e/` folder: a standalone Go module named `<slug>-e2e` holding black-box acceptance tests — one plain test function per acceptance criterion, run sequentially, with the AC number in a comment above it. No table-driven tests: the user prefers separate, readable functions. Writing and maintaining this suite is Claude's job (see "How user uses AI in this repo"); it replaces the old `scripts/*.sh` harnesses.
+
+- The acceptance criteria in `docs/REQUIREMENTS.md` are the single source of truth, and the suite mirrors them one-to-one: every AC has a test function carrying its number, every test function traces back to an AC, and no test asserts behavior the ACs don't state. An AC that bundles several concrete shapes may map to one function per shape (`AC-8a`, `AC-8b`, …). Whoever changes the ACs updates the suite in the same change — the two are never allowed to drift.
+- The suite never imports or builds the implementation. It executes the compiled binary whose path arrives in the `E2E_BINARY` environment variable and asserts on exit codes and output. That is what keeps it implementation-language-agnostic: a Go and a Rust implementation are exercised by the same suite, each pointing `E2E_BINARY` at its own binary.
+- The suite is always written in Go regardless of the implementation language, and uses only the standard library (`testing`, `os/exec`). One file unless it genuinely outgrows that; shared setup goes in small helpers (`run`, `expectExit`), not tables.
+- Each implementation folder carries a `Makefile` with at least `build`, `test` (unit), and `e2e` targets. `make e2e` compiles the implementation and runs the shared suite against it (`E2E_BINARY=<binary> go -C ../e2e test ./...`).
+- Unit tests inside the implementation are the user's job (core logic, stdlib `testing`, separate functions over tables). From the API-level projects (level 840 up), testify may be adopted to mirror the job stack.
 
 ## Programming languages
 
 Go and Rust. Use the latest version of each, with current docs and best practices.
 
-Pick one language per project. Go and Rust are both valid choices. The `recommended_languages` field in `curriculum.yaml` lists which the project leans toward, but the user has free choice. Some projects (especially in Phase I) may end up implemented in both as a deliberate exercise — that's allowed but no longer required.
+**Go-first, Rust paused (since Aug 2026):** the user starts a Go-stack job on 2026-11-01, so all new projects are implemented in Go and no new Rust implementations are started until further notice. Finished Rust work stays in the repo; the `<slug>-rust/` folder convention stays for when Rust resumes.
+
+Pick one language per project. The `recommended_languages` field in `curriculum.yaml` lists which the project leans toward, but the user has free choice.
 
 ## Always fix
 
@@ -87,14 +98,15 @@ These commands are the only ways to invoke help in this repo. If a message does 
 
 ### `start <level> [language]`
 
-Project initialization. The level must match a `level` in `curriculum.yaml`. The language defaults to `rust` when omitted; the only other accepted value is `go`.
+Project initialization. The level must match a `level` in `curriculum.yaml`. The language defaults to `go` when omitted; the only other accepted value is `rust` (currently paused — point that out if requested, but obey).
 
 Behavior:
 
 - If the project folder `<level>-<slug>` does not exist, create it (slug is derived from the matching `id` in `curriculum.yaml`).
-- Create `REQUIREMENTS.md` at the project root if not present, following the format in "Per-project REQUIREMENTS.md". If it is already present, leave it alone.
-- Create the empty language subfolder `<slug>-<language>/` if not present.
-- Print the toolchain command the user runs inside the language subfolder to initialize the project: `cargo init --name <slug>` for Rust, `go mod init <slug>` for Go. Do not run the init yourself.
+- Create `docs/REQUIREMENTS.md` if not present, following the format in "Per-project REQUIREMENTS.md". If it is already present, leave it alone.
+- Create `e2e/` if not present: a standalone Go module `<slug>-e2e` with one black-box test per acceptance criterion, per "E2E tests".
+- Create the language subfolder `<slug>-<language>/` with its `Makefile` if not present.
+- Print the toolchain command the user runs inside the language subfolder to initialize the project: `go mod init <slug>` for Go, `cargo init --name <slug>` for Rust. Do not run the init yourself.
 
 ### `help`
 
@@ -104,13 +116,17 @@ The user is stuck and wants to be unstuck without being handed the answer. Provi
 
 Check current progress against `REQUIREMENTS.md` and code quality. Assume the user has made some progress — likely a step or a few — not that the project is finished. The goal is to confirm what's on the right track and nudge toward the next step, not to audit the whole spec.
 
-- Briefly mention which acceptance criteria are met and which are not, based on the code as it currently stands. Don't mention details of steps that are not the immediate next one.
+- If the implementation builds, run `make e2e` and read the results as the acceptance-criteria check instead of eyeballing the code. Briefly mention which acceptance criteria are met and which are not. Don't mention details of steps that are not the immediate next one.
 - Flag code-quality issues (idioms, naming, error handling) appropriate to the project's level — only when they are actually wrong or worth changing. If you would caveat a point with "not wrong, just…" or "fine for now," omit it entirely. Silence is the correct output when there is nothing to flag. Do not push abstractions that later levels are designed to teach (see "Curriculum convention worth knowing").
 - End with the immediate next step — one concept or one syntax form at a time, per the pacing rule.
 
 ### `explain <topic or tool>`
 
 Deep explainer for a concept, library, framework, or language feature. Cover what it is, why it exists, the main tradeoffs, common pitfalls, and how it connects to ideas already in the curriculum. Use concrete examples; assume the user wants the mental model, not just the definition.
+
+### `curriculum`
+
+Repo maintenance mode: discuss and apply changes to `curriculum.yaml`, `CLAUDE.md`, `README.md`, or repo-wide conventions. This is normal engineering collaboration — the learning guardrails (hints-only, no end-to-end code) apply to project code, and none is written here.
 
 ## Curriculum convention worth knowing
 
