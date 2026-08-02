@@ -18,7 +18,7 @@ Project folder layout: `REQUIREMENTS.md` and the numbered step guides live in `d
         NN_<step>.md             # numbered step guides, one per milestone (see "Per-project step guides")
       e2e/                       # black-box acceptance tests; standalone Go module
       <slug>-go/                 # Go implementation (if present)
-        Makefile                 # build/test/e2e targets for this implementation
+        justfile                 # build/test/e2e recipes for this implementation
       <slug>-rust/               # Rust implementation (if present)
 
 The language package/module name inside each subfolder is the slug alone (e.g. `unit-converter`), without the language suffix — the language is already implied by which subfolder the code lives in. In Rust, run `cargo init --name <slug>` inside the subfolder so the crate name in `Cargo.toml` is `<slug>`. In Go, run `go mod init <slug>` inside the subfolder so the module path is `<slug>`. Projects 20 and 140 predate this rule and keep their older `<slug>-<language>` package names; do not retroactively rename them.
@@ -45,15 +45,15 @@ Each guide has a fixed shape:
 
 - `# NN — Title`, then a one-line **Goal:** tied to the functional requirement(s) the milestone serves.
 - A few bullets of what to do. Name concepts so they can be looked up, but leave the composition to the user; where a standard-library facility is the intended tool, say it exists ("your standard library has a way to…") without naming it. At least one bullet is a logging step (see "Logging as visualization") — run the program and see the structure before building on it.
-- A closing **Done when:** checklist — `- [ ]` items naming the acceptance tests that pass at the end of the milestone, each with a few words of what the test shows so the box is meaningful without opening `REQUIREMENTS.md`. The user ticks the boxes as he goes; the boxes are how the agent locates current progress. Progress is measured by `make e2e`, never by feel.
+- A closing **Done when:** checklist — `- [ ]` items naming the acceptance tests that pass at the end of the milestone, each with a few words of what the test shows so the box is meaningful without opening `REQUIREMENTS.md`. The user ticks the boxes as he goes; the boxes are how the agent locates current progress. Progress is measured by `just e2e`, never by feel.
 
 Rules:
 
 - Language-agnostic, same rule as `REQUIREMENTS.md`: no language names, no type, library, or function names, no language-specific syntax.
-- Ordering carries the pedagogy: 01 is always setup and ends with a first `make e2e` run where every test fails (the finish line made visible); shared foundations get their own milestone before the features that stand on them; the last milestone ends with the whole suite green.
+- Ordering carries the pedagogy: 01 is always setup and ends with a first `just e2e` run where every test fails (the finish line made visible); shared foundations get their own milestone before the features that stand on them; the last milestone ends with the whole suite green.
 - Flag what's worth understanding ("work out why the empty string passes without a special case") — never explain it away in the guide.
 - Guides reference FR and AC numbers, so whoever changes `REQUIREMENTS.md` updates the guides in the same change — same no-drift rule as the e2e suite.
-- During `help` and `review`, the current milestone is the first guide with an unticked box, and its guide anchors what the next step is. `review` cross-checks the ticks against the `make e2e` results — a ticked box the suite disputes gets flagged, and vice versa — but the user's boxes are his to tick; the agent never edits them.
+- During `help` and `review`, the current milestone is the first guide with an unticked box, and its guide anchors what the next step is. `review` cross-checks the ticks against the `just e2e` results — a ticked box the suite disputes gets flagged, and vice versa — but the user's boxes are his to tick; the agent never edits them.
 
 ## E2E tests
 
@@ -62,7 +62,7 @@ Every project has an `e2e/` folder: a standalone Go module named `<slug>-e2e` ho
 - The acceptance criteria in `docs/REQUIREMENTS.md` are the single source of truth, and the suite mirrors them one-to-one: every AC has a test function carrying its number, every test function traces back to an AC, and no test asserts behavior the ACs don't state. An AC that bundles several concrete shapes may map to one function per shape (`AC-8a`, `AC-8b`, …). Whoever changes the ACs updates the suite in the same change — the two are never allowed to drift.
 - The suite never imports or builds the implementation. It executes the compiled binary whose path arrives in the `E2E_BINARY` environment variable and asserts on exit codes and output. That is what keeps it implementation-language-agnostic: a Go and a Rust implementation are exercised by the same suite, each pointing `E2E_BINARY` at its own binary.
 - The suite is always written in Go regardless of the implementation language, and uses only the standard library (`testing`, `os/exec`). One file unless it genuinely outgrows that; shared setup goes in small helpers (`run`, `expectExit`), not tables.
-- Each implementation folder carries a `Makefile` with at least `build`, `test` (unit), and `e2e` targets. `make e2e` compiles the implementation and runs the shared suite against it (`E2E_BINARY=<binary> go -C ../e2e test ./...`).
+- Each implementation folder carries a `justfile` with at least `build`, `test` (unit), and `e2e` recipes. `just e2e` compiles the implementation and runs the shared suite against it (`E2E_BINARY=<binary> go -C ../e2e test ./...`).
 - Unit tests inside the implementation are the user's job (core logic, stdlib `testing`, separate functions over tables). From the API-level projects (level 840 up), testify may be adopted to mirror the job stack.
 
 ## Programming languages
@@ -125,7 +125,7 @@ Behavior:
 - Create `docs/REQUIREMENTS.md` if not present, following the format in "Per-project REQUIREMENTS.md". If it is already present, leave it alone.
 - Create the numbered step guides in `docs/` if not present, per "Per-project step guides". If any are present, leave them alone.
 - Create `e2e/` if not present: a standalone Go module `<slug>-e2e` with one black-box test per acceptance criterion, per "E2E tests".
-- Create the language subfolder `<slug>-<language>/` with its `Makefile` if not present.
+- Create the language subfolder `<slug>-<language>/` with its `justfile` if not present.
 - Print the toolchain command the user runs inside the language subfolder to initialize the project: `go mod init <slug>` for Go, `cargo init --name <slug>` for Rust. Do not run the init yourself.
 
 ### `help`
@@ -136,7 +136,7 @@ The user is stuck and wants to be unstuck without being handed the answer. Provi
 
 Check current progress against `REQUIREMENTS.md` and code quality. Assume the user has made some progress — likely a step or a few — not that the project is finished. The goal is to confirm what's on the right track and nudge toward the next step, not to audit the whole spec.
 
-- If the implementation builds, run `make e2e` and read the results as the acceptance-criteria check instead of eyeballing the code. Briefly mention which acceptance criteria are met and which are not. Don't mention details of steps that are not the immediate next one.
+- If the implementation builds, run `just e2e` and read the results as the acceptance-criteria check instead of eyeballing the code. Briefly mention which acceptance criteria are met and which are not. Don't mention details of steps that are not the immediate next one.
 - Flag code-quality issues (idioms, naming, error handling) appropriate to the project's level — only when they are actually wrong or worth changing. If you would caveat a point with "not wrong, just…" or "fine for now," omit it entirely. Silence is the correct output when there is nothing to flag. Do not push abstractions that later levels are designed to teach (see "Curriculum convention worth knowing").
 - End with the immediate next step — one concept or one syntax form at a time, per the pacing rule.
 

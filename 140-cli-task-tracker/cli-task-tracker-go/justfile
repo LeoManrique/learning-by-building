@@ -1,0 +1,13 @@
+binary := absolute_path("bin/cli-task-tracker")
+
+build:
+    go build -o {{binary}} .
+
+test:
+    go test ./...
+
+e2e: build
+    E2E_BINARY={{binary}} go -C ../e2e test -v ./...
+
+clean:
+    rm -rf bin

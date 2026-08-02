@@ -1,0 +1,13 @@
+binary := absolute_path("../../target/debug/cli-task-tracker-rust")
+
+build:
+    cargo build
+
+test:
+    cargo test
+
+e2e: build
+    E2E_BINARY={{binary}} go -C ../e2e test -v ./...
+
+clean:
+    cargo clean --package cli-task-tracker-rust

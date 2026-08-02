@@ -13,4 +13,4 @@
 - [ ] AC-5 passes (the multi-word pair is, exit 0).
 - [ ] AC-6 passes (`hello` / `world` are not, exit 1).
 - [ ] AC-7 passes (swapped arguments give the same answer).
-- [ ] `make e2e` shows all 8 tests passing — project done.
+- [ ] `just e2e` shows all 8 tests passing — project done.
